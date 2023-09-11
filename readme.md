@@ -1,5 +1,5 @@
 # Minesweeper Project
-![Bomb](/Pictures/Bomb.png)
+![Bomb](/pictures/Bomb.png)
 
 
 ## Table of Contents 📚
