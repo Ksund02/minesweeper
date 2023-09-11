@@ -3,7 +3,7 @@
 
 
 ## Table of Contents 📚
-- [Project Description]
+- [Project Description](#project-description-🕹️)
 - [Project Members](#members-🧔)
 - [Repository Structure](#repository-structure-👀)
 
