@@ -7,14 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileIO {
-    private static final String filePath = System.getProperty("user.dir")+"/g2302/minesweeper/src/main/resources/minesweeper/highscore.csv";
+    private static final String filePath = System.getProperty("user.dir")+"/minesweeper/src/main/resources/minesweeper/highscore.csv";
 
     public List<UserScore> readFromFile() {
         List<UserScore> userScores = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            reader.readLine();
             String line = reader.readLine();
-            while (!line.equals("")) {
+            while (line != null) {
                 String[] lineArray = line.split(",");
                 String name = lineArray[0];
                 int score = Integer.parseInt(lineArray[1]);
@@ -32,6 +33,5 @@ public class FileIO {
     public static void main(String[] args) {
         FileIO fileReader = new FileIO();
         fileReader.readFromFile();
-        System.out.println((System.getProperty("user.dir")));
     }
 }
