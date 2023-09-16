@@ -8,40 +8,57 @@ public class Tile {
     private boolean isRevealed;
     private int numBombsAround;
 
-    public Tile(boolean isBomb, int numBombsAround) { 
-        this.isBomb = isBomb;
-        this.numBombsAround = numBombsAround;
+    public Tile() { 
+        this.isBomb = false;
         this.isFlagged = false; 
-        this.isRevealed = false; 
+        this.isRevealed = false;
+        this.numBombsAround = 0;
     }
 
     public boolean isBomb() {
         return isBomb;
     }
-    
-    public int getNumBombsAround() {
-        return this.numBombsAround;
-    }
 
     public boolean isFlagged() {
         return isFlagged;
     }
-    
 
     public boolean isRevealed() {
         return isRevealed;
     }
 
-    public void reveal() {
-        isRevealed = true;
+    public int getNumBombsAround() {
+        return this.numBombsAround;
     }
 
     public void toggleFlag() {
         isFlagged = !isFlagged;
     }
 
-    public void incrementNumBombsAround() {
+    public void reveal() {
+        isRevealed = true;
+    }
+
+    protected void placeBomb() {
+        isBomb = true;
+    }
+
+    protected void incrementNumBombsAround() {
         this.numBombsAround++;
     }
-}
 
+    @Override
+    public String toString() {
+        String info = "";
+        if (isFlagged) {
+            info = "F";
+        } else if (isBomb){
+            info = "X";
+        } else if (!isRevealed()) {
+            info = "?";
+        } else {
+            info = String.valueOf(numBombsAround);
+        }
+        return info;
+    }
+}
