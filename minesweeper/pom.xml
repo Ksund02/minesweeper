@@ -95,7 +95,7 @@
                 <!-- Default configuration for running -->
                 <!-- Usage: mvn javafx:run -->
                 <configuration>
-                    <mainClass>minesweeper.app.MineApp</mainClass>
+                    <mainClass>minesweeper/minesweeper.app.MineApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>
