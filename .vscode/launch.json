@@ -1,0 +1,13 @@
+{
+    
+    "configurations": [
+        {
+            "type": "java",
+            "name": "MineApp",
+            "request": "launch",
+            "mainClass": "minesweeper/minesweeper.app.MineApp",
+            "projectName": "javafx-template",
+            "cwd": "${workspaceFolder}/minesweeper",
+        }
+    ]
+}
