@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileIO {
-    private static final String filePath = System.getProperty("user.dir")+"/minesweeper/src/main/resources/minesweeper/highscore.csv";
+    private static final String filePath = System.getProperty("user.dir")+"/src/main/resources/minesweeper/highscore.csv";
 
     public List<UserScore> readFromFile() {
         List<UserScore> userScores = new ArrayList<>();
@@ -32,6 +32,10 @@ public class FileIO {
     
     public static void main(String[] args) {
         FileIO fileReader = new FileIO();
-        fileReader.readFromFile();
+        List<UserScore> userScores = fileReader.readFromFile();
+        for (UserScore userScore : userScores) {
+            System.out.println(userScore);
+        }
+    
     }
 }
