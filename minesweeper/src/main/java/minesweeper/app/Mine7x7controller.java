@@ -1,9 +1,6 @@
 package minesweeper.app;
 
-
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
