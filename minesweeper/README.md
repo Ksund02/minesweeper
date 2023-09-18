@@ -7,6 +7,7 @@
 - [Optional Features](#optional-features-🔨)
 - [Intended Use](#intended-use-🎮)
 - [How to run the game](#how-to-run-the-game-🚂)
+- [How to check test coverage](#check-test-coverage🧪)
 
 
 ## Game Description 🕹️
@@ -50,4 +51,19 @@ cd minesweeper
 ```cmd
 mvn javafx:run
 ```
+## Check test coverage🧪
+
+1. **Navigate to the minesweeper directory**
+```cmd
+cd minesweeper
+```
+
+2. **Run the tests**
+```cmd
+mvn test jacoco:report
+```
+
+3. **Check the results**
+
+Navigate to minesweeper\target\site\jacoco, and view the results in jacoco.csv
 
