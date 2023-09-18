@@ -47,8 +47,12 @@ public class Tile {
         this.numBombsAround++;
     }
 
-    public String getRevealedImage() {
-        return "";
+    public String getRevealedImagePath() {
+        String relativePath = "file:src\\main\\resources\\minesweeper\\images\\";
+        if (isBomb) {
+            return relativePath + "Bomb.png";
+        }
+        return relativePath + "number" + getNumBombsAround() + ".jpg";
     }
 
     @Override

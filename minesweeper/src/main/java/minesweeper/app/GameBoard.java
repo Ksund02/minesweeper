@@ -23,9 +23,9 @@ public class GameBoard {
         this.width = width;
         this.height = height;
         this.numBombs = numBombs;
-        this.startingCoords = new int[]{0, 0}; //Foreløpig startplass
-        placeBombs(); //plassere senere?
-        tileClicked(startingCoords[0], startingCoords[1]);
+        this.startingCoords = new int[]{-1, -1}; //Foreløpig startplass
+        //placeBombs(); //plassere senere?
+        //tileClicked(startingCoords[0], startingCoords[1]);
     }
 
     public int[] getStartingCoords() {
@@ -64,7 +64,13 @@ public class GameBoard {
 
     protected void tileClicked(int x, int y) {
         Tile tile = gameBoard.get(x).get(y);
-        if (tile.isRevealed() || tile.isFlagged()) {
+
+        boolean newBoard = startingCoords[0] == -1;
+        if (newBoard){
+            setStartingCoords(x, y);
+            placeBombs();
+            System.out.println("NEW BOARD!!!");
+        } else if (tile.isRevealed() || tile.isFlagged()) {
             return;
         }
         tile.reveal();
