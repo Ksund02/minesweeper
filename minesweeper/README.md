@@ -60,7 +60,7 @@ cd minesweeper
 
 2. **Run the tests**
 ```cmd
-mvn jacoco:report
+mvn test jacoco:report
 ```
 
 3. **Check the results**
