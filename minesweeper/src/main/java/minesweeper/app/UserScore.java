@@ -11,6 +11,11 @@ public class UserScore {
         this.date = date;
     }
 
+    @Override
+    public String toString() {
+        return "UserScore [name=" + name + ", score=" + score + ", date=" + date + "]";
+    }
+
     public String getName() {
         return name;
     }
