@@ -2,11 +2,17 @@ package minesweeper.app;
 
 import java.io.IOException;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 public class Mine7x7controller {
 
@@ -27,7 +33,7 @@ public class Mine7x7controller {
 
     // TODO: Move this out of controller, add mouseClick event on imageView
     // Clear the grid to start
-    private void clearGameGrid() {
+    public void clearGameGrid() {
         Image squarImage = new Image("file:src/main/resources/minesweeper/images/square.jpg");
 
         for (int row = 0; row < 7; row++) {
@@ -39,6 +45,14 @@ public class Mine7x7controller {
                 gameGrid.add(imageView, col, row);
             }
         }
+    }
+    public void switchToHighScoreList(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("HighscoreList.fxml"));
+        Parent root = fxmlLoader.load();
+        Node eventSource = (Node) event.getSource();
+        Stage stage = (Stage) eventSource.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
     
 }
