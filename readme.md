@@ -6,6 +6,7 @@
 - [Project Description](#project-description-🕹️)
 - [Project Members](#members-🧔)
 - [Repository Structure](#repository-structure-👀)
+- [User story](#user-story🧑‍🌾)
 
 
 ## Project Description 🕹️
@@ -23,3 +24,7 @@ More information about the implementation can be found in [Minesweeper README](m
 - `pictures/`: Contains the pictures used in the project
 - `docs/`: Contains all sort of documentation about the project, including the reports after each Release.
 - `minesweeper/`: This is the folder where all of the code for the Minesweeper-game is.
+
+## User story🧑‍🌾
+We have made a story about Truls who is playing minesweeper.
+Truls' adventure can be read here: [user story](docs/release-1/user-story.md)
