@@ -20,16 +20,10 @@ public class Mine7x7controller {
     @FXML private GridPane gameGrid;
     @FXML private GameBoard gameBoard;
 
-    // TODO: Implementer logikk
     @FXML
     public void resetGame() {
         System.out.println("reset game er trykket inn");
         clearGameGrid();
-    }
-
-    @FXML
-    public void boardClicked() {
-
     }
 
     @FXML
@@ -65,18 +59,18 @@ public class Mine7x7controller {
     public void clearGameGrid() {
         Image squarImage = new Image("file:src/main/resources/minesweeper/images/square.jpg");
 
-        for (int row = 0; row < 7; row++) {
-            for (int col = 0; col < 7; col++) {
+        for (int y = 0; y < 7; y++) {
+            for (int x = 0; x < 7; x++) {
                 //Tile tile = gameBoard.getTile(row, col);
                 ImageView imageView = new ImageView(squarImage);
                 // Set dimensions, if necessary:
                 imageView.setFitWidth(30); 
                 imageView.setFitHeight(30); 
-                gameGrid.add(imageView, col, row);
-                final int rower = row;
-                final int coler = col;
+                gameGrid.add(imageView, x, y);
+                final int row = x;
+                final int col = y;
                 imageView.setOnMouseClicked(e -> {
-                    gameBoard.tileClicked(coler, rower);
+                    gameBoard.tileClicked(row, col);
                     updateGameBoard();
                 });
             }

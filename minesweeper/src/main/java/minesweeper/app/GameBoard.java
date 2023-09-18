@@ -12,39 +12,34 @@ public class GameBoard {
     private final int numBombs;
     private final int[] startingCoords;
 
-    public GameBoard(int width, int height, int numBombs) {
-        for (int x = 0; x < width; x++) {
-            List<Tile> newColumn = new ArrayList<>();
-            for (int y = 0; y < height; y++) {
-                newColumn.add(new Tile());
+    public GameBoard(int height, int width, int numBombs) {
+        for (int y = 0; y < height; y++) {
+            List<Tile> newRow = new ArrayList<>();
+            for (int x = 0; x < width; x++) {
+                newRow.add(new Tile());
             }
-            gameBoard.add(newColumn);
+            gameBoard.add(newRow);
         }
-        this.width = width;
         this.height = height;
+        this.width = width;
         this.numBombs = numBombs;
-        this.startingCoords = new int[]{-1, -1}; //Foreløpig startplass
-        //placeBombs(); //plassere senere?
-        //tileClicked(startingCoords[0], startingCoords[1]);
+        this.startingCoords = new int[]{-1, -1};
     }
 
-    public int[] getStartingCoords() {
-        return startingCoords;
-    }
-
-    public void setStartingCoords(int x, int y) {
+    private void setStartingCoords(int x, int y) {
         startingCoords[0] = x;
         startingCoords[1] = y;
     }
 
-    public void placeBombs() {
+    private void placeBombs() {
         Random rand = new Random();
         int bombsPlaced = 0;
         while (bombsPlaced < numBombs) {
             int x = rand.nextInt(width);
             int y = rand.nextInt(height);
-            Tile tile = gameBoard.get(x).get(y);
-            if (!tile.isBomb() && (x != startingCoords[0] || y != startingCoords[1])) {
+            Tile tile = getTile(x, y);
+            boolean validBombTile = !tile.isBomb() && (x != startingCoords[0] || y != startingCoords[1]);
+            if (validBombTile) {
                 tile.placeBomb();
                 incrementNeighborCounts(tile, x, y);
                 bombsPlaced++;
@@ -55,16 +50,28 @@ public class GameBoard {
     private void incrementNeighborCounts(Tile tile, int x, int y) {
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
-                if (i != -1 && i != width && j != -1 && j != height) {
-                    gameBoard.get(i).get(j).incrementNumBombsAround();
+                boolean validCoords = i != -1 && i != width && j != -1 && j != height;
+                if (validCoords) {
+                    getTile(i, j).incrementNumBombsAround();
                 }
             }
         }
     }
 
-    protected void tileClicked(int x, int y) {
-        Tile tile = gameBoard.get(x).get(y);
-
+    /**
+     * <pre>
+     * If a tile is clicked:
+     * - Checks if it is a new game 
+     * - Checks if the tile is already revealed or flagged
+     * - Reveals the tile and all tiles around zero-tiles 
+     *   (if not revealed or flagged)
+     * </pre>
+     * 
+     * @param x the row that was clicked
+     * @param y the column that was clicked
+     */
+    public void tileClicked(int x, int y) {
+        Tile tile = getTile(x, y);
         boolean newBoard = startingCoords[0] == -1;
         if (newBoard){
             setStartingCoords(x, y);
@@ -77,14 +84,15 @@ public class GameBoard {
     }
 
     private void revealZeros(int x, int y) {
-        Tile tile = gameBoard.get(x).get(y);
+        Tile tile = getTile(x, y);
         if (tile.getNumBombsAround() != 0) {
             return;
         }
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
-                if (i != -1 && i != width && j != -1 && j != height && !gameBoard.get(i).get(j).isRevealed()) {
-                    gameBoard.get(i).get(j).reveal();
+                boolean validCoords = i != -1 && i != width && j != -1 && j != height;
+                if (validCoords && !getTile(i, j).isRevealed()) {
+                    getTile(i, j).reveal();
                     revealZeros(i, j);
                 }
             }
@@ -92,11 +100,11 @@ public class GameBoard {
     }
 
     public Tile getTile(int x, int y) {
-        return gameBoard.get(x).get(y);
+        return gameBoard.get(y).get(x);
     }
 
     public void toggleFlag(int x, int y) {
-        Tile tile = gameBoard.get(x).get(y);
+        Tile tile = getTile(x, y);
         if (!tile.isRevealed()) {
             tile.toggleFlag();
         }
