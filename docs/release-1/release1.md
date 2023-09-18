@@ -1,5 +1,5 @@
 # Release 1: Innledende støtte og funksjonalitet
-I denne første utgivelsen får brukeren muligheten til å starte Minesweeper-spillet. Skjermen viser spillets grensesnitt, men det er foreløpig ikke mulig å interagere med rutenettet for å spille spillet.
+I denne første utgivelsen får brukeren muligheten til å starte Minesweeper-spillet. Skjermen viser spillets grensesnitt, og det er mulig å klikke på ruter for å se om ruten er en bombe eller ikke, men utenom dette, er det foreløpig begrenset med spillfunksjonalitet.
 
 ## Kjernefunksjonalitet og Utviklingsstatus
 Det meste av spillets logikk er allerede på plass, men brukergrensesnittet er ikke fullstendig implementert ennå. Dette vil bli introdusert i en fremtidig release.
