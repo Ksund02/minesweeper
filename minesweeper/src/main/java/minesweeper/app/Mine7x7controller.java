@@ -1,9 +1,6 @@
 package minesweeper.app;
 
-
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -25,9 +22,14 @@ public class Mine7x7controller {
     }
 
     @FXML
+    public void boardClicked() {
+
+    }
+
+    @FXML
     public void initialize() throws IOException {
         clearGameGrid();
-        //gameBoard = new GameBoard(7, 7, 10);
+        gameBoard = new GameBoard(7, 7, 10);
     }   
 
     // TODO: Move this out of controller, add mouseClick event on imageView
@@ -37,6 +39,7 @@ public class Mine7x7controller {
 
         for (int row = 0; row < 7; row++) {
             for (int col = 0; col < 7; col++) {
+                //Tile tile = gameBoard.getTile(row, col);
                 ImageView imageView = new ImageView(squarImage);
                 // Set dimensions, if necessary:
                 imageView.setFitWidth(30); 
@@ -44,7 +47,7 @@ public class Mine7x7controller {
                 gameGrid.add(imageView, col, row);
                 final int rower = row;
                 final int coler = col;
-                //imageView.setOnMouseClicked(e -> gameBoard.tileClicked(imageView, rower, coler));
+                imageView.setOnMouseClicked(e -> gameBoard.tileClicked(rower, coler));
                 
                 
             }

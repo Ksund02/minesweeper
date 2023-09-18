@@ -12,7 +12,7 @@ public class GameBoard {
     private final int numBombs;
     private final int[] startingCoords;
 
-    public GameBoard(int width, int height, int numBombs, int[] startingCoords) {
+    public GameBoard(int width, int height, int numBombs) {
         for (int x = 0; x < width; x++) {
             List<Tile> newColumn = new ArrayList<>();
             for (int y = 0; y < height; y++) {
@@ -23,9 +23,18 @@ public class GameBoard {
         this.width = width;
         this.height = height;
         this.numBombs = numBombs;
-        this.startingCoords = startingCoords;
-        placeBombs();
+        this.startingCoords = new int[]{0, 0}; //Foreløpig startplass
+        placeBombs(); //plassere senere?
         tileClicked(startingCoords[0], startingCoords[1]);
+    }
+
+    public int[] getStartingCoords() {
+        return startingCoords;
+    }
+
+    public void setStartingCoords(int x, int y) {
+        startingCoords[0] = x;
+        startingCoords[1] = y;
     }
 
     public void placeBombs() {
@@ -90,7 +99,8 @@ public class GameBoard {
 
     public static void main(String[] args) {
         int width = 8, height = 8;
-        GameBoard game = new GameBoard(width, height, 10, new int[]{0, 0});
+        GameBoard game = new GameBoard(width, height, 10);
+        game.setStartingCoords(0, 0);
         for (int i = 0; i < height; i++) {
             System.out.println(game.gameBoard.get(i));
         }

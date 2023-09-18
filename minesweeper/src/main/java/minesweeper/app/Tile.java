@@ -47,6 +47,10 @@ public class Tile {
         this.numBombsAround++;
     }
 
+    public String getRevealedImage() {
+        return "";
+    }
+
     @Override
     public String toString() {
         String info = "";
