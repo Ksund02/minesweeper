@@ -69,7 +69,6 @@ public class GameBoard {
         if (newBoard){
             setStartingCoords(x, y);
             placeBombs();
-            System.out.println("NEW BOARD!!!");
         } else if (tile.isRevealed() || tile.isFlagged()) {
             return;
         }
