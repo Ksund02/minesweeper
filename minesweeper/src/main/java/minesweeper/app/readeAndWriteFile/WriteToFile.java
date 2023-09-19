@@ -7,7 +7,6 @@ import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import minesweeper.app.UserScore;
 
 // TODO: Move this class to a common folder for read/write from file
 public class WriteToFile {

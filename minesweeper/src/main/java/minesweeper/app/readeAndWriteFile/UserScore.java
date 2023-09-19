@@ -1,4 +1,4 @@
-package minesweeper.app;
+package minesweeper.app.readeAndWriteFile;
 
 public class UserScore {
     private String name;

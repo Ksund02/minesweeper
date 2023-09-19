@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import minesweeper.app.readeAndWriteFile.ReadFromFile;
+import minesweeper.app.readeAndWriteFile.UserScore;
 
 
 public class HighscoreListController {

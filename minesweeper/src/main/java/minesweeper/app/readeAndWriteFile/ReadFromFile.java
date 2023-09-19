@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import minesweeper.app.UserScore;
-
 public class ReadFromFile {
     private static final String filePath = System.getProperty("user.dir")+"/src/main/resources/minesweeper/highscore.csv";
 
