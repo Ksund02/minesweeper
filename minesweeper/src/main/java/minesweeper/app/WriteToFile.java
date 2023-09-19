@@ -18,33 +18,36 @@ public class WriteToFile {
 
         String outputLine = ("\n" + name + "," + seconds + "," + date);
 
-        try {
-            ensureFileExists();
-            try (PrintStream outputStream = new PrintStream(new FileOutputStream(highscorePath, true))) {
-                writeToFile(outputStream, outputLine);
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Error writing to highscore file.");
-
-        } catch (IOException e) {
-        e.printStackTrace();
-        System.out.println("Error ensuring highscore file exists.");
-        }
+        ensureFileExists();
+        writeToFile(highscorePath, outputLine);
     }
+
     
-    private static void ensureFileExists() throws IOException {
+    
+    private static void ensureFileExists() {
         Path path = Paths.get(highscorePath);
         
-        if (!Files.exists(path)) {
+        if (Files.exists(path)) 
+            return;
+
+        try {
             Files.createDirectories(path.getParent());  
             Files.createFile(path); 
+        } catch(IOException e) {
+            System.out.println("Couldt make file");
         }
+
+        String firstRow = ("name,seconds,date");
+        writeToFile(highscorePath, firstRow);
+        
     }
 
-    private static void writeToFile(PrintStream outputStream, String outputLine) {
-        outputStream.print(outputLine);
+    private static void writeToFile(String path, String outputLine) {
+        try (PrintStream outputStream = new PrintStream(new FileOutputStream(path, true))) {
+            outputStream.print(outputLine);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        }
     }
 
     // Simple testing
