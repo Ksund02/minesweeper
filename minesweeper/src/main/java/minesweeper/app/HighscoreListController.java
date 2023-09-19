@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import minesweeper.app.readeAndWriteFile.ReadFromFile;
 
 
 public class HighscoreListController {
@@ -23,8 +24,7 @@ public class HighscoreListController {
 
     @FXML
     public void initialize() {
-        FileIO fileReader = new FileIO();
-        List<UserScore> userScores = fileReader.readFromFile();
+        List<UserScore> userScores = ReadFromFile.readFromHighscore();
         userScores.sort((a, b) -> a.getScore() - b.getScore());
         List<Label> names = new ArrayList<>(Arrays.asList(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10));
         List<Label> scores = new ArrayList<>(Arrays.asList(score1, score2, score3, score4, score5, score6, score7, score8, score9, score10));

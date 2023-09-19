@@ -14,7 +14,7 @@ public class WriteToFile {
     private static final String highscorePath = "minesweeper/src/main/resources/minesweeper/highscore.csv";
 
     // TODO: Show error as pop-up, not in terminal
-    public static void writeToHighscoreFile(String name, int seconds, String date) {
+    public static void writeToHighscore(String name, int seconds, String date) {
 
         String outputLine = ("\n" + name + "," + seconds + "," + date);
 
@@ -52,7 +52,7 @@ public class WriteToFile {
 
     // Simple testing
     public static void main(String[] args) {
-        WriteToFile.writeToHighscoreFile("Bob", 12, "1999-01-01");
+        WriteToFile.writeToHighscore("Bob", 12, "1999-01-01");
     }
 
     

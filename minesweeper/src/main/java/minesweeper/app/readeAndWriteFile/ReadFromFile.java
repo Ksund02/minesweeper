@@ -11,7 +11,7 @@ import minesweeper.app.UserScore;
 public class ReadFromFile {
     private static final String filePath = System.getProperty("user.dir")+"/src/main/resources/minesweeper/highscore.csv";
 
-    public List<UserScore> readFromFile() {
+    public static List<UserScore> readFromHighscore() {
         List<UserScore> userScores = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -33,8 +33,7 @@ public class ReadFromFile {
     }
     
     public static void main(String[] args) {
-        ReadFromFile fileReader = new ReadFromFile();
-        List<UserScore> userScores = fileReader.readFromFile();
+        List<UserScore> userScores = ReadFromFile.readFromHighscore();
         for (UserScore userScore : userScores) {
             System.out.println(userScore);
         }
