@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import minesweeper.app.UserScore;
 
 // TODO: Move this class to a common folder for read/write from file
 public class WriteToFile {
@@ -14,9 +15,9 @@ public class WriteToFile {
     private static final String highscorePath = "minesweeper/src/main/resources/minesweeper/highscore.csv";
 
     // TODO: Show error as pop-up, not in terminal
-    public static void writeToHighscore(String name, int seconds, String date) {
+    public static void writeToHighscore(UserScore userScore) {
 
-        String outputLine = ("\n" + name + "," + seconds + "," + date);
+        String outputLine = ("\n" + userScore.getUserLine());
 
         ensureFileExists();
         writeToFile(highscorePath, outputLine);
@@ -52,7 +53,8 @@ public class WriteToFile {
 
     // Simple testing
     public static void main(String[] args) {
-        WriteToFile.writeToHighscore("Bob", 12, "1999-01-01");
+        UserScore bob = new UserScore("Bob", 100, "2023-01-01");
+        WriteToFile.writeToHighscore(bob);
     }
 
     

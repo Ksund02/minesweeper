@@ -11,6 +11,10 @@ public class UserScore {
         this.date = date;
     }
 
+    public String getUserLine() {
+        return name + "," + score + "," + date;
+    }
+
     @Override
     public String toString() {
         return "UserScore [name=" + name + ", score=" + score + ", date=" + date + "]";
