@@ -25,6 +25,7 @@ public class HighscoreListController {
     public void initialize() {
         FileIO fileReader = new FileIO();
         List<UserScore> userScores = fileReader.readFromFile();
+        userScores.sort((a, b) -> a.getScore() - b.getScore());
         List<Label> names = new ArrayList<>(Arrays.asList(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10));
         List<Label> scores = new ArrayList<>(Arrays.asList(score1, score2, score3, score4, score5, score6, score7, score8, score9, score10));
         List<Label> dates = new ArrayList<>(Arrays.asList(date1, date2, date3, date4, date5, date6, date7, date8, date9, date10));
