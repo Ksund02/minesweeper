@@ -1,4 +1,4 @@
-package minesweeper.app;
+package minesweeper.app.readeAndWriteFile;
 
 public class UserScore {
     private String name;
@@ -9,6 +9,10 @@ public class UserScore {
         this.name = name;
         this.score = score;
         this.date = date;
+    }
+
+    public String getUserLine() {
+        return name + "," + score + "," + date;
     }
 
     @Override

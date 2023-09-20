@@ -1,4 +1,4 @@
-package minesweeper.app;
+package minesweeper.app.readeAndWriteFile;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileIO {
+public class ReadFromFile {
     private static final String filePath = System.getProperty("user.dir")+"/src/main/resources/minesweeper/highscore.csv";
 
-    public List<UserScore> readFromFile() {
+    public static List<UserScore> readFromHighscore() {
         List<UserScore> userScores = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -31,8 +31,7 @@ public class FileIO {
     }
     
     public static void main(String[] args) {
-        FileIO fileReader = new FileIO();
-        List<UserScore> userScores = fileReader.readFromFile();
+        List<UserScore> userScores = ReadFromFile.readFromHighscore();
         for (UserScore userScore : userScores) {
             System.out.println(userScore);
         }

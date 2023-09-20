@@ -3,11 +3,18 @@
     "configurations": [
         {
             "type": "java",
+            "name": "WriteToFile",
+            "request": "launch",
+            "mainClass": "minesweeper/minesweeper.app.WriteToFile",
+            "projectName": "javafx-template"
+        },
+        {
+            "type": "java",
             "name": "MineApp",
             "request": "launch",
             "mainClass": "minesweeper/minesweeper.app.MineApp",
             "projectName": "javafx-template",
-            "cwd": "${workspaceFolder}/minesweeper",
+            "cwd": "${workspaceFolder}/minesweeper"
         }
     ]
 }
