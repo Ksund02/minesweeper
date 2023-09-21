@@ -8,6 +8,7 @@
 - [Intended Use](#intended-use-🎮)
 - [How to run the game](#how-to-run-the-game-🚂)
 - [How to check test coverage](#check-test-coverage🧪)
+- [Environment setup](#)
 
 
 ## Game Description 🕹️
@@ -67,3 +68,7 @@ mvn test jacoco:report
 
 Navigate to minesweeper\target\site\jacoco, and view the results in jacoco.csv
 
+
+## Environment setup🕶️
+- Java: JDK 19
+- Maven: Version 3.8.1

@@ -8,10 +8,9 @@
 - [Repository Structure](#repository-structure-👀)
 - [User story](#user-story🧑‍🌾)
 
-
 ## Project Description 🕹️
 The goal of the project is to make a working minesweeper game.
-More information about the implementation can be found in [Minesweeper README](minesweeper/README.md)
+More information about the implementation and the environment setup can be found in [Minesweeper README](minesweeper/README.md)
 
 ## Members 🧔
 * Christian Fredrik Johnsen
