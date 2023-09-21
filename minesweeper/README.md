@@ -21,7 +21,7 @@ The goal of our project is to make a working version of minesweeper.
 A [screenshot](#minesweeper-code-base) of the game is shown at the top of this file.
 A picture of how the high-score list might look like is presented below.
 
-![High-Score List](../pictures/Highscore_List.png)
+![High-Score List](../pictures/highscore_list.png)
 
 ## Features 🎈
 - **Basic Minesweeper Gameplay**: Clear a grid of tiles without triggering mines.

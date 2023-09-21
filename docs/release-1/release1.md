@@ -13,4 +13,4 @@ Det finnes en lenke til en brukerhistorie fra personasen “Truls” i README. D
 
 ## Testing
 Enkle tester er utviklet for å bekrefte at en tekststreng blir skrevet ut til terminalen når en knapp blir trykket på. Selv om testen i seg selv ikke gir mye verdi, bekrefter den at test-oppsette fungerer som forventet.
-Vi genererer også en Jacoco-rapport hver gang testene kjøres, noe som gir oss mulighet til å vurdere testdekningen. For vår nåværende, enkle kontroller, er testdekningen 100%.
+Vi genererer også en Jacoco-rapport hver gang testene kjøres, noe som gir oss mulighet til å vurdere testdekningen. For vår nåværende, enkle kontroller, er testdekningen på litt under 40%. For resten av filene er testdekningen rundt 0%.
