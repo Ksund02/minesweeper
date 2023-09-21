@@ -8,7 +8,7 @@
 - [Intended Use](#intended-use-🎮)
 - [How to run the game](#how-to-run-the-game-🚂)
 - [How to check test coverage](#check-test-coverage🧪)
-- [Environment setup](#)
+- [Environment setup](#environment-setup🕶️)
 
 
 ## Game Description 🕹️
