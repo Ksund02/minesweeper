@@ -22,24 +22,22 @@ public class WriteToFile {
         writeToFile(highscorePath, outputLine);
     }
 
-    
-    
     private static void ensureFileExists() {
         Path path = Paths.get(highscorePath);
-        
-        if (Files.exists(path)) 
+
+        if (Files.exists(path))
             return;
 
         try {
-            Files.createDirectories(path.getParent());  
-            Files.createFile(path); 
-        } catch(IOException e) {
+            Files.createDirectories(path.getParent());
+            Files.createFile(path);
+        } catch (IOException e) {
             System.out.println("Couldt make file");
         }
 
         String firstRow = ("name,seconds,date");
         writeToFile(highscorePath, firstRow);
-        
+
     }
 
     private static void writeToFile(String path, String outputLine) {
@@ -56,5 +54,4 @@ public class WriteToFile {
         WriteToFile.writeToHighscore(bob);
     }
 
-    
 }
