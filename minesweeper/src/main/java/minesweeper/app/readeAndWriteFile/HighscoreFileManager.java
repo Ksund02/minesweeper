@@ -12,22 +12,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class HighscoreFileManager {
 
     private static final File highscoreFile = new File("src/main/resources/minesweeper/highscore.json");
-   
+
     // TODO: Show error as pop-up, not in terminal
-    
+
     /**
      * Writes a UserScore to the highscore file.
+     * 
      * @param userScore The score which the player has achieved.
      */
     public static void writeToHighscore(UserScore userScore) {
-        
+
         // Read in the old user scores
         List<UserScore> userScores = readFromHighscore();
-        if (userScores == null) {userScores = new ArrayList<>();}
+        if (userScores == null) {
+            userScores = new ArrayList<>();
+        }
 
         // Add the new user score
         userScores.add(userScore);
-        
+
         // Sort the userScores by score, lower score is better.
         userScores.sort((a, b) -> a.getScore() - b.getScore());
 
@@ -37,6 +40,7 @@ public class HighscoreFileManager {
 
     /**
      * Writes a list of UserScores to the highscore file.
+     * 
      * @param userScores The scores which are to be written to the highscore file.
      */
     private static void writeToFile(List<UserScore> userScores) {
@@ -50,25 +54,24 @@ public class HighscoreFileManager {
 
     /**
      * Reads from the highscore file and returns a list of UserScore objects
+     * 
      * @return List<UserScore>: A list containing all saved UserScores.
      */
     public static List<UserScore> readFromHighscore() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.readValue(highscoreFile, new TypeReference<List<UserScore>>(){});
-        }
-        catch (IOException e) {
+            return objectMapper.readValue(highscoreFile, new TypeReference<List<UserScore>>() {});
+        } catch (IOException e) {
             throw new RuntimeException("Failed to read highscore-file", e);
         }
     }
 
     /**
      * Removes all data from the highscore file
-    */
+     */
     private static void clearHighscore() {
         writeToFile(new ArrayList<UserScore>());
     }
-
 
     // Simple testing
     public static void main(String[] args) {

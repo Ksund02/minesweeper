@@ -23,7 +23,7 @@ public class GameBoard {
         this.height = height;
         this.width = width;
         this.numBombs = numBombs;
-        this.startingCoords = new int[]{-1, -1};
+        this.startingCoords = new int[] { -1, -1 };
     }
 
     private void setStartingCoords(int x, int y) {
@@ -73,7 +73,7 @@ public class GameBoard {
     public void tileClicked(int x, int y) {
         Tile tile = getTile(x, y);
         boolean newBoard = startingCoords[0] == -1;
-        if (newBoard){
+        if (newBoard) {
             setStartingCoords(x, y);
             placeBombs();
         } else if (tile.isRevealed() || tile.isFlagged()) {
