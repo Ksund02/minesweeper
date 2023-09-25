@@ -1,20 +1,26 @@
 package minesweeper.app.readeAndWriteFile;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UserScore {
+    
+    @JsonProperty("name")
     private String name;
+
+    @JsonProperty("score")
     private int score;
+
+    @JsonProperty("date")
     private String date;
 
-    public UserScore(String name, int score, String date) {
+    @JsonCreator
+    public UserScore(@JsonProperty("name") String name, @JsonProperty("score") int score, @JsonProperty("date") String date) {
         this.name = name;
         this.score = score;
         this.date = date;
     }
-
-    public String getUserLine() {
-        return name + "," + score + "," + date;
-    }
-
+    
     @Override
     public String toString() {
         return "UserScore [name=" + name + ", score=" + score + ", date=" + date + "]";
