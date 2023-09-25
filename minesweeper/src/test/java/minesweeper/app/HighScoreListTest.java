@@ -1,4 +1,4 @@
-public package minesweeper.app;
+package minesweeper.app;
 
 import java.io.IOException;
 
@@ -50,6 +50,4 @@ public class HighScoreListTest extends ApplicationTest {
             Assertions.assertEquals(userScores.get(i-1).getDate(), robot.lookup("#date"+i).queryLabeled().getText());
         }
     }  
-} {
-    
 }
