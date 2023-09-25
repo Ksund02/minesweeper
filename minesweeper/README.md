@@ -65,7 +65,6 @@ mvn test jacoco:report
 ```
 
 3. **Check the results**
-
 Navigate to minesweeper\target\site\jacoco, and view the results in jacoco.csv
 
 

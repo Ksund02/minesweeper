@@ -3,10 +3,11 @@
     "configurations": [
         {
             "type": "java",
-            "name": "WriteToFile",
+            "name": "HighscoreFileManager",
             "request": "launch",
-            "mainClass": "minesweeper/minesweeper.app.WriteToFile",
-            "projectName": "javafx-template"
+            "mainClass": "minesweeper/minesweeper.app.readeAndWriteFile.HighscoreFileManager",
+            "projectName": "javafx-template",
+            "cwd": "${workspaceFolder}/minesweeper"
         },
         {
             "type": "java",
