@@ -1,16 +1,15 @@
 package minesweeper.app;
 
-
 public class Tile {
-    
+
     private boolean isBomb;
     private boolean isFlagged;
     private boolean isRevealed;
     private int numBombsAround;
 
-    public Tile() { 
+    public Tile() {
         this.isBomb = false;
-        this.isFlagged = false; 
+        this.isFlagged = false;
         this.isRevealed = false;
         this.numBombsAround = 0;
     }
@@ -60,7 +59,7 @@ public class Tile {
         String info = "";
         if (isFlagged) {
             info = "F";
-        } else if (isBomb){
+        } else if (isBomb) {
             info = "X";
         } else if (!isRevealed()) {
             info = "?";

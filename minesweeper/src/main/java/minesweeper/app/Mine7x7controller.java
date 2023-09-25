@@ -16,9 +16,12 @@ import javafx.stage.Stage;
 
 public class Mine7x7controller {
 
-    @FXML private Label timeLabel;
-    @FXML private GridPane gameGrid;
-    @FXML private GameBoard gameBoard;
+    @FXML
+    private Label timeLabel;
+    @FXML
+    private GridPane gameGrid;
+    @FXML
+    private GameBoard gameBoard;
 
     @FXML
     public void resetGame() {
@@ -61,11 +64,11 @@ public class Mine7x7controller {
 
         for (int y = 0; y < 7; y++) {
             for (int x = 0; x < 7; x++) {
-                //Tile tile = gameBoard.getTile(row, col);
+                // Tile tile = gameBoard.getTile(row, col);
                 ImageView imageView = new ImageView(squarImage);
                 // Set dimensions, if necessary:
-                imageView.setFitWidth(30); 
-                imageView.setFitHeight(30); 
+                imageView.setFitWidth(30);
+                imageView.setFitHeight(30);
                 gameGrid.add(imageView, x, y);
                 final int row = x;
                 final int col = y;
@@ -76,6 +79,7 @@ public class Mine7x7controller {
             }
         }
     }
+
     public void switchToHighScoreList(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("HighscoreList.fxml"));
         Parent root = fxmlLoader.load();
@@ -84,5 +88,5 @@ public class Mine7x7controller {
         stage.setScene(new Scene(root));
         stage.show();
     }
-    
+
 }
