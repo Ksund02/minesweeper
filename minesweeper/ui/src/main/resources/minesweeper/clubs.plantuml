@@ -1,0 +1,30 @@
+@startuml klasseDiag
+
+
+class Tile{
+    - boolean isBomb
+    - boolean isFlagged
+    - boolean isRevealed
+    - int numBombsAround
+
+    + Tile(isBomb, numBombsAround)
+    + reveal()
+    + toggleFlag()
+    + getNumBombsAround()
+    + incrementNumBombsAround()
+    
+}
+
+class GameBoard {
+    - Map<{x, y}, Tile> tileMap
+    
+    
+    
+    - PlaceBombs()
+    - tileClicked(x, y)
+
+}
+
+GameBoard "1" -- "1..*" Tile
+
+@enduml
