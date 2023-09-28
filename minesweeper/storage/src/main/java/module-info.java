@@ -5,6 +5,6 @@ module minesweeperstorage {
     requires com.fasterxml.jackson.annotation;
 
     // Jackson needs access to the readAndWriteFile package
-    exports minestorage.storage;
-    opens minestorage.storage to com.fasterxml.jackson.databind;
+    exports storage;
+    opens storage to com.fasterxml.jackson.databind;
 }

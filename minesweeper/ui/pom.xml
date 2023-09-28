@@ -6,30 +6,30 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>19</maven.compiler.source>
-        <maven.compiler.target>19</maven.compiler.target>
-    </properties>
-
     <parent>
         <groupId>it1901</groupId>
         <artifactId>minesweeper</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+    <!--This module requires a lot of dependencies.-->
     <dependencies>
 
         <!-- javafx -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>19.0.2.1</version>
+            <version>19</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>19.0.2.1</version>
+            <version>19</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>19</version>
         </dependency>
 
         <!-- junit testing with jupiter -->
@@ -87,9 +87,6 @@
 
     </dependencies>
 
-
-    
-
     <build>
 
         <plugins>           
@@ -117,14 +114,7 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <release>16</release>
-                </configuration>
-            </plugin>
+            
             
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -132,12 +122,22 @@
 		        <version>3.0.0-M5</version>
                 <configuration>
                     <argLine>
-                        --add-opens minesweeper/minesweeper.ui=ALL-UNNAMED
                         --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
                         @{jaCoCoArgLine}
                     </argLine>
                 </configuration>
 	        </plugin>
+            
+            
+
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>minesweeperui/ui.MineApp</mainClass>
+                </configuration>
+            </plugin>
 
             
         </plugins>
