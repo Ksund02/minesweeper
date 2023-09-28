@@ -4,12 +4,19 @@
     <groupId>it1901</groupId>
     <artifactId>ui</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
     </properties>
+
+    <parent>
+        <groupId>it1901</groupId>
+        <artifactId>minesweeper</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
 
     <dependencies>
 
@@ -64,13 +71,6 @@
             <version>2.2</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>it1901</groupId>
-            <artifactId>ui</artifactId>
-            <version>1.0</version>
-        </dependency>
-
 
     </dependencies>
 

@@ -1,4 +1,4 @@
-package minesweeper.app;
+package minesweeper.core;
 
 import java.util.ArrayList;
 import java.util.List;

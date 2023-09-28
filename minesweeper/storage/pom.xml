@@ -4,14 +4,7 @@
     <groupId>it1901</groupId>
     <artifactId>storage</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-
-    <parent>
-        <groupId>it1901</groupId>
-        <artifactId>javafx-template</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-    </parent>
-
-
+    <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -64,10 +57,21 @@
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.15.2</version> 
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.15.2</version> 
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.15.2</version> 
+        </dependency>
 
     </dependencies>
 

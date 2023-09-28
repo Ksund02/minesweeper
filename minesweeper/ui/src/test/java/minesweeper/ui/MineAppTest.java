@@ -1,4 +1,4 @@
-package minesweeper.app;
+package minesweeper.ui;
 
 import java.io.IOException;
 
@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import minesweeper.ui.Mine7x7controller;
 
 
 public class MineAppTest extends ApplicationTest {

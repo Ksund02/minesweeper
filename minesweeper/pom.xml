@@ -2,8 +2,9 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>it1901</groupId>
-    <artifactId>javafx-template</artifactId>
+    <artifactId>minesweeper</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -11,7 +12,7 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
-    </modules>
+    <modules>
         <module>storage</module>
         <module>core</module>
         <module>ui</module>
@@ -130,7 +131,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>minesweeper/minesweeper.app.MineApp</mainClass>
+                    <mainClass>minesweeper/minesweeper.ui.MineApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>

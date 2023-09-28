@@ -1,4 +1,4 @@
-package minesweeper.app;
+package minesweeper.ui;
 
 import java.io.IOException;
 
@@ -13,6 +13,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import minesweeper.core.GameBoard;
+import minesweeper.core.Tile;
 
 public class Mine7x7controller {
 

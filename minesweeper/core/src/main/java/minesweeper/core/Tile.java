@@ -1,4 +1,4 @@
-package minesweeper.app;
+package minesweeper.core;
 
 public class Tile {
 

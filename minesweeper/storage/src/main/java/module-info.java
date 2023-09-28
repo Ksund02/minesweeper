@@ -1,10 +1,10 @@
 module minesweeper.storage {
     // Jackson 
-    requires transitive com.fasterxml.jackson.core;
-    requires transitive com.fasterxml.jackson.databind;
-    requires transitive com.fasterxml.jackson.annotation;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.annotation;
 
     // Jackson needs access to the readAndWriteFile package
-    opens minesweeper.storage to com.fasterxml.jackson.databind;
     exports minesweeper.storage;
+    opens minesweeper.storage to com.fasterxml.jackson.databind;
 }

@@ -1,4 +1,4 @@
-package minesweeper.app.readeAndWriteFile;
+package minesweeper.storage;
 
 import java.io.IOException;
 import java.io.File;
