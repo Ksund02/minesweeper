@@ -1,4 +1,4 @@
-package minesweeper.ui;
+package mineui.ui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +20,7 @@ public class MineApp extends Application {
         Parent parent = fxmlLoader.load();
         stage.setScene(new Scene(parent));
 
-        Image icon = new Image(getClass().getResourceAsStream("/minesweeper/images/truls.jpg"));
+        Image icon = new Image(getClass().getResourceAsStream("/mineui/images/truls.jpg"));
         stage.getIcons().add(icon);
 
         stage.show();

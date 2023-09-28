@@ -1,4 +1,4 @@
-package minesweeper.ui;
+package mineui.ui;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,8 +13,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import minesweeper.storage.HighscoreFileManager;
-import minesweeper.storage.UserScore;
+import minestorage.storage.HighscoreFileManager;
+import minestorage.storage.UserScore;
 
 public class HighscoreListController {
     private int number = 0;

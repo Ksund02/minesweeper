@@ -1,4 +1,4 @@
-package minesweeper.storage;
+package minestorage.storage;
 
 import java.io.IOException;
 import java.io.File;
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 // TODO: Move this class to a common folder for read/write from file
 public class HighscoreFileManager {
 
-    private static final File highscoreFile = new File("src/main/resources/minesweeper/highscore.json");
+    private static final File highscoreFile = new File("src/main/resources/highscore.json");
 
     // TODO: Show error as pop-up, not in terminal
 

@@ -1,4 +1,4 @@
-package minesweeper.ui;
+package mineui.ui;
 
 import java.io.IOException;
 
@@ -13,8 +13,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import minesweeper.core.GameBoard;
-import minesweeper.core.Tile;
+import minecore.core.GameBoard;
+import minecore.core.Tile;
 
 public class Mine7x7controller {
 
@@ -62,8 +62,7 @@ public class Mine7x7controller {
     // TODO: Move this out of controller, add mouseClick event on imageView
     // Clear the grid to start
     public void clearGameGrid() {
-        Image squarImage = new Image("file:src/main/resources/minesweeper/images/square.jpg");
-
+        Image squarImage = new Image(getClass().getResourceAsStream("/mineui/images/truls.jpg"));
         for (int y = 0; y < 7; y++) {
             for (int x = 0; x < 7; x++) {
                 // Tile tile = gameBoard.getTile(row, col);

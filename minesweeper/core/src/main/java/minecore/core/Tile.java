@@ -1,4 +1,4 @@
-package minesweeper.core;
+package minecore.core;
 
 public class Tile {
 
@@ -47,7 +47,7 @@ public class Tile {
     }
 
     public String getRevealedImagePath() {
-        String relativePath = "file:src\\main\\resources\\minesweeper\\images\\";
+        String relativePath = "file:src\\main\\resources\\coresweep\\";
         if (isBomb) {
             return relativePath + "bomb.png";
         }

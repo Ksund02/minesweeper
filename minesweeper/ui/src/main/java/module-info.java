@@ -1,9 +1,9 @@
-module minesweeper.ui {
+module minesweeperui {
     // JavaFX
     requires javafx.controls;
     requires javafx.fxml;
-    requires minesweeper.storage;
-    opens minesweeper.ui to javafx.graphics, javafx.fxml;
+    requires minesweeperstorage;
+    opens mineui.ui to javafx.graphics, javafx.fxml;
 
     // La til dette:
     //requires com.fasterxml.jackson.databind;
@@ -11,7 +11,7 @@ module minesweeper.ui {
     requires javafx.base;
     //requires javafx.controls;
     //requires javafx.fxml;
-    requires minesweeper.core;
+    requires minesweepercore;
     //requires fxutil;
 
 }

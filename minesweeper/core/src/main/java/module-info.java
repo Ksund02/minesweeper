@@ -1,8 +1,8 @@
-module minesweeper.core {
-    opens minesweeper.core;
+module minesweepercore {
+    opens minecore.core;
 
     // La til dette:
     requires transitive com.fasterxml.jackson.databind;
-    exports minesweeper.core;
+    exports minecore.core;
     //exports minesweeper.json;
 }
