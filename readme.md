@@ -35,7 +35,17 @@ Truls' adventure can be read here: [user story](docs/release-1/user-story.md)
 cd minesweeper
 ```
 
-2. **Run the application**
+2. **Compile the code**
+```cmd
+mvn clean compile
+```
+
+3. **Navigate to the ui directory**
+```cmd
+cd ui
+```
+
+4. **Run the application**
 ```cmd
 mvn javafx:run
 ```
