@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import core.GameBoard;
+import core.Stopwatch;
 import core.Tile;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +22,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Mine7x7controller {
 
@@ -27,18 +32,25 @@ public class Mine7x7controller {
     private GridPane gameGrid;
     //@FXML
     private GameBoard gameBoard;
+    private Stopwatch stopwatch;
+    private Timeline timeline;
 
     @FXML
     public void resetGame() {
         System.out.println("reset game er trykket inn");
         gameBoard = new GameBoard(7, 7, 10);
         clearGameGrid();
+        timeline.stop();
+        stopwatch.restart();
+        timeLabel.setText(""+0);
     }
 
     @FXML
     public void initialize() throws IOException {
         gameBoard = new GameBoard(7, 7, 10);
         newGameGrid();
+        stopwatch = new Stopwatch();
+        timeline = createTimeline();
     }
 
     private void updateGameBoard(MouseEvent e, int row, int col) {
@@ -79,6 +91,8 @@ public class Mine7x7controller {
     }
 
     private void gameOver() {
+        timeline.stop();
+        stopwatch.stop();
         for (int x = 0; x < 7; x++) {
             for (int y = 0; y < 7; y++) {
                 Tile tile = gameBoard.getTile(x, y);
@@ -97,6 +111,8 @@ public class Mine7x7controller {
     }
 
     private void gameWon() {
+        timeline.stop();
+        stopwatch.stop();
         gameGrid.setDisable(true);
         gameStatusLabel.setText("You win!");
     }
@@ -125,6 +141,11 @@ public class Mine7x7controller {
                 final int row = x;
                 final int col = y;
                 imageView.setOnMouseClicked(e -> {
+                    gameBoard.tileClicked(row, col);
+                    if (gameBoard.gameStarted() && !stopwatch.started()) {
+                        stopwatch.start();
+                        timeline.play();
+                    }
                     updateGameBoard(e, row, col);
                 });
             }
@@ -148,6 +169,22 @@ public class Mine7x7controller {
         Stage stage = (Stage) eventSource.getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
+    }
+
+    private Timeline createTimeline() {
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                updateTimeLabel();
+            }
+        });
+        Timeline timeline = new Timeline(keyFrame);
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        return timeline;
+    }
+
+    public void updateTimeLabel() {
+        timeLabel.setText(""+stopwatch.getTime());
     }
 
 }

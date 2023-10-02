@@ -111,6 +111,17 @@ public class GameBoard {
         return gameBoard.get(y).get(x);
     }
 
+    public boolean gameStarted() {
+        return tilesLeft != width * height;
+    }
+
+    public void toggleFlag(int x, int y) {
+        Tile tile = getTile(x, y);
+        if (!tile.isRevealed()) {
+            tile.toggleFlag();
+        }
+    }
+
     public static void main(String[] args) {
         int width = 8, height = 8;
         GameBoard game = new GameBoard(width, height, 10);
