@@ -6,7 +6,6 @@
 - [Features](#features-🎈)
 - [Optional Features](#optional-features-🔨)
 - [Intended Use](#intended-use-🎮)
-- [How to run the game](#how-to-run-the-game-🚂)
 - [How to check test coverage](#check-test-coverage🧪)
 - [Environment setup](#environment-setup🕶️)
 
@@ -41,17 +40,6 @@ A picture of how the high-score list might look like is presented below.
 6. Click the high-score button to view the high-score list
 
 
-## How to Run the game 🚂
-
-1. **Navigate to the minesweeper directory**
-```cmd
-cd minesweeper
-```
-
-2. **Run the application**
-```cmd
-mvn javafx:run
-```
 ## Check test coverage🧪
 
 1. **Navigate to the minesweeper directory**
@@ -61,13 +49,13 @@ cd minesweeper
 
 2. **Run the tests**
 ```cmd
-mvn test jacoco:report
+mvn test
 ```
 
 3. **Check the results**
-Navigate to minesweeper\target\site\jacoco, and view the results in jacoco.csv
-
+- A jacoco report is made automatically, once a test is run.
+- To check the results, navigate to minesweeper\target\site\jacoco, and open jacoco.csv
 
 ## Environment setup🕶️
-- Java: JDK 19
-- Maven: Version 3.8.1
+- Java: JDK 17
+- Maven: Version 3.5 or higher
