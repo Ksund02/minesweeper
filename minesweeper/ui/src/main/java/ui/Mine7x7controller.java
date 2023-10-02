@@ -14,6 +14,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -39,27 +41,41 @@ public class Mine7x7controller {
         newGameGrid();
     }
 
-    private void updateGameBoard() {
-        for (int x = 0; x < 7; x++) {
-            for (int y = 0; y < 7; y++) {
-                Tile tile = gameBoard.getTile(x, y);
-                if (tile.isRevealed()) {
-                    String path = tile.getRevealedImagePath();
-                    ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, x, y);
-                    InputStream is = Tile.class.getResourceAsStream(path);
-                    // Path = /number0.jpg returns null.
-                    if (is == null) {imageView.setImage(null);}
-                    else {imageView.setImage(new Image(is));}
-                }
-                if (tile.isRevealed() && tile.isBomb()) {
-                    gameOver();
-                    return;
-                } else if (gameBoard.gameIsWon()) {
-                    gameWon();
-                    return;
+    private void updateGameBoard(MouseEvent e, int row, int col) {
+        if (e.getButton().equals(MouseButton.PRIMARY)) {
+            gameBoard.tileClicked(row, col);
+            for (int x = 0; x < 7; x++) {
+                for (int y = 0; y < 7; y++) {
+                    Tile tile = gameBoard.getTile(x, y);
+                    if (tile.isRevealed()) {
+                        String path = tile.getRevealedImagePath();
+                        ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, x, y);
+                        InputStream is = Tile.class.getResourceAsStream(path);
+                        // Path = /number0.jpg returns null.
+                        if (is == null) {imageView.setImage(null);}
+                        else {imageView.setImage(new Image(is));}
+                    }
+                    if (tile.isRevealed() && tile.isBomb()) {
+                        gameOver();
+                        return;
+                    } else if (gameBoard.gameIsWon()) {
+                        gameWon();
+                        return;
+                    }
                 }
             }
+        } else if (e.getButton().equals(MouseButton.SECONDARY)) {
+            Tile tile = gameBoard.getTile(row, col);
+            if (!tile.isRevealed()) {
+                tile.toggleFlag();
+                String path = tile.getRevealedImagePath();
+                ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, row, col);
+                InputStream is = Tile.class.getResourceAsStream(path);
+                if (is == null) {imageView.setImage(null);}
+                else {imageView.setImage(new Image(is));}
+            }
         }
+        
     }
 
     private void gameOver() {
@@ -109,8 +125,7 @@ public class Mine7x7controller {
                 final int row = x;
                 final int col = y;
                 imageView.setOnMouseClicked(e -> {
-                    gameBoard.tileClicked(row, col);
-                    updateGameBoard();
+                    updateGameBoard(e, row, col);
                 });
             }
         }

@@ -111,13 +111,6 @@ public class GameBoard {
         return gameBoard.get(y).get(x);
     }
 
-    public void toggleFlag(int x, int y) {
-        Tile tile = getTile(x, y);
-        if (!tile.isRevealed()) {
-            tile.toggleFlag();
-        }
-    }
-
     public static void main(String[] args) {
         int width = 8, height = 8;
         GameBoard game = new GameBoard(width, height, 10);
@@ -127,9 +120,6 @@ public class GameBoard {
         }
         System.out.println("");
         game.tileClicked(1, 0);
-        game.toggleFlag(3, 4);
-        game.toggleFlag(1, 0);
-        game.toggleFlag(0, 1);
         for (int i = 0; i < height; i++) {
             System.out.println(game.gameBoard.get(i));
         }
