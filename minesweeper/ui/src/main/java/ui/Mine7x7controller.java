@@ -27,15 +27,14 @@ import javafx.util.Duration;
 public class Mine7x7controller {
 
     @FXML
-    private Label timeLabel, gameStatusLabel;
+    private Label timeLabel, gameStatusLabel, flagsLeftLabel;
     @FXML
     private GridPane gameGrid;
-    //@FXML
+
     private GameBoard gameBoard;
     private Stopwatch stopwatch;
     private Timeline timeline;
 
-    @FXML
     public void resetGame() {
         System.out.println("reset game er trykket inn");
         gameBoard = new GameBoard(7, 7, 10);
@@ -43,6 +42,7 @@ public class Mine7x7controller {
         timeline.stop();
         stopwatch.restart();
         timeLabel.setText(""+0);
+        flagsLeftLabel.setText("10");
     }
 
     @FXML
@@ -60,12 +60,7 @@ public class Mine7x7controller {
                 for (int y = 0; y < 7; y++) {
                     Tile tile = gameBoard.getTile(x, y);
                     if (tile.isRevealed()) {
-                        String path = tile.getRevealedImagePath();
-                        ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, x, y);
-                        InputStream is = Tile.class.getResourceAsStream(path);
-                        // Path = /number0.jpg returns null.
-                        if (is == null) {imageView.setImage(null);}
-                        else {imageView.setImage(new Image(is));}
+                        setNewImage(tile, x, y);
                     }
                     if (tile.isRevealed() && tile.isBomb()) {
                         gameOver();
@@ -76,18 +71,33 @@ public class Mine7x7controller {
                     }
                 }
             }
-        } else if (e.getButton().equals(MouseButton.SECONDARY)) {
+        } else if (e.getButton().equals(MouseButton.SECONDARY) && gameBoard.gameStarted()) {
             Tile tile = gameBoard.getTile(row, col);
             if (!tile.isRevealed()) {
-                tile.toggleFlag();
-                String path = tile.getRevealedImagePath();
-                ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, row, col);
-                InputStream is = Tile.class.getResourceAsStream(path);
-                if (is == null) {imageView.setImage(null);}
-                else {imageView.setImage(new Image(is));}
+                boolean flagCanbeToggled = gameBoard.getFlagsLeft() > 0 && !tile.isFlagged() || gameBoard.getFlagsLeft() < 10 && tile.isFlagged();
+                if (flagCanbeToggled) {
+                    tile.toggleFlag();
+                } else {
+                    return;
+                }
+                if (tile.isFlagged()) {
+                    gameBoard.flagPlaced();
+                } else {
+                    gameBoard.flagRemoved();
+                }
+                flagsLeftLabel.setText(""+gameBoard.getFlagsLeft());
+                setNewImage(tile, row, col);
             }
         }
-        
+    }
+
+    private void setNewImage(Tile tile, int x, int y) {
+        String path = tile.getRevealedImagePath();
+        ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, x, y);
+        InputStream is = Tile.class.getResourceAsStream(path);
+        // Path = /number0.jpg returns null.
+        if (is == null) {imageView.setImage(null);}
+        else {imageView.setImage(new Image(is));}
     }
 
     private void gameOver() {
@@ -97,12 +107,11 @@ public class Mine7x7controller {
             for (int y = 0; y < 7; y++) {
                 Tile tile = gameBoard.getTile(x, y);
                 if (tile.isBomb()) {
-                    String path = tile.getRevealedImagePath();
-                    ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, x, y);
-                    InputStream is = Tile.class.getResourceAsStream(path);
-                    // Path = /number0.jpg returns null.
-                    if (is == null) {imageView.setImage(null);}
-                    else {imageView.setImage(new Image(is));}
+                    if (tile.isFlagged()) {
+                        tile.toggleFlag();
+                    }
+                    tile.reveal();
+                    setNewImage(tile, x, y);
                 }
                 gameGrid.setDisable(true);
                 gameStatusLabel.setText("Game over!");
@@ -141,7 +150,6 @@ public class Mine7x7controller {
                 final int row = x;
                 final int col = y;
                 imageView.setOnMouseClicked(e -> {
-                    gameBoard.tileClicked(row, col);
                     if (gameBoard.gameStarted() && !stopwatch.started()) {
                         stopwatch.start();
                         timeline.play();

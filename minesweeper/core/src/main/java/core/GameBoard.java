@@ -12,6 +12,7 @@ public class GameBoard {
     private final int numBombs;
     private final int[] startingCoords;
     private int tilesLeft;
+    private int flagsLeft;
 
     public GameBoard(int height, int width, int numBombs) {
         for (int y = 0; y < height; y++) {
@@ -26,6 +27,7 @@ public class GameBoard {
         this.numBombs = numBombs;
         this.startingCoords = new int[] { -1, -1 };
         this.tilesLeft = height * width;
+        this.flagsLeft = numBombs;
     }
 
     private void setStartingCoords(int x, int y) {
@@ -115,11 +117,16 @@ public class GameBoard {
         return tilesLeft != width * height;
     }
 
-    public void toggleFlag(int x, int y) {
-        Tile tile = getTile(x, y);
-        if (!tile.isRevealed()) {
-            tile.toggleFlag();
-        }
+    public int getFlagsLeft() {
+        return flagsLeft;
+    }
+
+    public void flagPlaced() {
+        flagsLeft--;
+    }
+
+    public void flagRemoved() {
+        flagsLeft++;
     }
 
     public static void main(String[] args) {
