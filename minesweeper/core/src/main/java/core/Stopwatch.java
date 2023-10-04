@@ -4,42 +4,41 @@ import java.time.LocalDate;
 
 public class Stopwatch {
     private String date;
-    private long nowTime;
+    private long timeWhenStarted;
     private int endTime;
-    private boolean finished;
-    private boolean started;
+    private boolean finished, started;
 
     public Stopwatch() {
-        this.date = ""+LocalDate.now();
-        this.nowTime = 0;
-        this.endTime = 0;
-        this.finished = false;
-        this.started = false;
+        restart();
     }
 
     public void start() {
         this.started = true;
-        this.nowTime = System.currentTimeMillis();
+        this.timeWhenStarted = System.currentTimeMillis();
     }
 
     public void stop() {
         if (!finished && started) {
-            this.endTime = (int) ((System.currentTimeMillis()-this.nowTime)/1000);
+            this.endTime = (int) ((System.currentTimeMillis()-this.timeWhenStarted)/1000);
             finished = true;
         }
     }
 
     public int getTime() {
-        if (finished && started) {
+        if (finished && started) 
             return endTime;
+        
+        int timeUsed = ((int) (System.currentTimeMillis()-this.timeWhenStarted)/1000);
+        boolean usedTooLongTime = timeUsed>999;
+
+        if (started && usedTooLongTime) {
+            finished = true;
+            return 999;
         }
-        else if (started) {
-            if ((int) ((System.currentTimeMillis()-this.nowTime)/1000)>999) {
-                finished = true;
-                return 999;
-            }
-            return (int) ((System.currentTimeMillis()-this.nowTime)/1000);
-        }
+
+        if (started)
+            return timeUsed;
+
         return 0;
     }
 
@@ -53,7 +52,7 @@ public class Stopwatch {
 
     public void restart() {
         this.date = ""+LocalDate.now();
-        this.nowTime = 0;
+        this.timeWhenStarted = 0;
         this.endTime = 0;
         this.finished = false;
         this.started = false;
