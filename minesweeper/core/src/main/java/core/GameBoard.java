@@ -15,9 +15,9 @@ public class GameBoard {
     public GameBoard(int width, int height, int numBombs) {
         for (int y = 0; y < height; y++) {
             List<Tile> newRow = new ArrayList<>();
-            for (int x = 0; x < width; x++) 
+            for (int x = 0; x < width; x++)
                 newRow.add(new Tile());
-    
+
             gameBoard.add(newRow);
         }
 
@@ -79,11 +79,13 @@ public class GameBoard {
     public void tileClicked(int x, int y) {
         Tile tile = getTile(x, y);
 
-        boolean isNewBoard = startingCoords[0] == -1;
-        if (isNewBoard) {
+        boolean isFirstClick = startingCoords[0] == -1;
+        boolean revealedOrFlagged = tile.isRevealed() || tile.isFlagged();
+
+        if (isFirstClick) {
             setStartingCoords(x, y);
             placeBombs();
-        } else if (tile.isRevealed() || tile.isFlagged()) {
+        } else if (revealedOrFlagged) {
             return;
         }
 
@@ -102,14 +104,14 @@ public class GameBoard {
 
     private void revealZeros(int x, int y) {
         Tile tile = getTile(x, y);
-        if (tile.hasAdjacentBomb()) 
+        if (tile.hasAdjacentBomb())
             return;
 
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
                 boolean validCoords = i != -1 && i != width && j != -1 && j != height;
-                if (validCoords && !getTile(i, j).isRevealed()) 
-                    revealAdjacentTile(getTile(i, j), i, j);   
+                if (validCoords && !getTile(i, j).isRevealed())
+                    revealAdjacentTile(getTile(i, j), i, j);
             }
         }
     }

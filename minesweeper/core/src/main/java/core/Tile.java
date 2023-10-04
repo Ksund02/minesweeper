@@ -20,7 +20,7 @@ public class Tile {
     public boolean hasAdjacentBomb() {
         return this.getNumBombsAround() > 0;
     }
-    
+
     private int getNumBombsAround() {
         return numBombsAround;
     }
@@ -42,27 +42,30 @@ public class Tile {
     }
 
     public String getRevealedImagePath() {
-        if (isFlagged) 
+        if (isFlagged)
             return "/flag.png";
-        else if (!isRevealed) 
+        else if (!isRevealed)
             return "/square.jpg";
-        else if (isBomb) 
+        else if (isBomb)
             return "/bomb.png";
-        else 
-            return "/number" + getNumBombsAround() + ".jpg";        
+        else
+            return "/number" + getNumBombsAround() + ".jpg";
     }
 
     @Override
     public String toString() {
-        String info = "";
-        if (isFlagged) 
-            info = "F";
-        else if (isBomb) 
-            info = "X";
-        else if (!isRevealed()) 
-            info = "?";
-        else 
-            info = String.valueOf(numBombsAround);
-        return info;
+        if (isFlagged)
+            return "F";
+
+        if (isBomb)
+            return "X";
+
+        if (!isRevealed())
+            return "?";
+
+        if (getNumBombsAround() == 0)
+            return "";
+
+        return String.valueOf(getNumBombsAround());
     }
 }
