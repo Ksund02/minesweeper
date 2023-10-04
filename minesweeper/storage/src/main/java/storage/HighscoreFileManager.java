@@ -3,33 +3,44 @@ package storage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-// TODO: Move this class to a common folder for read/write from file
 public class HighscoreFileManager {
 
-    private static final File highscoreFile = new File("storage/src/main/resources/highscore.json");
+    public static final File highscoreFile = new File("./../appdata/highscore.json");
+    public final File file;
 
-    
+    public HighscoreFileManager() {
+        file = highscoreFile;
+    }
 
-    // TODO: Show error as pop-up, not in terminal
+    public HighscoreFileManager(String filePath) {
+        this.file = new File(filePath);
+    }
+
+    public static File getFile() {
+        return highscoreFile;
+    }
 
     /**
      * Writes a UserScore to the highscore file.
      * 
      * @param userScore The score which the player has achieved.
      */
-    public static void writeToHighscore(UserScore userScore) {
-        
+    public static void writeToHighscore(UserScore userScore, File file) {
+
         List<UserScore> userScores = null;
         // Read in the old user scores
-        try {userScores = readFromHighscore();}
-        catch (FileNotFoundException e) {e.printStackTrace();}
+        try {
+            userScores = readFromHighscore(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         if (userScores == null) {
             userScores = new ArrayList<>();
@@ -42,7 +53,7 @@ public class HighscoreFileManager {
         userScores.sort((a, b) -> a.getScore() - b.getScore());
 
         // Write the scores to json-file
-        writeToFile(userScores);
+        writeToFile(userScores, file);
     }
 
     /**
@@ -50,12 +61,11 @@ public class HighscoreFileManager {
      * 
      * @param userScores The scores which are to be written to the highscore file.
      */
-    private static void writeToFile(List<UserScore> userScores) {
-        
-        
+    private static void writeToFile(List<UserScore> userScores, File file) {
+
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(highscoreFile, userScores);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, userScores);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,14 +76,12 @@ public class HighscoreFileManager {
      * 
      * @return List<UserScore>: A list containing all saved UserScores.
      */
-    public static List<UserScore> readFromHighscore() throws FileNotFoundException {
-        InputStream is = HighscoreFileManager.class.getClassLoader().getResourceAsStream("highscore.json");
-        if (is == null) {
-            throw new FileNotFoundException("Failed to read highscore-file");
-        }
+    public static List<UserScore> readFromHighscore(File file) throws IOException {
+        InputStream is = new FileInputStream(file);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.readValue(is, new TypeReference<List<UserScore>>() {});
+            return objectMapper.readValue(is, new TypeReference<List<UserScore>>() {
+            });
         } catch (IOException e) {
             throw new RuntimeException("Failed to read highscore-file", e);
         }
@@ -82,8 +90,9 @@ public class HighscoreFileManager {
     /**
      * Removes all data from the highscore file
      */
-    private static void clearHighscore() {
-        writeToFile(new ArrayList<UserScore>());
+    public static void clearHighscore(File file) {
+        writeToFile(new ArrayList<UserScore>(), file);
+
     }
 
     // Simple testing
@@ -99,13 +108,13 @@ public class HighscoreFileManager {
         userScores.add(charlie);
         userScores.add(dave);
         userScores.add(eve);
-        writeToHighscore(alice);
-        writeToHighscore(bob);
-        writeToHighscore(charlie);
-        writeToHighscore(dave);
-        writeToHighscore(eve);
+        writeToHighscore(alice, highscoreFile);
+        writeToHighscore(bob, highscoreFile);
+        writeToHighscore(charlie, highscoreFile);
+        writeToHighscore(dave, highscoreFile);
+        writeToHighscore(eve, highscoreFile);
 
-        // clearHighscore();
+        // clearHighscore(HighscoreFileManager.highscoreFile);
         // System.out.println(readFromHighscore());
 
     }
