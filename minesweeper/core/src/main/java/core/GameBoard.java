@@ -12,7 +12,7 @@ public class GameBoard {
     private final int[] startingCoords;
     private int tilesLeft, flagsLeft;
 
-    public GameBoard(int height, int width, int numBombs) {
+    public GameBoard(int width, int height, int numBombs) {
         for (int y = 0; y < height; y++) {
             List<Tile> newRow = new ArrayList<>();
             for (int x = 0; x < width; x++) 
