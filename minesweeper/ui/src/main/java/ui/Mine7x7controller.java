@@ -35,13 +35,14 @@ public class Mine7x7controller {
     private Stopwatch stopwatch;
     private Timeline timeline;
 
+    @FXML
     public void resetGame() {
         System.out.println("reset game er trykket inn");
         gameBoard = new GameBoard(7, 7, 10);
         clearGameGrid();
         timeline.stop();
         stopwatch.restart();
-        timeLabel.setText(""+0);
+        timeLabel.setText("" + 0);
         flagsLeftLabel.setText("10");
     }
 
@@ -74,7 +75,8 @@ public class Mine7x7controller {
         } else if (e.getButton().equals(MouseButton.SECONDARY) && gameBoard.gameStarted()) {
             Tile tile = gameBoard.getTile(row, col);
             if (!tile.isRevealed()) {
-                boolean flagCanbeToggled = gameBoard.getFlagsLeft() > 0 && !tile.isFlagged() || gameBoard.getFlagsLeft() < 10 && tile.isFlagged();
+                boolean flagCanbeToggled = gameBoard.getFlagsLeft() > 0 && !tile.isFlagged()
+                        || gameBoard.getFlagsLeft() < 10 && tile.isFlagged();
                 if (flagCanbeToggled) {
                     tile.toggleFlag();
                 } else {
@@ -85,7 +87,7 @@ public class Mine7x7controller {
                 } else {
                     gameBoard.flagRemoved();
                 }
-                flagsLeftLabel.setText(""+gameBoard.getFlagsLeft());
+                flagsLeftLabel.setText("" + gameBoard.getFlagsLeft());
                 setNewImage(tile, row, col);
             }
         }
@@ -96,8 +98,11 @@ public class Mine7x7controller {
         ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, x, y);
         InputStream is = Tile.class.getResourceAsStream(path);
         // Path = /number0.jpg returns null.
-        if (is == null) {imageView.setImage(null);}
-        else {imageView.setImage(new Image(is));}
+        if (is == null) {
+            imageView.setImage(null);
+        } else {
+            imageView.setImage(new Image(is));
+        }
     }
 
     private void gameOver() {
@@ -192,7 +197,7 @@ public class Mine7x7controller {
     }
 
     public void updateTimeLabel() {
-        timeLabel.setText(""+stopwatch.getTime());
+        timeLabel.setText("" + stopwatch.getTime());
     }
 
 }
