@@ -6,28 +6,51 @@ import java.util.Random;
 
 public class GameBoard {
 
-    private final List<List<Tile>> gameBoard = new ArrayList<>();
-    private final int width;
-    private final int height;
+    private List<List<Tile>> board = new ArrayList<>();
+    private final int width, height;
     private final int numBombs;
     private final int[] startingCoords;
-    private int tilesLeft;
-    private int flagsLeft;
+    protected int tilesLeft, flagsLeft;
 
-    public GameBoard(int height, int width, int numBombs) {
-        for (int y = 0; y < height; y++) {
-            List<Tile> newRow = new ArrayList<>();
-            for (int x = 0; x < width; x++) {
-                newRow.add(new Tile());
-            }
-            gameBoard.add(newRow);
-        }
+    public GameBoard(int width, int height, int numBombs) {
+        validateInput(width, height, numBombs);
+
         this.height = height;
         this.width = width;
         this.numBombs = numBombs;
         this.startingCoords = new int[] { -1, -1 };
         this.tilesLeft = height * width;
         this.flagsLeft = numBombs;
+
+        createGameBoard();
+    }
+
+    private void validateInput(int width, int height, int numBombs) {
+        boolean negativeOrZeroAreal = width <= 0 || height <= 0;
+        boolean negativeAmountOfBombs = numBombs < 0;
+        boolean tooManyBombs = numBombs >= width * height;
+
+        if (negativeOrZeroAreal)
+            throw new IllegalArgumentException(
+                    "width and height must be poistive integer");
+
+        if (negativeAmountOfBombs)
+            throw new IllegalArgumentException(
+                    "Number of bombs cannot be negative");
+
+        if (tooManyBombs)
+            throw new IllegalArgumentException(
+                    "Cannot have more or equal number og bombs as squares in grid");
+    }
+
+    private void createGameBoard() {
+        for (int y = 0; y < height; y++) {
+            List<Tile> newRow = new ArrayList<>();
+            for (int x = 0; x < width; x++)
+                newRow.add(new Tile());
+
+            board.add(newRow);
+        }
     }
 
     private void setStartingCoords(int x, int y) {
@@ -38,13 +61,15 @@ public class GameBoard {
     private void placeBombs() {
         Random rand = new Random();
         int bombsPlaced = 0;
+
         while (bombsPlaced < numBombs) {
             int x = rand.nextInt(width);
             int y = rand.nextInt(height);
             Tile tile = getTile(x, y);
+
             boolean validBombTile = !tile.isBomb() && (x != startingCoords[0] || y != startingCoords[1]);
             if (validBombTile) {
-                tile.placeBomb();
+                tile.makeBomb();
                 incrementNeighborCounts(tile, x, y);
                 bombsPlaced++;
             }
@@ -54,6 +79,7 @@ public class GameBoard {
     private void incrementNeighborCounts(Tile tile, int x, int y) {
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
+
                 boolean validCoords = i != -1 && i != width && j != -1 && j != height;
                 if (validCoords) {
                     getTile(i, j).incrementNumBombsAround();
@@ -76,13 +102,21 @@ public class GameBoard {
      */
     public void tileClicked(int x, int y) {
         Tile tile = getTile(x, y);
-        boolean newBoard = startingCoords[0] == -1;
-        if (newBoard) {
+
+        boolean isFirstClick = startingCoords[0] == -1;
+        boolean revealedOrFlagged = tile.isRevealed() || tile.isFlagged();
+
+        if (isFirstClick) {
             setStartingCoords(x, y);
             placeBombs();
-        } else if (tile.isRevealed() || tile.isFlagged()) {
+        } else if (revealedOrFlagged) {
             return;
         }
+
+        revealAdjacentTile(tile, x, y);
+    }
+
+    private void revealAdjacentTile(Tile tile, int x, int y) {
         tile.reveal();
         tilesLeft--;
         revealZeros(x, y);
@@ -94,23 +128,24 @@ public class GameBoard {
 
     private void revealZeros(int x, int y) {
         Tile tile = getTile(x, y);
-        if (tile.getNumBombsAround() != 0) {
+        if (tile.hasAdjacentBomb())
             return;
-        }
+
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
                 boolean validCoords = i != -1 && i != width && j != -1 && j != height;
-                if (validCoords && !getTile(i, j).isRevealed()) {
-                    getTile(i, j).reveal();
-                    tilesLeft--;
-                    revealZeros(i, j);
-                }
+                if (validCoords && !getTile(i, j).isRevealed())
+                    revealAdjacentTile(getTile(i, j), i, j);
             }
         }
     }
 
+    protected void setGameboard(List<List<Tile>> gameBoard) {
+        this.board = gameBoard;
+    }
+
     public Tile getTile(int x, int y) {
-        return gameBoard.get(y).get(x);
+        return board.get(y).get(x);
     }
 
     public boolean gameStarted() {
@@ -130,16 +165,25 @@ public class GameBoard {
     }
 
     public static void main(String[] args) {
+        // ### Test ###:
+
+        // Initialization:
         int width = 8, height = 8;
-        GameBoard game = new GameBoard(width, height, 10);
-        game.setStartingCoords(0, 0);
-        for (int i = 0; i < height; i++) {
-            System.out.println(game.gameBoard.get(i));
+        GameBoard gameBoard = new GameBoard(width, height, 10);
+        gameBoard.setStartingCoords(0, 0);
+
+        // Print the Initial GameBoard:
+        for (List<Tile> row : gameBoard.board) {
+            System.out.println(row);
         }
-        System.out.println("");
-        game.tileClicked(1, 0);
-        for (int i = 0; i < height; i++) {
-            System.out.println(game.gameBoard.get(i));
+        System.out.println("\n");
+
+        // Click on a tile
+        gameBoard.tileClicked(1, 0);
+
+        // Print the Updated GameBoard:
+        for (List<Tile> row : gameBoard.board) {
+            System.out.println(row);
         }
     }
 }

@@ -2,17 +2,8 @@ package core;
 
 public class Tile {
 
-    private boolean isBomb;
-    private boolean isFlagged;
-    private boolean isRevealed;
+    private boolean isBomb, isFlagged, isRevealed;
     private int numBombsAround;
-
-    public Tile() {
-        this.isBomb = false;
-        this.isFlagged = false;
-        this.isRevealed = false;
-        this.numBombsAround = 0;
-    }
 
     public boolean isBomb() {
         return isBomb;
@@ -26,8 +17,12 @@ public class Tile {
         return isRevealed;
     }
 
-    public int getNumBombsAround() {
-        return this.numBombsAround;
+    public boolean hasAdjacentBomb() {
+        return this.getNumBombsAround() > 0;
+    }
+
+    private int getNumBombsAround() {
+        return numBombsAround;
     }
 
     public void toggleFlag() {
@@ -38,7 +33,7 @@ public class Tile {
         isRevealed = true;
     }
 
-    protected void placeBomb() {
+    protected void makeBomb() {
         isBomb = true;
     }
 
@@ -47,30 +42,30 @@ public class Tile {
     }
 
     public String getRevealedImagePath() {
-        if (isFlagged) {
+        if (isFlagged)
             return "/flag.png";
-        } else if (!isRevealed) {
+        else if (!isRevealed)
             return "/square.jpg";
-        } else if (isBomb) {
+        else if (isBomb)
             return "/bomb.png";
-        } else {
+        else
             return "/number" + getNumBombsAround() + ".jpg";
-        }
-        
     }
 
     @Override
     public String toString() {
-        String info = "";
-        if (isFlagged) {
-            info = "F";
-        } else if (isBomb) {
-            info = "X";
-        } else if (!isRevealed()) {
-            info = "?";
-        } else {
-            info = String.valueOf(numBombsAround);
-        }
-        return info;
+        if (isFlagged)
+            return "F";
+
+        if (isBomb)
+            return "X";
+
+        if (!isRevealed())
+            return "?";
+
+        if (getNumBombsAround() == 0)
+            return "";
+
+        return String.valueOf(getNumBombsAround());
     }
 }
