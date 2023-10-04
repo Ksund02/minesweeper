@@ -32,9 +32,8 @@
             <version>19</version>
         </dependency>
 
-
-
-        <!-- test javafx with TextFX -->
+        <!-- These dependencies are used when creating these graphical tests,
+        where you have a player clicking around in the app. -->
 		<dependency>
 			<groupId>org.testfx</groupId>
 			<artifactId>testfx-core</artifactId>

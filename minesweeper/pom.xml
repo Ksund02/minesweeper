@@ -13,10 +13,11 @@
     </properties>
 
     <modules>
-        <module>storage</module>
         <module>core</module>
+        <module>storage</module>
         <module>ui</module>
     </modules>
+    
     <dependencies>
             <!-- junit testing with jupiter -->
         <dependency>
@@ -38,5 +39,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-       
+    
 </project>

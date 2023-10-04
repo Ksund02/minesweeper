@@ -1,6 +1,6 @@
 package ui;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,8 +30,8 @@ public class HighscoreListController {
     public void initialize() {
         List<UserScore> userScores = null;
         // Read in the old user scores
-        try {userScores = HighscoreFileManager.readFromHighscore();}
-        catch (FileNotFoundException e) {e.printStackTrace();}
+        try {userScores = HighscoreFileManager.readFromHighscore(HighscoreFileManager.getFile());}
+        catch (IOException e) {e.printStackTrace();}
 
         if (userScores == null) {
             userScores = new ArrayList<>();

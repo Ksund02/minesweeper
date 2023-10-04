@@ -44,8 +44,8 @@ public class HighScoreListTest extends ApplicationTest {
     @Test
     public void right_order() {
         List<UserScore> userScores = null;
-        try {userScores = HighscoreFileManager.readFromHighscore();}
-        catch (FileNotFoundException e) {e.printStackTrace();}
+        try {userScores = HighscoreFileManager.readFromHighscore(HighscoreFileManager.highscoreFile);}
+        catch (IOException e) {e.printStackTrace();}
         userScores.sort((a, b) -> a.getScore() - b.getScore());
         for (int i=1;i<Math.min(11,userScores.size());i++) {
             Assertions.assertEquals(""+userScores.get(i-1).getScore(), robot.lookup("#score"+i).queryLabeled().getText());

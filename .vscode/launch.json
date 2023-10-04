@@ -1,0 +1,13 @@
+{
+    
+    "configurations": [
+        {
+            "type": "java",
+            "name": "MineApp",
+            "request": "launch",
+            "mainClass": "minesweeperui/ui.MineApp",
+            "projectName": "ui",
+            "cwd": "${workspaceFolder}/minesweeper/ui"
+        }
+    ]
+}
