@@ -6,20 +6,14 @@ import java.util.Random;
 
 public class GameBoard {
 
-    private final List<List<Tile>> gameBoard = new ArrayList<>();
+    private List<List<Tile>> board = new ArrayList<>();
     private final int width, height;
     private final int numBombs;
     private final int[] startingCoords;
-    private int tilesLeft, flagsLeft;
+    protected int tilesLeft, flagsLeft;
 
     public GameBoard(int width, int height, int numBombs) {
-        for (int y = 0; y < height; y++) {
-            List<Tile> newRow = new ArrayList<>();
-            for (int x = 0; x < width; x++)
-                newRow.add(new Tile());
-
-            gameBoard.add(newRow);
-        }
+        validateInput(width, height, numBombs);
 
         this.height = height;
         this.width = width;
@@ -27,6 +21,36 @@ public class GameBoard {
         this.startingCoords = new int[] { -1, -1 };
         this.tilesLeft = height * width;
         this.flagsLeft = numBombs;
+
+        createGameBoard();
+    }
+
+    private void validateInput(int width, int height, int numBombs) {
+        boolean negativeOrZeroAreal = width <= 0 || height <= 0;
+        boolean negativeAmountOfBombs = numBombs < 0;
+        boolean tooManyBombs = numBombs >= width * height;
+
+        if (negativeOrZeroAreal)
+            throw new IllegalArgumentException(
+                    "width and height must be poistive integer");
+
+        if (negativeAmountOfBombs)
+            throw new IllegalArgumentException(
+                    "Number of bombs cannot be negative");
+
+        if (tooManyBombs)
+            throw new IllegalArgumentException(
+                    "Cannot have more or equal number og bombs as squares in grid");
+    }
+
+    private void createGameBoard() {
+        for (int y = 0; y < height; y++) {
+            List<Tile> newRow = new ArrayList<>();
+            for (int x = 0; x < width; x++)
+                newRow.add(new Tile());
+
+            board.add(newRow);
+        }
     }
 
     private void setStartingCoords(int x, int y) {
@@ -116,8 +140,12 @@ public class GameBoard {
         }
     }
 
+    protected void setGameboard(List<List<Tile>> gameBoard) {
+        this.board = gameBoard;
+    }
+
     public Tile getTile(int x, int y) {
-        return gameBoard.get(y).get(x);
+        return board.get(y).get(x);
     }
 
     public boolean gameStarted() {
@@ -141,21 +169,21 @@ public class GameBoard {
 
         // Initialization:
         int width = 8, height = 8;
-        GameBoard game = new GameBoard(width, height, 10);
-        game.setStartingCoords(0, 0);
+        GameBoard gameBoard = new GameBoard(width, height, 10);
+        gameBoard.setStartingCoords(0, 0);
 
         // Print the Initial GameBoard:
-        for (int i = 0; i < height; i++) {
-            System.out.println(game.gameBoard.get(i));
+        for (List<Tile> row : gameBoard.board) {
+            System.out.println(row);
         }
-        System.out.println("");
+        System.out.println("\n");
 
         // Click on a tile
-        game.tileClicked(1, 0);
+        gameBoard.tileClicked(1, 0);
 
         // Print the Updated GameBoard:
-        for (int i = 0; i < height; i++) {
-            System.out.println(game.gameBoard.get(i));
+        for (List<Tile> row : gameBoard.board) {
+            System.out.println(row);
         }
     }
 }
