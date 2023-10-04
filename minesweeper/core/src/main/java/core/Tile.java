@@ -47,10 +47,16 @@ public class Tile {
     }
 
     public String getRevealedImagePath() {
-        if (isBomb) {
+        if (isFlagged) {
+            return "/flag.png";
+        } else if (!isRevealed) {
+            return "/square.jpg";
+        } else if (isBomb) {
             return "/bomb.png";
+        } else {
+            return "/number" + getNumBombsAround() + ".jpg";
         }
-        return "/number" + getNumBombsAround() + ".jpg";
+        
     }
 
     @Override

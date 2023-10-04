@@ -11,6 +11,8 @@ public class GameBoard {
     private final int height;
     private final int numBombs;
     private final int[] startingCoords;
+    private int tilesLeft;
+    private int flagsLeft;
 
     public GameBoard(int height, int width, int numBombs) {
         for (int y = 0; y < height; y++) {
@@ -24,6 +26,8 @@ public class GameBoard {
         this.width = width;
         this.numBombs = numBombs;
         this.startingCoords = new int[] { -1, -1 };
+        this.tilesLeft = height * width;
+        this.flagsLeft = numBombs;
     }
 
     private void setStartingCoords(int x, int y) {
@@ -80,7 +84,12 @@ public class GameBoard {
             return;
         }
         tile.reveal();
+        tilesLeft--;
         revealZeros(x, y);
+    }
+
+    public boolean gameIsWon() {
+        return tilesLeft == numBombs;
     }
 
     private void revealZeros(int x, int y) {
@@ -93,6 +102,7 @@ public class GameBoard {
                 boolean validCoords = i != -1 && i != width && j != -1 && j != height;
                 if (validCoords && !getTile(i, j).isRevealed()) {
                     getTile(i, j).reveal();
+                    tilesLeft--;
                     revealZeros(i, j);
                 }
             }
@@ -103,11 +113,20 @@ public class GameBoard {
         return gameBoard.get(y).get(x);
     }
 
-    public void toggleFlag(int x, int y) {
-        Tile tile = getTile(x, y);
-        if (!tile.isRevealed()) {
-            tile.toggleFlag();
-        }
+    public boolean gameStarted() {
+        return tilesLeft != width * height;
+    }
+
+    public int getFlagsLeft() {
+        return flagsLeft;
+    }
+
+    public void flagPlaced() {
+        flagsLeft--;
+    }
+
+    public void flagRemoved() {
+        flagsLeft++;
     }
 
     public static void main(String[] args) {
@@ -119,9 +138,6 @@ public class GameBoard {
         }
         System.out.println("");
         game.tileClicked(1, 0);
-        game.toggleFlag(3, 4);
-        game.toggleFlag(1, 0);
-        game.toggleFlag(0, 1);
         for (int i = 0; i < height; i++) {
             System.out.println(game.gameBoard.get(i));
         }
