@@ -2,17 +2,8 @@ package core;
 
 public class Tile {
 
-    private boolean isBomb;
-    private boolean isFlagged;
-    private boolean isRevealed;
+    private boolean isBomb, isFlagged, isRevealed;
     private int numBombsAround;
-
-    public Tile() {
-        this.isBomb = false;
-        this.isFlagged = false;
-        this.isRevealed = false;
-        this.numBombsAround = 0;
-    }
 
     public boolean isBomb() {
         return isBomb;
@@ -27,7 +18,7 @@ public class Tile {
     }
 
     public int getNumBombsAround() {
-        return this.numBombsAround;
+        return numBombsAround;
     }
 
     public void toggleFlag() {
@@ -38,7 +29,7 @@ public class Tile {
         isRevealed = true;
     }
 
-    protected void placeBomb() {
+    protected void makeBomb() {
         isBomb = true;
     }
 
@@ -47,30 +38,27 @@ public class Tile {
     }
 
     public String getRevealedImagePath() {
-        if (isFlagged) {
+        if (isFlagged) 
             return "/flag.png";
-        } else if (!isRevealed) {
+        else if (!isRevealed) 
             return "/square.jpg";
-        } else if (isBomb) {
+        else if (isBomb) 
             return "/bomb.png";
-        } else {
-            return "/number" + getNumBombsAround() + ".jpg";
-        }
-        
+        else 
+            return "/number" + getNumBombsAround() + ".jpg";        
     }
 
     @Override
     public String toString() {
         String info = "";
-        if (isFlagged) {
+        if (isFlagged) 
             info = "F";
-        } else if (isBomb) {
+        else if (isBomb) 
             info = "X";
-        } else if (!isRevealed()) {
+        else if (!isRevealed()) 
             info = "?";
-        } else {
+        else 
             info = String.valueOf(numBombsAround);
-        }
         return info;
     }
 }

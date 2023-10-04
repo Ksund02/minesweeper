@@ -44,7 +44,7 @@ public class GameBoard {
             Tile tile = getTile(x, y);
             boolean validBombTile = !tile.isBomb() && (x != startingCoords[0] || y != startingCoords[1]);
             if (validBombTile) {
-                tile.placeBomb();
+                tile.makeBomb();
                 incrementNeighborCounts(tile, x, y);
                 bombsPlaced++;
             }
