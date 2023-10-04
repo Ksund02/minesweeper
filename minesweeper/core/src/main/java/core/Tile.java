@@ -17,7 +17,11 @@ public class Tile {
         return isRevealed;
     }
 
-    public int getNumBombsAround() {
+    public boolean hasAdjacentBomb() {
+        return this.getNumBombsAround() > 0;
+    }
+    
+    private int getNumBombsAround() {
         return numBombsAround;
     }
 
