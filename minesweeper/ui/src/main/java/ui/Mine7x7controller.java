@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,13 +24,21 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import storage.HighscoreFileManager;
+import storage.UserScore;
+import javafx.scene.control.TextField;
 
 public class Mine7x7controller {
 
     @FXML
-    private Label timeLabel, gameStatusLabel, flagsLeftLabel;
+    private Label timeLabel, gameStatusLabel, flagsLeftLabel, lbNameLabel, feedbackLabel;
     @FXML
     private GridPane gameGrid;
+    @FXML
+    private TextField nameField;
+    @FXML
+    private Button sendLB;
+
 
     private GameBoard gameBoard;
     private Stopwatch stopwatch;
@@ -44,6 +53,13 @@ public class Mine7x7controller {
         stopwatch.restart();
         timeLabel.setText("" + 0);
         flagsLeftLabel.setText("10");
+
+        sendLB.setDisable(true);
+        sendLB.setVisible(false);
+        nameField.setVisible(false);
+        nameField.setDisable(true);
+        lbNameLabel.setVisible(false);
+        feedbackLabel.setVisible(false);
     }
 
     @FXML
@@ -66,7 +82,8 @@ public class Mine7x7controller {
                     if (tile.isRevealed() && tile.isBomb()) {
                         gameOver();
                         return;
-                    } else if (gameBoard.gameIsWon()) {
+                    }
+                    if (gameBoard.gameIsWon()) {
                         gameWon();
                         return;
                     }
@@ -129,6 +146,12 @@ public class Mine7x7controller {
         stopwatch.stop();
         gameGrid.setDisable(true);
         gameStatusLabel.setText("You win!");
+
+        sendLB.setDisable(false);
+        sendLB.setVisible(true);
+        nameField.setVisible(true);
+        nameField.setDisable(false);
+        lbNameLabel.setVisible(true);
     }
 
     private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
@@ -155,11 +178,11 @@ public class Mine7x7controller {
                 final int row = x;
                 final int col = y;
                 imageView.setOnMouseClicked(e -> {
+                    updateGameBoard(e, row, col);
                     if (gameBoard.gameStarted() && !stopwatch.started()) {
                         stopwatch.start();
                         timeline.play();
                     }
-                    updateGameBoard(e, row, col);
                 });
             }
         }
@@ -198,6 +221,16 @@ public class Mine7x7controller {
 
     public void updateTimeLabel() {
         timeLabel.setText("" + stopwatch.getTime());
+    }
+
+    public void sendToLeaderBoard() {
+        HighscoreFileManager.writeToHighscore(new UserScore(nameField.getText(), this.stopwatch.getTime(), this.stopwatch.getDate()), HighscoreFileManager.getFile());
+        feedbackLabel.setVisible(true);
+        sendLB.setDisable(true);
+        sendLB.setVisible(false);
+        nameField.setVisible(false);
+        nameField.setDisable(true);
+        lbNameLabel.setVisible(false);
     }
 
 }

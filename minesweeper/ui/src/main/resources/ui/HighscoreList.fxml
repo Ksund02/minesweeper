@@ -158,7 +158,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="first12date65" alignment="CENTER" prefHeight="34.0" prefWidth="148.0" text="-" textAlignment="CENTER">
+            <Label fx:id="date6" alignment="CENTER" prefHeight="34.0" prefWidth="148.0" text="-" textAlignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font>

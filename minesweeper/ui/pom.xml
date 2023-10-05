@@ -1,5 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>it1901</groupId>
     <artifactId>ui</artifactId>
@@ -12,7 +13,8 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <!--This module requires a lot of dependencies.-->
+    <!--This
+    module requires a lot of dependencies.-->
     <dependencies>
 
         <!-- javafx -->
@@ -34,17 +36,17 @@
 
         <!-- These dependencies are used when creating these graphical tests,
         where you have a player clicking around in the app. -->
-		<dependency>
-			<groupId>org.testfx</groupId>
-			<artifactId>testfx-core</artifactId>
-			<version>4.0.16-alpha</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testfx</groupId>
-			<artifactId>testfx-junit5</artifactId>
-			<version>4.0.16-alpha</version>
-			<scope>test</scope>
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-core</artifactId>
+            <version>4.0.16-alpha</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-junit5</artifactId>
+            <version>4.0.16-alpha</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
@@ -53,7 +55,7 @@
             <scope>test</scope>
         </dependency>
 
-        
+
         <dependency>
             <groupId>it1901</groupId>
             <artifactId>storage</artifactId>
@@ -69,47 +71,20 @@
     </dependencies>
 
     <build>
+        <plugins>
 
-        <plugins>           
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.8</version>
-                <configuration>
-                    <propertyName>jaCoCoArgLine</propertyName>
-                </configuration>
-                <executions>       
-                    <execution>
-                        <id>default-prepare-agent</id>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>test</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            
-            
+            <!-- Need to add exports to get the clicky animation tests to work. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-        		<artifactId>maven-surefire-plugin</artifactId>
-		        <version>3.0.0-M5</version>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
                 <configuration>
                     <argLine>
                         --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
-                        @{jaCoCoArgLine}
                     </argLine>
                 </configuration>
-	        </plugin>
-            
-            
+            </plugin>
+
 
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -120,7 +95,7 @@
                 </configuration>
             </plugin>
 
-            
+
         </plugins>
     </build>
 </project>
