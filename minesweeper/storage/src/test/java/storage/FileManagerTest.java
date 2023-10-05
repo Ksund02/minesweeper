@@ -18,7 +18,6 @@ public class FileManagerTest {
     @BeforeEach
     public void setup() {
         HighscoreFileManager.clearHighscore(testFile);
-
     }
 
     @Test
@@ -36,12 +35,9 @@ public class FileManagerTest {
         assertEquals("2023-10-04", userScores.get(0).getDate(), "Date is not correct");
     }
 
-
     @Test
     public void klubb() {
-    
+
     }
-
-
 
 }
