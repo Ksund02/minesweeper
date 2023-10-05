@@ -79,7 +79,7 @@
             </GridPane>
             <VBox alignment="TOP_CENTER" prefHeight="205.0" prefWidth="158.0">
                <children>
-                  <Label prefHeight="16.0" prefWidth="128.0" text="Leaderboard name:">
+                  <Label fx:id="lbNameLabel" prefHeight="16.0" prefWidth="128.0" text="Leaderboard name:" visible="false">
                      <padding>
                         <Insets top="30.0" />
                      </padding>
@@ -87,12 +87,13 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="103.0">
+                  <HBox alignment="TOP_CENTER" prefHeight="22.0" prefWidth="133.0">
                      <children>
-                        <TextField prefHeight="25.0" prefWidth="98.0" promptText="name ..." />
-                        <Button mnemonicParsing="false" text="OK" />
+                        <TextField fx:id="nameField" disable="true" prefHeight="25.0" prefWidth="98.0" promptText="name ..." visible="false" />
+                        <Button fx:id="sendLB" disable="true" mnemonicParsing="false" onAction="#sendToLeaderBoard" text="OK" visible="false" />
                      </children>
                   </HBox>
+                  <Label fx:id="feedbackLabel" text="Sent to leaderboard!" visible="false" />
                </children>
                <HBox.margin>
                   <Insets left="20.0" />
