@@ -1,6 +1,6 @@
 # Minesweeper Project
 ![Bomb](/pictures/bomb.png)
-[open in Eclpise Che](https://che.stud.ntnu.no/oskarew-stud-ntnu-no/gr2302/3100/)
+[open in Eclpise Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2302/gr2302/minesweeper?new)
 ## Table of Contents 📚
 - [Project Description](#project-description-🕹️)
 - [Project Members](#members-🧔)
