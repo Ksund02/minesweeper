@@ -12,8 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class HighscoreFileManager {
 
-    public static final File highscoreFile = new File("./../appdata/highscore.json");
-    public final File file;
+    private static final File highscoreFile = new File("./../appdata/highscore.json");
+    private final File file;
 
     public HighscoreFileManager() {
         file = highscoreFile;
@@ -25,6 +25,10 @@ public class HighscoreFileManager {
 
     public static File getFile() {
         return highscoreFile;
+    }
+
+    public File getCustomFile() {
+        return file;
     }
 
     /**
