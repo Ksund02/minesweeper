@@ -31,11 +31,11 @@ public class GameBoardTest {
             new GameBoard(5, 5, -2);
         }, "Should not be able to create a GameBoard with negative bombs");
 
-        checkToManyBombs(16);
+        checkTooManyBombs(16);
 
     }
 
-    private static void checkToManyBombs(int boardLimit) {
+    private static void checkTooManyBombs(int boardLimit) {
         for (int i = 1; i < boardLimit; i++) {
             int heightWeight = i;
             int numberOfBombs = i * i;
@@ -115,5 +115,7 @@ public class GameBoardTest {
             }
         }
     }
+
+
 
 }

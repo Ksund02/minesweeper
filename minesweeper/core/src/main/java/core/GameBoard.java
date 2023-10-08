@@ -22,17 +22,17 @@ public class GameBoard {
         this.tilesLeft = height * width;
         this.flagsLeft = numBombs;
 
-        createGameBoard();
+        populateBoardWithTiles();
     }
 
     private void validateInput(int width, int height, int numBombs) {
-        boolean negativeOrZeroAreal = width <= 0 || height <= 0;
+        boolean negativeOrZeroArea = width <= 0 || height <= 0;
         boolean negativeAmountOfBombs = numBombs < 0;
         boolean tooManyBombs = numBombs >= width * height;
 
-        if (negativeOrZeroAreal)
+        if (negativeOrZeroArea)
             throw new IllegalArgumentException(
-                    "width and height must be poistive integer");
+                    "Width and height must be positive integers");
 
         if (negativeAmountOfBombs)
             throw new IllegalArgumentException(
@@ -40,10 +40,10 @@ public class GameBoard {
 
         if (tooManyBombs)
             throw new IllegalArgumentException(
-                    "Cannot have more or equal number og bombs as squares in grid");
+                    "Cannot have more or equal number of bombs as squares in grid");
     }
 
-    private void createGameBoard() {
+    private void populateBoardWithTiles() {
         for (int y = 0; y < height; y++) {
             List<Tile> newRow = new ArrayList<>();
             for (int x = 0; x < width; x++)
@@ -70,13 +70,13 @@ public class GameBoard {
             boolean validBombTile = !tile.isBomb() && (x != startingCoords[0] || y != startingCoords[1]);
             if (validBombTile) {
                 tile.makeBomb();
-                incrementNeighborCounts(tile, x, y);
+                incrementNeighborCounts(x, y);
                 bombsPlaced++;
             }
         }
     }
 
-    private void incrementNeighborCounts(Tile tile, int x, int y) {
+    private void incrementNeighborCounts(int x, int y) {
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
 
@@ -103,43 +103,42 @@ public class GameBoard {
     public void tileClicked(int x, int y) {
         Tile tile = getTile(x, y);
 
-        boolean isFirstClick = startingCoords[0] == -1;
-        boolean revealedOrFlagged = tile.isRevealed() || tile.isFlagged();
-
-        if (isFirstClick) {
-            setStartingCoords(x, y);
-            placeBombs();
-        } else if (revealedOrFlagged) {
-            return;
+        if (isNewGame()) {
+            initializeGame(x, y);
         }
-
-        revealAdjacentTile(tile, x, y);
+        if (canRevealTile(tile)) {
+            revealTileAndAdjacentZerosIfZero(x, y);
+        }
     }
 
-    private void revealAdjacentTile(Tile tile, int x, int y) {
+    private void initializeGame(int row, int col) {
+        setStartingCoords(row, col);
+        placeBombs();
+    }
+
+    private void revealTileAndAdjacentZerosIfZero(int x, int y) {
+        Tile tile = getTile(x, y);
         tile.reveal();
         tilesLeft--;
-        revealZeros(x, y);
-    }
-
-    public boolean gameIsWon() {
-        return tilesLeft == numBombs;
+        if (!tile.hasAdjacentBomb()) {
+            revealZeros(x, y);
+        }
     }
 
     private void revealZeros(int x, int y) {
-        Tile tile = getTile(x, y);
-        if (tile.hasAdjacentBomb())
-            return;
-
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
-                boolean validCoords = i != -1 && i != width && j != -1 && j != height;
-                if (validCoords && !getTile(i, j).isRevealed())
-                    revealAdjacentTile(getTile(i, j), i, j);
+                if (isValidCoordinate(i, j))
+                    revealTileAndAdjacentZerosIfZero(i, j);
             }
         }
     }
 
+    /**
+     * Method for testing purposes.
+     * 
+     * @param gameBoard The custom gameBoard you want to play with.
+     */
     protected void setGameboard(List<List<Tile>> gameBoard) {
         this.board = gameBoard;
     }
@@ -148,8 +147,24 @@ public class GameBoard {
         return board.get(y).get(x);
     }
 
+    public boolean gameIsWon() {
+        return tilesLeft == numBombs;
+    }
+
     public boolean gameStarted() {
         return tilesLeft != width * height;
+    }
+
+    public boolean canRevealTile(Tile tile) {
+        return !tile.isRevealed() && !tile.isFlagged();
+    }
+
+    private boolean isValidCoordinate(int x, int y) {
+        return x >= 0 && x < width && y >= 0 && y < height && !getTile(x, y).isRevealed();
+    }
+
+    public boolean isNewGame() {
+        return startingCoords[0] == -1;
     }
 
     public int getFlagsLeft() {

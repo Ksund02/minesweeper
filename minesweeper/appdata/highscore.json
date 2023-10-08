@@ -1,4 +1,8 @@
 [ {
+  "name" : "Christian",
+  "score" : 41,
+  "date" : "2023-10-08"
+}, {
   "name" : "Bob",
   "score" : 100,
   "date" : "2023-01-01"
@@ -18,4 +22,4 @@
   "name" : "Charlie",
   "score" : 300,
   "date" : "2023-01-01"
-}]
+} ]
