@@ -28,7 +28,7 @@ public class HighscoreFileManager {
 
     /**
      * Writes a UserScore to the highscore file.
-     * 
+     * Ensures that the highscore file is sorted by score, lower scores first.
      * @param userScore The score which the player has achieved.
      */
     public static void writeToHighscore(UserScore userScore, File file) {
