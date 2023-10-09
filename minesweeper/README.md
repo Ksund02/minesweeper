@@ -54,7 +54,7 @@ mvn test
 
 3. **Check the results**
 - A jacoco report is made automatically, once a test is run.
-- To check the results, navigate to minesweeper\target\site\jacoco, and open jacoco.csv
+- To check the results, navigate to minesweeper\core\site\jacoco, minesweeper\storage\site\jacoco or minesweeper\ui\site\jacoco and open index.html
 
 ## Environment setup🕶️
 - Java: JDK 17
