@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import core.GameBoardTestUtils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +43,7 @@ public class GameBoardTest {
 
             Assertions.assertThrows(IllegalArgumentException.class, () -> {
                 new GameBoard(heightWeight, heightWeight, numberOfBombs);
-            }, "Should not be able to create a GameBoard with as many tiles as bombs.");
+            }, "Should not be able to create a GameBoard with as many bombs as tiles.");
 
         }
     }
@@ -69,53 +70,47 @@ public class GameBoardTest {
                 Arrays.asList('E', 'E', 'B', 'E', 'E'),
                 Arrays.asList('E', 'E', 'B', 'E', 'E'),
                 Arrays.asList('E', 'E', 'E', 'E', 'E'));
-        List<List<Tile>> board = convertBoardToTileBoard(board5x5);
+        GameBoard gameBoard = GameBoardTestUtils.convertCharacterToGameBoard(board5x5);
 
-        GameBoard gameBoard = new GameBoard(5, 5, 5);
-        gameBoard.tileClicked(0, 0);
-        board.get(0).get(0).reveal();
-        
-        gameBoard.setGameboard(board);
+        gameBoard.testTileClicked(0, 0);
+        GameBoardTestUtils.clickOnAllEmptyTiles(gameBoard);
 
-        clickOnAllEmptyTiles(gameBoard, board);
-
-        // TODO: denne testen er ikke ferdigstillt, da den det er noe med place bombs, som 
-        // ikke blir gjort riktig, når man kjører setGameboard
-        
-        // assertEquals(5, gameBoard.tilesLeft,
-        //         "Every Tile except bombs should be clicked");
-
-        // assertEquals(true, gameBoard.gameIsWon(),
-        //         "When all not bomb tiles is clicked game should be won");
-
+        assertEquals(0, gameBoard.tilesLeft,
+                "Every Tile except bombs should be clicked");
+        assertEquals(true, gameBoard.gameIsWon(),
+                "When all not bomb tiles is clicked game should be won");
     }
 
-    private static List<List<Tile>> convertBoardToTileBoard(List<List<Character>> boarWithText) {
-        List<List<Tile>> convertedBoard = new ArrayList<>();
-        for (List<Character> row : boarWithText) {
-            List<Tile> newRow = new ArrayList<>();
-            for (char tileChar : row) {
-                Tile newTile = new Tile();
-                if (tileChar == 'B')
-                    newTile.makeBomb();
-                newRow.add(newTile);
-            }
-            convertedBoard.add(newRow);
-        }
-        return convertedBoard;
+    @Test
+    @DisplayName("Test that the game is lost when a bomb is clicked")
+    public void testLosingGame() {
+        List<List<Character>> board5x5 = Arrays.asList(
+                Arrays.asList('E', 'E', 'E', 'E', 'B'),
+                Arrays.asList('E', 'B', 'B', 'E', 'E'),
+                Arrays.asList('E', 'E', 'B', 'E', 'E'),
+                Arrays.asList('E', 'E', 'B', 'E', 'E'),
+                Arrays.asList('E', 'E', 'E', 'E', 'E'));
+        GameBoard gameBoard = GameBoardTestUtils.convertCharacterToGameBoard(board5x5);
+
+        gameBoard.testTileClicked(0, 0);
+        gameBoard.testTileClicked(0, 4);
+        GameBoardTestUtils.clickOnAllEmptyTiles(gameBoard, 1);
+
+        assertEquals(1, gameBoard.tilesLeft,
+                "All but one tile should be clicked");
+        assertEquals(true, gameBoard.getTile(0, 4).isRevealed(),
+                "The bomb should be revealed");
+        assertEquals(false, gameBoard.gameIsWon(),
+                "When a bomb is clicked the game should be lost");
+
+        GameBoardTestUtils.clickOnAllEmptyTiles(gameBoard);
+
+        assertEquals(0, gameBoard.tilesLeft,
+                "All but one tile should be clicked");
+        assertEquals(true, gameBoard.getTile(0, 4).isRevealed(),
+                "The bomb should be revealed");
+        assertEquals(false, gameBoard.gameIsWon(),
+                "When a bomb is clicked the game should be lost");
+
     }
-
-    private void clickOnAllEmptyTiles(GameBoard gameBoard, List<List<Tile>> board) {
-        for (int i = 0; i < board.size(); i++) {
-            for (int j = 0; j < board.get(i).size(); j++) {
-                Tile tile = board.get(i).get(j);
-                if (!tile.isBomb()) {
-                    gameBoard.tileClicked(i, j);
-                }
-            }
-        }
-    }
-
-
-
 }
