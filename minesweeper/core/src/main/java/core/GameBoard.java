@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -10,6 +11,7 @@ public class GameBoard {
     private final int width, height;
     private final int numBombs;
     private final int[] startingCoords;
+    private HashSet<String> bombCoords;
     protected int tilesLeft, flagsLeft;
 
     public GameBoard(int width, int height, int numBombs) {
@@ -21,6 +23,8 @@ public class GameBoard {
         this.startingCoords = new int[] { -1, -1 };
         this.tilesLeft = height * width;
         this.flagsLeft = numBombs;
+
+        this.bombCoords = new HashSet<>();
 
         createGameBoard();
     }
@@ -71,6 +75,7 @@ public class GameBoard {
             if (validBombTile) {
                 tile.makeBomb();
                 incrementNeighborCounts(tile, x, y);
+                bombCoords.add(""+x+"."+y);
                 bombsPlaced++;
             }
         }
@@ -162,6 +167,10 @@ public class GameBoard {
 
     public void flagRemoved() {
         flagsLeft++;
+    }
+
+    public HashSet<String> getBombCoords() {
+        return this.bombCoords;
     }
 
     public static void main(String[] args) {

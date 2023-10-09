@@ -6,15 +6,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-
+import java.util.HashSet;
 
 import org.junit.jupiter.api.Test;
+import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.control.LabeledMatchers;
 
+import core.GameBoard;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import ui.Mine7x7controller;
 
@@ -30,6 +34,8 @@ public class MineAppTest extends ApplicationTest {
 
     private Mine7x7controller controller;
     private Parent root;
+    private GridPane gameGrid;
+    private FxRobot robot;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -38,6 +44,8 @@ public class MineAppTest extends ApplicationTest {
         controller = fxmlLoader.getController();
         stage.setScene(new Scene(root));
         stage.show();
+        robot = new FxRobot();
+        gameGrid = robot.lookup("#gameGrid").query();
     }
     
 
@@ -69,6 +77,58 @@ public class MineAppTest extends ApplicationTest {
     }
 
     // Parameterized test, the test will be run multiple times, but each time with slightly different parameters.
-    // We should probably add those once we have more interesting things to test.   
+    // We should probably add those once we have more interesting things to test.  
+
+    // test where we click on the tiles that are not bombs and win:
+    @Test 
+    public void testWin() {
+        assertEquals(false, robot.lookup("#lbNameLabel").queryLabeled().isVisible());
+        assertEquals(false, robot.lookup("#nameField").query().isVisible());
+        assertEquals(false, robot.lookup("#sendLB").query().isVisible());
+        assertEquals(false, !robot.lookup("#nameField").query().isDisabled());
+        assertEquals(false, !robot.lookup("#sendLB").query().isDisabled());
+
+        HashSet<String> bombCoords = controller.getGameBoard().getBombCoords();
+    
+        for (Node n : gameGrid.getChildren()) {
+            // Coordinate of the node we click on / (Tile)
+            int rowIndex = gameGrid.getRowIndex(n);
+            int columnIndex = gameGrid.getColumnIndex(n);
+            String coordinate = columnIndex + "." + rowIndex;
+
+            // Check if the coordinate is not in the bombCoords set
+            if (!bombCoords.contains(coordinate)) {
+                clickOn(n);
+            }
+            else {
+                rightClickOn(n);
+            }
+        }
+
+        assertEquals(true, robot.lookup("#lbNameLabel").queryLabeled().isVisible());
+        assertEquals(true, robot.lookup("#nameField").query().isVisible());
+        assertEquals(true, robot.lookup("#sendLB").query().isVisible());
+        assertEquals(true, !robot.lookup("#nameField").query().isDisabled());
+        assertEquals(true, !robot.lookup("#sendLB").query().isDisabled());
+    }
+
+    @Test
+    public void testLose() {
+        HashSet<String> bombCoords = controller.getGameBoard().getBombCoords();
+        clickOn((Node) gameGrid.getChildren().get(0));
+        for (Node n : gameGrid.getChildren()) {
+            // Coordinate of the node we click on / (Tile)
+            int rowIndex = gameGrid.getRowIndex(n);
+            int columnIndex = gameGrid.getColumnIndex(n);
+            String coordinate = columnIndex + "." + rowIndex;
+
+            // Check if the coordinate is in the bombCoords set
+            if (bombCoords.contains(coordinate)) {
+                clickOn(n);
+                break;
+            }
+        }
+        assertEquals("Game over!", robot.lookup("#gameStatusLabel").queryLabeled().getText());
+    }
 }
 
