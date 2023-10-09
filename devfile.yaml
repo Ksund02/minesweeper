@@ -1,6 +1,6 @@
 schemaVersion: 2.1.0
 metadata:
-  name: GR2302
+  name: gr2302
 components:
   - name: minesweeper
     container:
