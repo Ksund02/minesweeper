@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "GameBoard",
+            "request": "launch",
+            "mainClass": "minesweepercore/core.GameBoard",
+            "projectName": "core"
+        },
+        {
+            "type": "java",
             "name": "MineApp",
             "request": "launch",
             "mainClass": "minesweeperui/ui.MineApp",
