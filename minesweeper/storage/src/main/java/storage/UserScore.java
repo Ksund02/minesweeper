@@ -31,8 +31,8 @@ public class UserScore {
         return name;
     }
 
-  public int getScore() {
-    return score;
+    public int getScore() {
+        return score;
     }
 
     public String getDate() {

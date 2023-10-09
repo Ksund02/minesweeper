@@ -28,16 +28,7 @@ public class HighscoreListController {
 
     @FXML
     public void initialize() {
-        List<UserScore> userScores = null;
-        // Read in the old user scores
-        try {userScores = HighscoreFileManager.readFromHighscore(HighscoreFileManager.getFile());}
-        catch (IOException e) {e.printStackTrace();}
-
-        if (userScores == null) {
-            userScores = new ArrayList<>();
-        }
-
-        userScores.sort((a, b) -> a.getScore() - b.getScore());
+        List<UserScore> userScores = HighscoreFileManager.readFromHighscore(HighscoreFileManager.getFile());
         List<Label> names = new ArrayList<>(
                 Arrays.asList(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10));
         List<Label> scores = new ArrayList<>(

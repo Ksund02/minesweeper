@@ -81,6 +81,7 @@
                 <configuration>
                     <argLine>
                         --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+                        @{jaCoCoArgLine}
                     </argLine>
                 </configuration>
             </plugin>
