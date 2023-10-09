@@ -23,6 +23,10 @@ More information about the implementation and the environment setup can be found
 - `pictures/`: Contains pictures used in readme-files.
 - `docs/`: Contains all sort of documentation about the project, including the reports after each Release.
 - `minesweeper/`: This is the folder where all of the code for the Minesweeper-game is.
+- `minesweeper/core`: Contains the core logic of the game.
+- `minesweeper/storage`: Contains code used when saving files.
+- `minesweeper/ui`: Contains code for frontend UI, created with JavaFX.
+- `minesweeper/appdata`: Contains all of the persistent data is. The highscore list is located here.
 
 ## User story🧑‍🌾
 We have made a story about Truls who is playing minesweeper.
