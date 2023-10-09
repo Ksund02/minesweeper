@@ -2,6 +2,7 @@ package ui;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
 
 import core.GameBoard;
 import core.Stopwatch;
@@ -78,13 +79,13 @@ public class Mine7x7controller {
                     Tile tile = gameBoard.getTile(x, y);
                     if (tile.isRevealed()) {
                         setNewImage(tile, x, y);
+                        if (gameBoard.gameIsWon()) {
+                            gameWon();
+                            return;
+                        }
                     }
                     if (tile.isRevealed() && tile.isBomb()) {
                         gameOver();
-                        return;
-                    }
-                    if (gameBoard.gameIsWon()) {
-                        gameWon();
                         return;
                     }
                 }
@@ -231,6 +232,10 @@ public class Mine7x7controller {
         nameField.setVisible(false);
         nameField.setDisable(true);
         lbNameLabel.setVisible(false);
+    }
+
+    public GameBoard getGameBoard() {
+        return this.gameBoard;
     }
 
 }
