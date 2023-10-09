@@ -4,7 +4,7 @@ metadata:
 components:
   - name: minesweeper
     container:
-      image: GR2302/GR2302/pictures:bomb
+      image: adrianstoica/it1901:latest
       memoryLimit: 3Gi
       endpoints:
         - exposure: public
