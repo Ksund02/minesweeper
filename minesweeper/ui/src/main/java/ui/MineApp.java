@@ -18,9 +18,9 @@ import javafx.scene.media.MediaPlayer;
 public class MineApp extends Application {
 
     private final String[] playlist = {
-        "/music/introvert.mp3",
-        "/music/houses_on_hills.mp3",
-        "/music/close_my_eyes.mp3"
+            "/music/introvert.mp3",
+            "/music/houses_on_hills.mp3",
+            "/music/close_my_eyes.mp3"
     };
 
     private MediaPlayer musicPlayer;
@@ -37,20 +37,23 @@ public class MineApp extends Application {
         Image icon = new Image(getClass().getResourceAsStream("/images/truls.jpg"));
         stage.getIcons().add(icon);
 
-        play_music(0);
+        // play_music(0);
 
         stage.show();
     }
 
-
     private void play_music(int index) {
-        
-        if (musicPlayer != null) {musicPlayer.dispose();}
+
+        if (musicPlayer != null) {
+            musicPlayer.dispose();
+        }
 
         Media media = new Media(getClass().getResource(playlist[index]).toString());
         musicPlayer = new MediaPlayer(media);
 
-        musicPlayer.setOnEndOfMedia(() -> {play_music((index + 1) % playlist.length);});
+        musicPlayer.setOnEndOfMedia(() -> {
+            play_music((index + 1) % playlist.length);
+        });
         musicPlayer.play();
     }
 
