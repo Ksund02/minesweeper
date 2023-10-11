@@ -1,16 +1,14 @@
 # Minesweeper Project
 ![Bomb](/pictures/bomb.png)
 
-## Eclipse Che
-[Open project in Eclpise Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2302/gr2302?new)
-
 ## Table of Contents 📚
 - [Project Description](#project-description-🕹️)
 - [Project Members](#members-🧔)
 - [Repository Structure](#repository-structure-👀)
 - [User story](#user-story🧑‍🌾)
-- [How to run the game](#how-to-run-the-game-🚂)
-- [Priority labels](#issue-priority-labels-🚩)
+- [How to Run the Game Localy](#how-to-run-the-game-localy-🚂)
+- [How to Run Project in Eclipse Che](#how-to-run-project-in-eclipse-che-🌐)
+- [Priority Labels](#issue-priority-labels-🚩)
 
 ## Project Description 🕹️
 The goal of the project is to make a working minesweeper game.
@@ -31,11 +29,11 @@ More information about the implementation and the environment setup can be found
 - `minesweeper/ui`: Contains code for frontend UI, created with JavaFX.
 - `minesweeper/appdata`: Contains all of the persistent data is. The highscore list is located here.
 
-## User story🧑‍🌾
+## User Story🧑‍🌾
 We have made a story about Truls who is playing minesweeper.
 Truls' adventure can be read here: [user story](docs/release-1/user-story.md)
 
-## How to Run the game 🚂
+## How to Run the Game Localy 🚂
 
 1. **Navigate to the minesweeper directory**
 ```cmd
@@ -56,6 +54,46 @@ cd ui
 ```cmd
 mvn javafx:run
 ```
+
+## How to Run Project in Eclipse Che 🌐
+
+1. **Open the link in a browser**
+
+[Open project in Eclpise Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2302/gr2302?new)
+
+
+2. **Open a new terminal and navigate to the minesweeper directory**
+```cmd
+cd minesweeper/
+```
+
+3. **Run the following command**
+```cmd
+mvn clean install
+```
+
+4. **Navigate to the ui directory**
+```cmd
+cd ui/
+```
+
+5. **Run the following command**
+```cmd
+mvn clean install
+```
+
+6. **Open virtual endpoint**
+
+In the left down corner open **ENDPOINTS** and copy the link from **6080-tcp-desktop-ui (6080/http)** and past it in a new tab.
+
+7. **Run the following command**
+```cmd
+mvn javafx:run
+```
+
+8. **Navigate to the game**
+
+The game is now running in the other tab with the virtual computer
 
 ## Issue Priority Labels 🚩
 To streamline our development process and provide clear guidance on the importance of each task, we use a color-coded labeling system for our GitLab issues. Each color signifies a specific level of priority, detailed as follows:
