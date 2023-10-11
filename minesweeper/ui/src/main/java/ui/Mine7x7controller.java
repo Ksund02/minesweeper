@@ -2,22 +2,23 @@ package ui;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashSet;
+import java.util.List;
 
 import core.GameBoard;
-import core.Stopwatch;
+import core.GameEngine;
 import core.Tile;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -25,9 +26,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
 import storage.HighscoreFileManager;
 import storage.UserScore;
-import javafx.scene.control.TextField;
 
 public class Mine7x7controller {
 
@@ -40,20 +41,25 @@ public class Mine7x7controller {
     @FXML
     private Button sendLB;
 
-
-    private GameBoard gameBoard;
-    private Stopwatch stopwatch;
+    private GameEngine gameEngine;
     private Timeline timeline;
+    private static final int GRID_WIDTH = 7, GRID_HEIGHT = 7, NUM_BOMBS = 10;
+
+    @FXML
+    public void initialize() throws IOException {
+        this.gameEngine = new GameEngine(GRID_WIDTH, GRID_WIDTH, NUM_BOMBS);
+        newGameGrid(GRID_WIDTH, GRID_HEIGHT);
+        this.timeline = createTimeline();
+    }
 
     @FXML
     public void resetGame() {
-        System.out.println("reset game er trykket inn");
-        gameBoard = new GameBoard(7, 7, 10);
+        gameEngine.resetGame(GRID_WIDTH, GRID_HEIGHT, NUM_BOMBS);
+
         clearGameGrid();
         timeline.stop();
-        stopwatch.restart();
-        timeLabel.setText("" + 0);
-        flagsLeftLabel.setText("10");
+        updateTimeLabel();
+        flagsLeftLabel.setText(String.valueOf(gameEngine.getFlagsLeft()));
 
         sendLB.setDisable(true);
         sendLB.setVisible(false);
@@ -63,88 +69,79 @@ public class Mine7x7controller {
         feedbackLabel.setVisible(false);
     }
 
-    @FXML
-    public void initialize() throws IOException {
-        gameBoard = new GameBoard(7, 7, 10);
-        newGameGrid();
-        stopwatch = new Stopwatch();
-        timeline = createTimeline();
-    }
-
-    private void updateGameBoard(MouseEvent e, int row, int col) {
-        if (e.getButton().equals(MouseButton.PRIMARY)) {
-            gameBoard.tileClicked(row, col);
-            for (int x = 0; x < 7; x++) {
-                for (int y = 0; y < 7; y++) {
-                    Tile tile = gameBoard.getTile(x, y);
-                    if (tile.isRevealed()) {
-                        setNewImage(tile, x, y);
-                        if (gameBoard.gameIsWon()) {
-                            gameWon();
-                            return;
-                        }
-                    }
-                    if (tile.isRevealed() && tile.isBomb()) {
-                        gameOver();
-                        return;
-                    }
-                }
-            }
-        } else if (e.getButton().equals(MouseButton.SECONDARY) && gameBoard.gameStarted()) {
-            Tile tile = gameBoard.getTile(row, col);
-            if (!tile.isRevealed()) {
-                boolean flagCanbeToggled = gameBoard.getFlagsLeft() > 0 && !tile.isFlagged()
-                        || gameBoard.getFlagsLeft() < 10 && tile.isFlagged();
-                if (flagCanbeToggled) {
-                    tile.toggleFlag();
-                } else {
-                    return;
-                }
-                if (tile.isFlagged()) {
-                    gameBoard.flagPlaced();
-                } else {
-                    gameBoard.flagRemoved();
-                }
-                flagsLeftLabel.setText("" + gameBoard.getFlagsLeft());
-                setNewImage(tile, row, col);
-            }
-        }
-    }
-
-    private void setNewImage(Tile tile, int x, int y) {
+    private void setNewImage(Tile tile) {
         String path = tile.getRevealedImagePath();
-        ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, x, y);
-        InputStream is = Tile.class.getResourceAsStream(path);
+        ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, tile.getXCoordinate(), tile.getYCoordinate());
+        InputStream inputStream = Tile.class.getResourceAsStream(path);
+
         // Path = /number0.jpg returns null.
-        if (is == null) {
+        if (inputStream == null) {
             imageView.setImage(null);
         } else {
-            imageView.setImage(new Image(is));
+            imageView.setImage(new Image(inputStream));
         }
     }
 
-    private void gameOver() {
-        timeline.stop();
-        stopwatch.stop();
-        for (int x = 0; x < 7; x++) {
-            for (int y = 0; y < 7; y++) {
-                Tile tile = gameBoard.getTile(x, y);
-                if (tile.isBomb()) {
-                    if (tile.isFlagged()) {
-                        tile.toggleFlag();
-                    }
-                    tile.reveal();
-                    setNewImage(tile, x, y);
-                }
-                gameGrid.setDisable(true);
-                gameStatusLabel.setText("Game over!");
+    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+        return gridPane.getChildren().stream()
+                .filter(node -> GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row)
+                .findFirst()
+                .orElse(null);
+    }
+
+    // Clear the grid to start
+    // TODO: make @FXXML gamegrid w*h optinal
+    private void newGameGrid(int width, int height) {
+        Image squareImage = new Image(getClass().getResourceAsStream("/images/square.jpg"));
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                newSquare(squareImage, x, y);
             }
         }
     }
 
-    private void gameWon() {
+    private void newSquare(Image image, int x, int y) {
+        ImageView imageView = new ImageView(image);
+
+        // Set dimensions to square
+        imageView.setFitWidth(30);
+        imageView.setFitHeight(30);
+
+        gameGrid.add(imageView, x, y);
+        final int row = x;
+        final int col = y;
+        imageView.setOnMouseClicked(e -> {
+            squareClicked(e, row, col);
+            if (gameEngine.gameIsStarted() && gameEngine.stopWatchIsStarted()) {
+                timeline.play();
+            }
+        });
+    }
+
+    private void squareClicked(MouseEvent e, int row, int col) {
+        if (e.getButton().equals(MouseButton.PRIMARY)) {
+            gameEngine.handleLeftClick(row, col);
+
+        } else if (e.getButton().equals(MouseButton.SECONDARY)) {
+            gameEngine.handleRightClick(row, col);
+            flagsLeftLabel.setText("" + gameEngine.getFlagsLeft());
+        }
+
+        updateGameView();
+    }
+
+    private void updateGameView() {
+        if (gameEngine.isGameWon())
+            updateGameWon();
+
+        if (gameEngine.isGameLost())
+            updateGameLost();
+
+        updateTiles();
+    }
+
+    private void updateGameWon() {
         timeline.stop();
-        stopwatch.stop();
         gameGrid.setDisable(true);
         gameStatusLabel.setText("You win!");
 
@@ -155,37 +152,15 @@ public class Mine7x7controller {
         lbNameLabel.setVisible(true);
     }
 
-    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
-        for (Node node : gridPane.getChildren()) {
-            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
-                return node;
-            }
-        }
-        return null;
+    private void updateGameLost() {
+        timeline.stop();
+        gameStatusLabel.setText("Game over!");
     }
 
-    // TODO: Move this out of controller, add mouseClick event on imageView
-    // Clear the grid to start
-    private void newGameGrid() {
-        Image squareImage = new Image(getClass().getResourceAsStream("/images/square.jpg"));
-        for (int y = 0; y < 7; y++) {
-            for (int x = 0; x < 7; x++) {
-                // Tile tile = gameBoard.getTile(row, col);
-                ImageView imageView = new ImageView(squareImage);
-                // Set dimensions, if necessary:
-                imageView.setFitWidth(30);
-                imageView.setFitHeight(30);
-                gameGrid.add(imageView, x, y);
-                final int row = x;
-                final int col = y;
-                imageView.setOnMouseClicked(e -> {
-                    updateGameBoard(e, row, col);
-                    if (gameBoard.gameStarted() && !stopwatch.started()) {
-                        stopwatch.start();
-                        timeline.play();
-                    }
-                });
-            }
+    private void updateTiles() {
+        List<Tile> updatedTiles = gameEngine.getLatestUpdatedTiles();
+        for (Tile tile : updatedTiles) {
+            setNewImage(tile);
         }
     }
 
@@ -209,23 +184,21 @@ public class Mine7x7controller {
     }
 
     private Timeline createTimeline() {
-        KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                updateTimeLabel();
-            }
-        });
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), event -> updateTimeLabel());
         Timeline timeline = new Timeline(keyFrame);
         timeline.setCycleCount(Timeline.INDEFINITE);
         return timeline;
     }
 
     public void updateTimeLabel() {
-        timeLabel.setText("" + stopwatch.getTime());
+        timeLabel.setText("" + gameEngine.getTime());
     }
 
+    // TODO: Name this saveToFIle ?
     public void sendToLeaderBoard() {
-        HighscoreFileManager.writeToHighscore(new UserScore(nameField.getText(), this.stopwatch.getTime(), this.stopwatch.getDate()), HighscoreFileManager.getFile());
+        HighscoreFileManager.writeToHighscore(
+                new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate()),
+                HighscoreFileManager.getFile());
         feedbackLabel.setVisible(true);
         sendLB.setDisable(true);
         sendLB.setVisible(false);
@@ -235,7 +208,7 @@ public class Mine7x7controller {
     }
 
     public GameBoard getGameBoard() {
-        return this.gameBoard;
+        return gameEngine.getGameBoard();
     }
 
 }

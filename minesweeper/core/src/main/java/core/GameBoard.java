@@ -11,7 +11,7 @@ public class GameBoard {
     private final int width, height;
     private final int numBombs;
     private final int[] startingCoords;
-    private boolean lost;
+    private boolean gameIsLost;
     private HashSet<String> bombCoords;
     protected int tilesLeft, flagsLeft;
 
@@ -52,7 +52,7 @@ public class GameBoard {
         for (int y = 0; y < height; y++) {
             List<Tile> newRow = new ArrayList<>();
             for (int x = 0; x < width; x++)
-                newRow.add(new Tile());
+                newRow.add(new Tile(x, y));
 
             board.add(newRow);
         }
@@ -76,7 +76,7 @@ public class GameBoard {
             if (validBombTile) {
                 tile.makeBomb();
                 incrementNeighborCounts(x, y);
-                bombCoords.add(""+x+"."+y);
+                bombCoords.add("" + x + "." + y);
                 bombsPlaced++;
             }
         }
@@ -115,7 +115,7 @@ public class GameBoard {
         Tile tile = getTile(x, y);
         if (tile.isBomb()) {
             tile.reveal();
-            lost = true;
+            gameIsLost = true;
         }
 
         else if (canRevealTile(tile)) {
@@ -137,10 +137,9 @@ public class GameBoard {
 
         Tile tile = getTile(x, y);
 
-        // If the tile is a bomb, the game is lost
         if (tile.isBomb()) {
             tile.reveal();
-            lost = true;
+            gameIsLost = true;
         }
 
         else if (canRevealTile(tile)) {
@@ -225,7 +224,7 @@ public class GameBoard {
     }
 
     public boolean gameIsWon() {
-        return tilesLeft == 0 & !lost;
+        return tilesLeft == 0 & !gameIsLost;
     }
 
     public boolean gameStarted() {
@@ -254,6 +253,18 @@ public class GameBoard {
 
     public void flagRemoved() {
         flagsLeft++;
+    }
+
+    public boolean hasFlagsLeft() {
+        return getFlagsLeft() > 0;
+    }
+
+    public boolean isGameEnded() {
+        return gameIsWon() || isGameLost();
+    }
+
+    public boolean isGameLost() {
+        return gameIsLost;
     }
 
     public HashSet<String> getBombCoords() {

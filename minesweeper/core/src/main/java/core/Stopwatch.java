@@ -46,7 +46,7 @@ public class Stopwatch {
         return this.date;
     }
 
-    public boolean started() {
+    public boolean isStarted() {
         return this.started;
     }
 

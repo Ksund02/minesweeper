@@ -4,6 +4,12 @@ public class Tile {
 
     private boolean isBomb, isFlagged, isRevealed;
     private int numBombsAround;
+    private int xCoordinat, yCoordinat;
+
+    public Tile(int xCoordinat, int yCoordinat) {
+        this.xCoordinat = xCoordinat;
+        this.yCoordinat = yCoordinat;
+    }
 
     public boolean isBomb() {
         return isBomb;
@@ -31,6 +37,14 @@ public class Tile {
 
     public void reveal() {
         isRevealed = true;
+    }
+
+    public int getXCoordinate() {
+        return xCoordinat;
+    }
+
+    public int getYCoordinate() {
+        return yCoordinat;
     }
 
     protected void makeBomb() {
