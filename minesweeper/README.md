@@ -8,6 +8,7 @@
 - [Intended Use](#intended-use-🎮)
 - [How to check test coverage](#check-test-coverage🧪)
 - [Environment setup](#environment-setup🕶️)
+- [Priority Labels](#issue-priority-labels-🚩)
 
 
 ## Game Description 🕹️
@@ -58,4 +59,19 @@ mvn test
 
 ## Environment setup🕶️
 - Java: JDK 17
-- Maven: Version 3.5 or higher
+- Maven: Version 3.8.1 
+
+## Issue Priority Labels 🚩
+To streamline our development process and provide clear guidance on the importance of each task, we use a color-coded labeling system for our GitLab issues. Each color signifies a specific level of priority, detailed as follows:
+
+Green: Optional Features 🟢
+- What it means: Issues marked green are considered optional. They are "nice-to-haves" but not essential for the project's core functionality.
+- Action: Address these issues only after resolving all higher-priority tasks.
+
+Orange: Medium Priority 🟠
+- What it means: Issues marked orange need to be implemented but are not immediate concerns.
+- Action: These issues should be addressed in the next release cycle. They take precedence unless there are critical issues that require immediate attention.
+
+Red: High Priority 🔴
+- What it means: Issues marked red are critical and must be resolved immediately as they either block further development or introduce serious bugs.
+- Action: Prioritize these issues, they must be resolved before attending to tasks of lower priority.
