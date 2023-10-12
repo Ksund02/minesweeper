@@ -22,8 +22,8 @@ public class GameEngine {
     }
 
     public void handleLeftClick(int x, int y) {
-        boolean tileFlaggAfterStart = gameIsStarted() && getTile(x, y).isFlagged();
-        if (gameBoard.isGameEnded() || tileFlaggAfterStart)
+        boolean tileFlaggedAfterStart = gameIsStarted() && getTile(x, y).isFlagged();
+        if (gameBoard.isGameEnded() || tileFlaggedAfterStart)
             return;
 
         gameBoard.tileClicked(x, y);
