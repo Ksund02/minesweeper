@@ -24,4 +24,4 @@ Alle README-filer er oppdatert. README-filen på rotnivå inneholder nå en lenk
 
 ## Arbeidsvaner
 
-Vi har brukt GitLab-Issues for å holde styr på kodingsoppgaver. Hvert løst "issue" tilsvarer en ny "branch". Parprogrammering ble brukt, spesielt under utvikling av tester. Dette hadde betydning for tidsbruken vår, men vi så verdien i å ha en ekstra makker som kan dobbeltsjekke koden underveis og komme med innspill.
+Vi har brukt GitLab-Issues for å holde styr på kodingsoppgaver. Hvert løst "issue" tilsvarer en ny "branch". Disse har en tilhørende "label", som forteller oss hvor mye den haster. Det gjør det enkelt for oss å vurdere prioritetsgraden i en "sprint". Parprogrammering ble brukt, spesielt under utvikling av tester. Dette hadde betydning for tidsbruken vår, men vi så verdien i å ha en ekstra makker som kan dobbeltsjekke koden underveis og komme med innspill.
