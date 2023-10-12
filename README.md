@@ -59,7 +59,7 @@ mvn javafx:run
 
 1. **Open the link in a browser**
 
-[Open project in Eclpise Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2302/gr2302?new)
+[Open project in Eclipse Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2302/gr2302?new)
 
 
 2. **Open a new terminal and navigate to the minesweeper directory**
