@@ -250,11 +250,11 @@ public class GameBoard {
         return flagsLeft;
     }
 
-    public void flagPlaced() {
+    public void decrementFlagsLeft() {
         flagsLeft--;
     }
 
-    public void flagRemoved() {
+    public void incrementFlagsLeft() {
         flagsLeft++;
     }
 

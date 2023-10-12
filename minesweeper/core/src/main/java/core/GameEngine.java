@@ -62,9 +62,9 @@ public class GameEngine {
         tile.toggleFlag();
 
         if (tile.isFlagged())
-            gameBoard.flagPlaced();
+            gameBoard.decrementFlagsLeft();
         else
-            gameBoard.flagRemoved();
+            gameBoard.incrementFlagsLeft();
 
         this.latestUpdatedTiles = Arrays.asList(tile);
     }
