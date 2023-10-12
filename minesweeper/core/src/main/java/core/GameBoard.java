@@ -72,7 +72,10 @@ public class GameBoard {
             int y = rand.nextInt(height);
             Tile tile = getTile(x, y);
 
-            boolean validBombTile = !tile.isBomb() && (x != startingCoords[0] || y != startingCoords[1]);
+            boolean adjacentToStartingX = x >= (startingCoords[0] - 1) && x <= (startingCoords[0] + 1);
+            boolean adjacentToStartingY = y >= (startingCoords[1] - 1) && y <= (startingCoords[1] + 1);
+
+            boolean validBombTile = !tile.isBomb() && !(adjacentToStartingX && adjacentToStartingY);
             if (validBombTile) {
                 tile.makeBomb();
                 incrementNeighborCounts(x, y);
