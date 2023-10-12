@@ -67,6 +67,7 @@ public class Mine7x7controller {
         nameField.setDisable(true);
         leaderBoardNameLabel.setVisible(false);
         feedbackLabel.setVisible(false);
+        gameGrid.setDisable(false);
     }
     
     @FXML
@@ -175,11 +176,13 @@ public class Mine7x7controller {
         nameField.setVisible(true);
         nameField.setDisable(false);
         leaderBoardNameLabel.setVisible(true);
+        gameGrid.setDisable(true);
     }
 
     private void updateGameLost() {
         timeline.stop();
         gameStatusLabel.setText("Game over!");
+        gameGrid.setDisable(true);
     }
 
     private void updateTiles() {

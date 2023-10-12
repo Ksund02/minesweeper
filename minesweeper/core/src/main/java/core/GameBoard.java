@@ -116,11 +116,12 @@ public class GameBoard {
         }
 
         Tile tile = getTile(x, y);
+
         if (tile.isBomb()) {
             tile.reveal();
             isGameLost = true;
-        } 
-        
+        }
+
         else if (canRevealTile(tile)) {
             revealTileAndAdjacentIfZero(x, y);
         }
