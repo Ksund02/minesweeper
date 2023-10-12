@@ -18,7 +18,7 @@ import storage.HighscoreFileManager;
 import storage.UserScore;
 
 public class HighscoreListController {
-    private final int HIGHESCORE_LENGTH = 9;
+    private final int HIGHESCORE_LENGTH = 10;
 
     @FXML
     private Label name1, name2, name3, name4, name5, name6, name7, name8, name9, name10;
@@ -37,13 +37,14 @@ public class HighscoreListController {
         List<Label> dates = new ArrayList<>(
                 Arrays.asList(date1, date2, date3, date4, date5, date6, date7, date8, date9, date10));
 
-        for (int i = 0; i < HIGHESCORE_LENGTH; i++) {
+        for (int i = 0; i < Math.min(HIGHESCORE_LENGTH, userScores.size()); i++) {
             names.get(i).setText(userScores.get(i).getName());
             scores.get(i).setText("" + userScores.get(i).getScore());
             dates.get(i).setText(userScores.get(i).getDate());
         }
     }
 
+    @FXML
     public void switchToGame(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/Mine7x7.fxml"));
         Parent root = fxmlLoader.load();
