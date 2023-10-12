@@ -12,11 +12,13 @@ public class GameEngine {
     public GameEngine(int width, int height, int numBombs) {
         gameBoard = new GameBoard(width, height, numBombs);
         stopwatch = new Stopwatch();
+        latestUpdatedTiles = new ArrayList<>();
     }
 
     public void resetGame(int width, int height, int numBombs) {
         this.gameBoard = new GameBoard(width, height, numBombs);
         stopwatch.restart();
+        latestUpdatedTiles = new ArrayList<>();
     }
 
     public void handleLeftClick(int x, int y) {
