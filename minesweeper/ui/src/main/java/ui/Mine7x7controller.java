@@ -68,6 +68,31 @@ public class Mine7x7controller {
         lbNameLabel.setVisible(false);
         feedbackLabel.setVisible(false);
     }
+    
+    @FXML
+    public void switchToHighScoreList(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/HighscoreList.fxml"));
+        Parent root = fxmlLoader.load();
+        Node eventSource = (Node) event.getSource();
+        Stage stage = (Stage) eventSource.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    // TODO: Name this saveToFIle ?
+    @FXML
+    public void sendToLeaderBoard() {
+        HighscoreFileManager.writeToHighscore(
+                new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate()),
+                HighscoreFileManager.getFile());
+        feedbackLabel.setVisible(true);
+        sendLB.setDisable(true);
+        sendLB.setVisible(false);
+        nameField.setVisible(false);
+        nameField.setDisable(true);
+        lbNameLabel.setVisible(false);
+    }
+
 
     private void setNewImage(Tile tile) {
         String path = tile.getRevealedImagePath();
@@ -174,15 +199,6 @@ public class Mine7x7controller {
         gameStatusLabel.setText("");
     }
 
-    public void switchToHighScoreList(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/HighscoreList.fxml"));
-        Parent root = fxmlLoader.load();
-        Node eventSource = (Node) event.getSource();
-        Stage stage = (Stage) eventSource.getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.show();
-    }
-
     private Timeline createTimeline() {
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), event -> updateTimeLabel());
         Timeline timeline = new Timeline(keyFrame);
@@ -192,19 +208,6 @@ public class Mine7x7controller {
 
     public void updateTimeLabel() {
         timeLabel.setText("" + gameEngine.getTime());
-    }
-
-    // TODO: Name this saveToFIle ?
-    public void sendToLeaderBoard() {
-        HighscoreFileManager.writeToHighscore(
-                new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate()),
-                HighscoreFileManager.getFile());
-        feedbackLabel.setVisible(true);
-        sendLB.setDisable(true);
-        sendLB.setVisible(false);
-        nameField.setVisible(false);
-        nameField.setDisable(true);
-        lbNameLabel.setVisible(false);
     }
 
     public GameBoard getGameBoard() {
