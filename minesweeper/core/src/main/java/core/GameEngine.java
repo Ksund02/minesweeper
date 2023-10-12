@@ -44,18 +44,16 @@ public class GameEngine {
     }
 
     public void handleRightClick(int x, int y) {
-        if (!gameBoard.gameStarted() || isGameLost())
+        if (!gameBoard.gameStarted() || gameBoard.isGameEnded())
             return;
 
         Tile clickedTile = gameBoard.getTile(x, y);
-        if (clickedTile.isRevealed() || !canToggleFlag(clickedTile))
-            return;
-
-        toggleTileFlag(clickedTile);
+        if (canToggleFlag(clickedTile))
+            toggleTileFlag(clickedTile);
     }
 
     private void handleBombClicked() {
-        addBombToLatestUpdated();
+        addBombsToLatestUpdated();
         stopwatch.stop();
     }
 
@@ -71,7 +69,7 @@ public class GameEngine {
     }
 
     private boolean canToggleFlag(Tile tile) {
-        return gameBoard.hasFlagsLeft() && !tile.isFlagged() || tile.isFlagged();
+        return !tile.isRevealed() && gameBoard.hasFlagsLeft() && !tile.isFlagged() || tile.isFlagged();
     }
 
     private void addRevealedTilesToLatestUpdated() {
@@ -84,7 +82,7 @@ public class GameEngine {
         }
     }
 
-    private void addBombToLatestUpdated() {
+    private void addBombsToLatestUpdated() {
         latestUpdatedTiles = new ArrayList<>();
         for (int x = 0; x < gameBoard.getWidth(); x++) {
             for (int y = 0; y < gameBoard.getHeight(); y++) {

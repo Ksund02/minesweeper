@@ -33,13 +33,13 @@ import storage.UserScore;
 public class Mine7x7controller {
 
     @FXML
-    private Label timeLabel, gameStatusLabel, flagsLeftLabel, lbNameLabel, feedbackLabel;
+    private Label timeLabel, gameStatusLabel, flagsLeftLabel, leaderBoardNameLabel, feedbackLabel;
     @FXML
     private GridPane gameGrid;
     @FXML
     private TextField nameField;
     @FXML
-    private Button sendLB;
+    private Button sendToLeaderBoardButton;
 
     private GameEngine gameEngine;
     private Timeline timeline;
@@ -61,11 +61,11 @@ public class Mine7x7controller {
         updateTimeLabel();
         flagsLeftLabel.setText(String.valueOf(gameEngine.getFlagsLeft()));
 
-        sendLB.setDisable(true);
-        sendLB.setVisible(false);
+        sendToLeaderBoardButton.setDisable(true);
+        sendToLeaderBoardButton.setVisible(false);
         nameField.setVisible(false);
         nameField.setDisable(true);
-        lbNameLabel.setVisible(false);
+        leaderBoardNameLabel.setVisible(false);
         feedbackLabel.setVisible(false);
     }
     
@@ -81,22 +81,23 @@ public class Mine7x7controller {
 
     // TODO: Name this saveToFIle ?
     @FXML
-    public void sendToLeaderBoard() {
+    public void submitHigescore() {
         HighscoreFileManager.writeToHighscore(
                 new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate()),
                 HighscoreFileManager.getFile());
+
         feedbackLabel.setVisible(true);
-        sendLB.setDisable(true);
-        sendLB.setVisible(false);
+        sendToLeaderBoardButton.setDisable(true);
+        sendToLeaderBoardButton.setVisible(false);
         nameField.setVisible(false);
         nameField.setDisable(true);
-        lbNameLabel.setVisible(false);
+        leaderBoardNameLabel.setVisible(false);
     }
 
 
     private void setNewImage(Tile tile) {
         String path = tile.getRevealedImagePath();
-        ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, tile.getXCoordinate(), tile.getYCoordinate());
+        ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, tile.getX(), tile.getY());
         InputStream inputStream = Tile.class.getResourceAsStream(path);
 
         // Path = /number0.jpg returns null.
@@ -115,7 +116,7 @@ public class Mine7x7controller {
     }
 
     // Clear the grid to start
-    // TODO: make @FXXML gamegrid w*h optinal
+    // TODO: make @FXML gamegrid w*h optinal
     private void newGameGrid(int width, int height) {
         Image squareImage = new Image(getClass().getResourceAsStream("/images/square.jpg"));
         for (int y = 0; y < height; y++) {
@@ -167,14 +168,13 @@ public class Mine7x7controller {
 
     private void updateGameWon() {
         timeline.stop();
-        gameGrid.setDisable(true);
         gameStatusLabel.setText("You win!");
 
-        sendLB.setDisable(false);
-        sendLB.setVisible(true);
+        sendToLeaderBoardButton.setDisable(false);
+        sendToLeaderBoardButton.setVisible(true);
         nameField.setVisible(true);
         nameField.setDisable(false);
-        lbNameLabel.setVisible(true);
+        leaderBoardNameLabel.setVisible(true);
     }
 
     private void updateGameLost() {

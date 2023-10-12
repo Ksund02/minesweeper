@@ -59,6 +59,8 @@ public class MineAppTest extends ApplicationTest {
         }
     }
 
+    // TODO: Make a updated reset game test. It it not writing anything
+    // to terminal anymore
     @Test
     public void testResetGame() {
 
@@ -69,7 +71,7 @@ public class MineAppTest extends ApplicationTest {
         click("Reset game");
 
         // We must trim the text, since the terminal will have a newline at the end.
-        String terminal_text = buffer.toString().trim();
+        // String terminal_text = buffer.toString().trim();
 
         // Not printing to terminal
         // assertEquals("reset game er trykket inn", terminal_text);
@@ -82,11 +84,11 @@ public class MineAppTest extends ApplicationTest {
     // test where we click on the tiles that are not bombs and win:
     @Test
     public void testWin() {
-        assertEquals(false, robot.lookup("#lbNameLabel").queryLabeled().isVisible());
+        assertEquals(false, robot.lookup("#leaderBoardNameLabel").queryLabeled().isVisible());
         assertEquals(false, robot.lookup("#nameField").query().isVisible());
-        assertEquals(false, robot.lookup("#sendLB").query().isVisible());
+        assertEquals(false, robot.lookup("#sendToLeaderBoardButton").query().isVisible());
         assertEquals(false, !robot.lookup("#nameField").query().isDisabled());
-        assertEquals(false, !robot.lookup("#sendLB").query().isDisabled());
+        assertEquals(false, !robot.lookup("#sendToLeaderBoardButton").query().isDisabled());
 
         HashSet<String> bombCoords = controller.getGameBoard().getBombCoords();
 
@@ -104,11 +106,11 @@ public class MineAppTest extends ApplicationTest {
             }
         }
 
-        assertEquals(true, robot.lookup("#lbNameLabel").queryLabeled().isVisible());
+        assertEquals(true, robot.lookup("#leaderBoardNameLabel").queryLabeled().isVisible());
         assertEquals(true, robot.lookup("#nameField").query().isVisible());
-        assertEquals(true, robot.lookup("#sendLB").query().isVisible());
+        assertEquals(true, robot.lookup("#sendToLeaderBoardButton").query().isVisible());
         assertEquals(true, !robot.lookup("#nameField").query().isDisabled());
-        assertEquals(true, !robot.lookup("#sendLB").query().isDisabled());
+        assertEquals(true, !robot.lookup("#sendToLeaderBoardButton").query().isDisabled());
     }
 
     @Test
