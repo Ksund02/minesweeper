@@ -11,7 +11,7 @@ public class GameBoard {
     private final int width, height;
     private final int numBombs;
     private final int[] startingCoords;
-    private boolean lost;
+    private boolean isGameLost;
     private HashSet<String> bombCoords;
     protected int tilesLeft, flagsLeft;
 
@@ -52,7 +52,7 @@ public class GameBoard {
         for (int y = 0; y < height; y++) {
             List<Tile> newRow = new ArrayList<>();
             for (int x = 0; x < width; x++)
-                newRow.add(new Tile());
+                newRow.add(new Tile(x, y));
 
             board.add(newRow);
         }
@@ -72,11 +72,14 @@ public class GameBoard {
             int y = rand.nextInt(height);
             Tile tile = getTile(x, y);
 
-            boolean validBombTile = !tile.isBomb() && (x != startingCoords[0] || y != startingCoords[1]);
+            boolean adjacentToStartingX = x >= (startingCoords[0] - 1) && x <= (startingCoords[0] + 1);
+            boolean adjacentToStartingY = y >= (startingCoords[1] - 1) && y <= (startingCoords[1] + 1);
+
+            boolean validBombTile = !tile.isBomb() && !(adjacentToStartingX && adjacentToStartingY);
             if (validBombTile) {
                 tile.makeBomb();
                 incrementNeighborCounts(x, y);
-                bombCoords.add(""+x+"."+y);
+                bombCoords.add(x + "." + y);
                 bombsPlaced++;
             }
         }
@@ -113,15 +116,15 @@ public class GameBoard {
         }
 
         Tile tile = getTile(x, y);
+
         if (tile.isBomb()) {
             tile.reveal();
-            lost = true;
+            isGameLost = true;
         }
 
         else if (canRevealTile(tile)) {
             revealTileAndAdjacentIfZero(x, y);
         }
-
     }
 
     /**
@@ -137,10 +140,9 @@ public class GameBoard {
 
         Tile tile = getTile(x, y);
 
-        // If the tile is a bomb, the game is lost
         if (tile.isBomb()) {
             tile.reveal();
-            lost = true;
+            isGameLost = true;
         }
 
         else if (canRevealTile(tile)) {
@@ -225,7 +227,7 @@ public class GameBoard {
     }
 
     public boolean gameIsWon() {
-        return tilesLeft == 0 & !lost;
+        return tilesLeft == 0 & !isGameLost;
     }
 
     public boolean gameStarted() {
@@ -248,16 +250,28 @@ public class GameBoard {
         return flagsLeft;
     }
 
-    public void flagPlaced() {
+    public void decrementFlagsLeft() {
         flagsLeft--;
     }
 
-    public void flagRemoved() {
+    public void incrementFlagsLeft() {
         flagsLeft++;
     }
 
+    public boolean hasFlagsLeft() {
+        return getFlagsLeft() > 0;
+    }
+
+    public boolean isGameEnded() {
+        return gameIsWon() || isGameLost();
+    }
+
+    public boolean isGameLost() {
+        return isGameLost;
+    }
+
     public HashSet<String> getBombCoords() {
-        return this.bombCoords;
+        return bombCoords;
     }
 
     public int getWidth() {

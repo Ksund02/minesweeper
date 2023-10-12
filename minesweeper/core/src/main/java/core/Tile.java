@@ -4,6 +4,12 @@ public class Tile {
 
     private boolean isBomb, isFlagged, isRevealed;
     private int numBombsAround;
+    private final int x, y;
+
+    public Tile(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
     public boolean isBomb() {
         return isBomb;
@@ -31,6 +37,14 @@ public class Tile {
 
     public void reveal() {
         isRevealed = true;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     protected void makeBomb() {

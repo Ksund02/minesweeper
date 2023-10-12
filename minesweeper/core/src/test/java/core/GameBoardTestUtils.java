@@ -3,15 +3,14 @@ package core;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class GameBoardTestUtils {
-    
+
     public static GameBoard convertCharacterToGameBoard(List<List<Character>> boardWithText) {
         List<List<Tile>> convertedBoard = new ArrayList<>();
         for (List<Character> row : boardWithText) {
             List<Tile> newRow = new ArrayList<>();
             for (char tileChar : row) {
-                Tile newTile = new Tile();
+                Tile newTile = new Tile(0, 0);
                 if (tileChar == 'B')
                     newTile.makeBomb();
                 newRow.add(newTile);
@@ -36,7 +35,7 @@ public class GameBoardTestUtils {
                 }
             }
         }
-    
+
     }
 
     public static void printGameboard(GameBoard gameBoard) {

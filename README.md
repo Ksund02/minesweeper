@@ -8,7 +8,6 @@
 - [User story](#user-story🧑‍🌾)
 - [How to Run the Game Localy](#how-to-run-the-game-localy-🚂)
 - [How to Run Project in Eclipse Che](#how-to-run-project-in-eclipse-che-🌐)
-- [Priority Labels](#issue-priority-labels-🚩)
 
 ## Project Description 🕹️
 The goal of the project is to make a working minesweeper game.
@@ -40,9 +39,9 @@ Truls' adventure can be read here: [user story](docs/release-1/user-story.md)
 cd minesweeper
 ```
 
-2. **Compile the code**
+2. **Install the code**
 ```cmd
-mvn clean compile
+mvn clean install
 ```
 
 3. **Navigate to the ui directory**
@@ -59,7 +58,7 @@ mvn javafx:run
 
 1. **Open the link in a browser**
 
-[Open project in Eclpise Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2302/gr2302?new)
+[Open project in Eclipse Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2302/gr2302?new)
 
 
 2. **Open a new terminal and navigate to the minesweeper directory**
@@ -77,35 +76,15 @@ mvn clean install
 cd ui/
 ```
 
-5. **Run the following command**
-```cmd
-mvn clean install
-```
+5. **Open virtual endpoint**
 
-6. **Open virtual endpoint**
+In the left down corner open **ENDPOINTS** and copy the link from **6080-tcp-desktop-ui (6080/http)** and paste it in a new tab.
 
-In the left down corner open **ENDPOINTS** and copy the link from **6080-tcp-desktop-ui (6080/http)** and past it in a new tab.
-
-7. **Run the following command**
+6. **Run the following command**
 ```cmd
 mvn javafx:run
 ```
 
-8. **Navigate to the game**
+7. **Navigate to the game**
 
 The game is now running in the other tab with the virtual computer
-
-## Issue Priority Labels 🚩
-To streamline our development process and provide clear guidance on the importance of each task, we use a color-coded labeling system for our GitLab issues. Each color signifies a specific level of priority, detailed as follows:
-
-Green: Optional Features 🟢
-- What it Means: Issues marked green are considered optional. They are "nice-to-haves" but not essential for the project's core functionality.
-- Action: Address these issues only after resolving all higher-priority tasks.
-
-Orange: Medium Priority 🟠
-- What it Means: Issues marked orange need to be implemented but are not immediate concerns.
-- Action: These issues should be addressed in the next release cycle. They take precedence unless there are critical issues that require immediate attention.
-
-Red: High Priority 🔴
-- What it Means: Issues marked red are critical and must be resolved immediately as they either block further development or introduce serious bugs.
-- Action: Prioritize these issues, they must be resolved before attending to tasks of lower priority.

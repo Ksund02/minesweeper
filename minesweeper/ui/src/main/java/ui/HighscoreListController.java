@@ -1,9 +1,8 @@
 package ui;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.io.IOException;
 import java.util.List;
 
 import javafx.event.ActionEvent;
@@ -14,11 +13,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+
 import storage.HighscoreFileManager;
 import storage.UserScore;
 
 public class HighscoreListController {
-    private int number = 0;
+    private final int HIGHESCORE_LENGTH = 10;
+
     @FXML
     private Label name1, name2, name3, name4, name5, name6, name7, name8, name9, name10;
     @FXML
@@ -35,17 +36,15 @@ public class HighscoreListController {
                 Arrays.asList(score1, score2, score3, score4, score5, score6, score7, score8, score9, score10));
         List<Label> dates = new ArrayList<>(
                 Arrays.asList(date1, date2, date3, date4, date5, date6, date7, date8, date9, date10));
-        for (UserScore userScore : userScores) {
-            if (number > 9) {
-                break;
-            }
-            names.get(number).setText(userScore.getName());
-            scores.get(number).setText("" + userScore.getScore());
-            dates.get(number).setText(userScore.getDate());
-            number += 1;
+
+        for (int i = 0; i < Math.min(HIGHESCORE_LENGTH, userScores.size()); i++) {
+            names.get(i).setText(userScores.get(i).getName());
+            scores.get(i).setText("" + userScores.get(i).getScore());
+            dates.get(i).setText(userScores.get(i).getDate());
         }
     }
 
+    @FXML
     public void switchToGame(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/Mine7x7.fxml"));
         Parent root = fxmlLoader.load();
