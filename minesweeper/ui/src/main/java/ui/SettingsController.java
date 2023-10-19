@@ -19,7 +19,9 @@ import javafx.stage.Stage;
 
 public class SettingsController {
     @FXML
-    private Label theme, difficultyLevel;
+    private Button easyButton, mediumButton, hardButton;
+    @FXML
+    private Label themeLabel, difficultyLevelLabel;
     @FXML
     private AnchorPane anchorPane;
     @FXML
