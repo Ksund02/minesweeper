@@ -46,6 +46,7 @@ public class Mine7x7controller {
     private Timeline timeline;
     private static final int GRID_WIDTH = 10, GRID_HEIGHT = 10, NUM_BOMBS = 10;
     private static final int SCENE_MIN_WIDTH = 500, SCENE_MIN_HEIGHT = 500;
+    private static final int SQUARE_SIZE = 30;
 
     @FXML
     public void initialize() throws IOException {
@@ -134,8 +135,8 @@ public class Mine7x7controller {
         ImageView imageView = new ImageView(image);
 
         // Set dimensions to square
-        imageView.setFitWidth(30);
-        imageView.setFitHeight(30);
+        imageView.setFitWidth(SQUARE_SIZE);
+        imageView.setFitHeight(SQUARE_SIZE);
 
         final int row = x;
         final int col = y;
