@@ -2,6 +2,8 @@ package ui;
 
 import java.io.IOException;
 
+import core.GameDifficulty;
+import core.GameEngine;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,7 +35,7 @@ public class SettingsController {
         difficultyLevel.setText("Easy");
         difficultyLevel.setTextFill(Paint.valueOf("green"));
         // Must also set difficultyLevel in static variable
-
+        GameEngine.setGameDifficulty(GameDifficulty.EASY);
     }
 
     @FXML
@@ -41,7 +43,7 @@ public class SettingsController {
         difficultyLevel.setText("Medium");
         difficultyLevel.setTextFill(Paint.valueOf("orange"));
         // Must also set difficultyLevel in static variable
-        
+        GameEngine.setGameDifficulty(GameDifficulty.MEDIUM);
     }
 
     @FXML
@@ -49,7 +51,7 @@ public class SettingsController {
         difficultyLevel.setText("Hard");
         difficultyLevel.setTextFill(Paint.valueOf("red"));
         // Must also set difficultyLevel in static variable
-        
+        GameEngine.setGameDifficulty(GameDifficulty.HARD);
     }
 
     @FXML
@@ -73,13 +75,14 @@ public class SettingsController {
 
     @FXML
     public void switchToGame(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/Mine7x7.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
         Parent root = fxmlLoader.load();
-        Mine7x7controller controller = fxmlLoader.getController();
+        GamePageController controller = fxmlLoader.getController();
         controller.setIsLightMode(theme.getText() == "Light mode");
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
     }
+
 }

@@ -6,12 +6,7 @@ public enum GameDifficulty {
     MEDIUM(10, 12, 20, 400, 500, 30),
     HARD(12, 14, 40, 500, 600, 30);
 
-    private final int gridWidth;
-    private final int gridHeight;
-    private final int numBombs;
-    private final int sceneMinWidth;
-    private final int sceneMinHeight;
-    private final int squareSize;
+    private final int gridWidth, gridHeight, numBombs, sceneMinWidth, sceneMinHeight, squareSize;
 
     private GameDifficulty(int gridWidth, int gridHeight, int numBombs, int sceneMinWidth, int sceneMinHeight, int squareSize) {
         this.gridWidth = gridWidth;

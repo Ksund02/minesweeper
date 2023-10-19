@@ -54,7 +54,7 @@ public class HighscoreListController {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
         Parent root = fxmlLoader.load();
         if (!isLightMode) {
-            Mine7x7controller controller = fxmlLoader.getController();
+            GamePageController controller = fxmlLoader.getController();
             controller.setIsLightMode(false);
         }
         Node eventSource = (Node) event.getSource();

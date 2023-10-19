@@ -49,8 +49,6 @@ public class GamePageController {
     private boolean isLightMode = true;
     private GameEngine gameEngine;
     private Timeline timeline;
-    // private static final int GRID_WIDTH = 10, GRID_HEIGHT = 10, NUM_BOMBS = 10;
-    // private static final int SCENE_MIN_WIDTH = 500, SCENE_MIN_HEIGHT = 500;
     private int[] currentSquare;
 
     @FXML
