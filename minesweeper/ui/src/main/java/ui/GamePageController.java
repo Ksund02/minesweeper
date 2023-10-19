@@ -44,7 +44,7 @@ public class GamePageController {
     @FXML
     private Button sendToLeaderBoardButton;
     @FXML
-    private VBox anchor;
+    private VBox vBox;
 
     private boolean isLightMode = true;
     private GameEngine gameEngine;
@@ -101,8 +101,7 @@ public class GamePageController {
         SettingsController controller = fxmlLoader.getController();
         if (isLightMode) {
             controller.setLightMode();
-        }
-        else {
+        } else {
             controller.setDarkMode();
         }
         Node eventSource = (Node) event.getSource();
@@ -295,9 +294,8 @@ public class GamePageController {
     }
 
     public void setDarkMode() {
-        anchor.setStyle("-fx-background-color: gray");
+        vBox.setStyle("-fx-background-color: gray");
         isLightMode = false;
     }
-
 
 }

@@ -28,7 +28,7 @@ public class HighscoreListController {
     @FXML
     private Label date1, date2, date3, date4, date5, date6, date7, date8, date9, date10;
     @FXML
-    private AnchorPane anchor;
+    private AnchorPane anchorPane;
 
     private boolean isLightMode = true;
 
@@ -64,7 +64,7 @@ public class HighscoreListController {
     }
 
     public void setDarkMode() {
-        anchor.setStyle("-fx-background-color: gray");
+        anchorPane.setStyle("-fx-background-color: gray");
         isLightMode = false;
     }
 }

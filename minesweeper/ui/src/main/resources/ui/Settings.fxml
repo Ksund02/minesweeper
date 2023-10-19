@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="303.0" prefWidth="342.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.SettingsController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="303.0" prefWidth="342.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.SettingsController">
    <children>
       <HBox layoutX="-11.0" layoutY="14.0" prefHeight="46.0" prefWidth="353.0">
          <children>
@@ -42,7 +42,7 @@
                         <Insets left="87.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="difficultyLevel" prefHeight="18.0" prefWidth="110.0" text="Easy" textFill="#008000">
+                  <Label fx:id="difficultyLevelLabel" prefHeight="18.0" prefWidth="110.0" text="Easy" textFill="#008000">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
@@ -85,7 +85,7 @@
                         <Insets left="95.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="theme" prefHeight="18.0" prefWidth="110.0" text="Light mode" textFill="#404640">
+                  <Label fx:id="themeLabel" prefHeight="18.0" prefWidth="110.0" text="Light mode" textFill="#404640">
                      <font>
                         <Font size="15.0" />
                      </font>
