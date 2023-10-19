@@ -46,7 +46,6 @@ public class GamePageController {
     @FXML
     private VBox vBox;
 
-    private boolean isLightMode = true;
     private GameEngine gameEngine;
     private Timeline timeline;
     private int[] currentSquare;
@@ -58,6 +57,7 @@ public class GamePageController {
         Platform.runLater(() -> setStageMinSize());
 
         spaceBarClickSetup();
+        flagsLeftLabel.setText(String.valueOf(gameEngine.getFlagsLeft()));
         this.timeline = createTimeline();
         this.currentSquare = null;
     }
@@ -85,7 +85,7 @@ public class GamePageController {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/HighscoreList.fxml"));
         Parent root = fxmlLoader.load();
         HighscoreListController controller = fxmlLoader.getController();
-        if (!isLightMode) {
+        if (GameEngine.darkMode) {
             controller.setDarkMode();
         }
         Node eventSource = (Node) event.getSource();
@@ -99,10 +99,10 @@ public class GamePageController {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/Settings.fxml"));
         Parent root = fxmlLoader.load();
         SettingsController controller = fxmlLoader.getController();
-        if (isLightMode) {
-            controller.setLightMode();
-        } else {
+        if (GameEngine.darkMode) {
             controller.setDarkMode();
+        } else {
+            controller.setLightMode();
         }
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
@@ -127,7 +127,7 @@ public class GamePageController {
 
     private void setNewImage(Tile tile) {
         // if dark mode add the /dark in the path
-        String mode = (isLightMode) ? "/" : "/dark_";
+        String mode = (GameEngine.darkMode) ? "/dark_" : "/";
         String path = mode + tile.getRevealedImagePath();
         ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, tile.getX(), tile.getY());
         InputStream inputStream = Tile.class.getResourceAsStream(path);
@@ -149,7 +149,8 @@ public class GamePageController {
 
     private void newGameGrid() {
         gameGrid.getChildren().clear();
-        Image squareImage = new Image(getClass().getResourceAsStream("/images/square.jpg"));
+        String mode = (GameEngine.darkMode) ? "/dark_" : "/";
+        Image squareImage = new Image(getClass().getResourceAsStream("/images" + mode + "square.jpg"));
         int height = GameEngine.settings.getGridHeight();
         int width = GameEngine.settings.getGridWidth();
 
@@ -269,7 +270,8 @@ public class GamePageController {
     }
 
     private void clearGameGrid() {
-        Image squareImage = new Image(getClass().getResourceAsStream("/images/square.jpg"));
+        String mode = (GameEngine.darkMode) ? "/dark_" : "/";
+        Image squareImage = new Image(getClass().getResourceAsStream("/images" + mode + "square.jpg"));
         for (Node node : gameGrid.getChildren()) {
             ImageView iv = (ImageView) node;
             iv.setImage(squareImage);
@@ -295,7 +297,6 @@ public class GamePageController {
 
     public void setDarkMode() {
         vBox.setStyle("-fx-background-color: gray");
-        isLightMode = false;
     }
 
 }
