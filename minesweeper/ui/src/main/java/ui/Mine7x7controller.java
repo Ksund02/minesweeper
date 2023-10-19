@@ -41,7 +41,10 @@ public class Mine7x7controller {
     private TextField nameField;
     @FXML
     private Button sendToLeaderBoardButton;
+    @FXML
+    private VBox anchor;
 
+    private boolean isLightMode = true;
     private GameEngine gameEngine;
     private Timeline timeline;
     private static final int GRID_WIDTH = 7, GRID_HEIGHT = 7, NUM_BOMBS = 10;
@@ -75,6 +78,27 @@ public class Mine7x7controller {
     public void switchToHighScoreList(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/HighscoreList.fxml"));
         Parent root = fxmlLoader.load();
+        HighscoreListController controller = fxmlLoader.getController();
+        if (!isLightMode) {
+            controller.setDarkMode();
+        }
+        Node eventSource = (Node) event.getSource();
+        Stage stage = (Stage) eventSource.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    @FXML
+    public void switchToSettings(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/Settings.fxml"));
+        Parent root = fxmlLoader.load();
+        SettingsController controller = fxmlLoader.getController();
+        if (isLightMode) {
+            controller.setLightMode();
+        }
+        else {
+            controller.setDarkMode();
+        }
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
         stage.setScene(new Scene(root));
@@ -219,5 +243,14 @@ public class Mine7x7controller {
     public GameBoard getGameBoard() {
         return gameEngine.getGameBoard();
     }
+
+    public void setIsLightMode(boolean b) {
+        isLightMode = b;
+        // if theme is dark mode
+        if (!isLightMode) {
+            anchor.setStyle("-fx-background-color: gray");
+        }
+    }
+
 
 }
