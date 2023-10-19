@@ -24,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -97,7 +98,9 @@ public class Mine7x7controller {
 
 
     private void setNewImage(Tile tile) {
-        String path = tile.getRevealedImagePath();
+        // if dark mode add the /dark in the path
+        String mode = (isLightMode) ? "/" : "/dark_";
+        String path = mode + tile.getRevealedImagePath();
         ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, tile.getX(), tile.getY());
         InputStream inputStream = Tile.class.getResourceAsStream(path);
 
