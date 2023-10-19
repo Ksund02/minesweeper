@@ -55,7 +55,7 @@ public class HighscoreListController {
         Parent root = fxmlLoader.load();
         if (!isLightMode) {
             GamePageController controller = fxmlLoader.getController();
-            controller.setIsLightMode(false);
+            controller.setDarkMode();
         }
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
