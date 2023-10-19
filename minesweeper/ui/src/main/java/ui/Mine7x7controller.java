@@ -117,24 +117,25 @@ public class Mine7x7controller {
     }
 
     // Clear the grid to start
-    // TODO: make @FXML gamegrid w*h optinal
     private void newGameGrid(int width, int height) {
+        gameGrid.getChildren().clear();
         Image squareImage = new Image(getClass().getResourceAsStream("/images/square.jpg"));
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                newSquare(squareImage, x, y);
+                ImageView newSquare = newSquare(squareImage, x, y);
+
+                gameGrid.add(newSquare, x, y);
             }
         }
     }
 
-    private void newSquare(Image image, int x, int y) {
+    private ImageView newSquare(Image image, int x, int y) {
         ImageView imageView = new ImageView(image);
 
         // Set dimensions to square
         imageView.setFitWidth(30);
         imageView.setFitHeight(30);
 
-        gameGrid.add(imageView, x, y);
         final int row = x;
         final int col = y;
         imageView.setOnMouseClicked(e -> {
@@ -143,6 +144,7 @@ public class Mine7x7controller {
                 timeline.play();
             }
         });
+        return imageView;
     }
 
     private void squareClicked(MouseEvent e, int row, int col) {
