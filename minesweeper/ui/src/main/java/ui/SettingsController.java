@@ -31,19 +31,13 @@ public class SettingsController {
     public void initialize() {
         switch (GameEngine.settings) {
             case EASY:
-                difficultyLevelLabel.setText("Easy");
-                difficultyLevelLabel.setTextFill(Paint.valueOf("green"));
-                easyButton.setDisable(true);
+                setEasy();
                 break;
             case MEDIUM:
-                difficultyLevelLabel.setText("Medium");
-                difficultyLevelLabel.setTextFill(Paint.valueOf("orange"));
-                mediumButton.setDisable(true);
+                setMedium();
                 break;
             case HARD:
-                difficultyLevelLabel.setText("Hard");
-                difficultyLevelLabel.setTextFill(Paint.valueOf("red"));
-                hardButton.setDisable(true);
+                setHard();
                 break;
             default:
         }
