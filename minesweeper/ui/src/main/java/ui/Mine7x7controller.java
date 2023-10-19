@@ -45,16 +45,15 @@ public class Mine7x7controller {
 
     private GameEngine gameEngine;
     private Timeline timeline;
-    private static final int GRID_WIDTH = 10, GRID_HEIGHT = 10, NUM_BOMBS = 10;
-    private static final int SCENE_MIN_WIDTH = 500, SCENE_MIN_HEIGHT = 500;
-    private static final int SQUARE_SIZE = 30;
+    //private static final int GRID_WIDTH = 10, GRID_HEIGHT = 10, NUM_BOMBS = 10;
+    //private static final int SCENE_MIN_WIDTH = 500, SCENE_MIN_HEIGHT = 500;
     private int[] currentSquare;
 
     @FXML
     public void initialize() throws IOException {
-        this.gameEngine = new GameEngine(GRID_WIDTH, GRID_WIDTH, NUM_BOMBS);
-        newGameGrid(GRID_WIDTH, GRID_HEIGHT);
-        Platform.runLater(() -> setStageMinSize(SCENE_MIN_WIDTH, SCENE_MIN_HEIGHT));
+        this.gameEngine = new GameEngine();
+        newGameGrid();
+        Platform.runLater(() -> setStageMinSize());
 
         spaceBarClickSetup();
         this.timeline = createTimeline();
@@ -63,7 +62,7 @@ public class Mine7x7controller {
 
     @FXML
     public void resetGame() {
-        gameEngine.resetGame(GRID_WIDTH, GRID_HEIGHT, NUM_BOMBS);
+        gameEngine.resetGame();
 
         clearGameGrid();
         timeline.stop();
@@ -124,9 +123,12 @@ public class Mine7x7controller {
                 .orElse(null);
     }
 
-    private void newGameGrid(int width, int height) {
+    private void newGameGrid() {
         gameGrid.getChildren().clear();
         Image squareImage = new Image(getClass().getResourceAsStream("/images/square.jpg"));
+        int height = GameEngine.settings.getGridHeight();
+        int width = GameEngine.settings.getGridWidth();
+        
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 ImageView newSquare = newSquare(squareImage, x, y);
@@ -139,8 +141,8 @@ public class Mine7x7controller {
         ImageView imageView = new ImageView(image);
 
         // Set dimensions to square
-        imageView.setFitWidth(SQUARE_SIZE);
-        imageView.setFitHeight(SQUARE_SIZE);
+        imageView.setFitWidth(GameEngine.settings.getSquareSize());
+        imageView.setFitHeight(GameEngine.settings.getSquareSize());
 
         final int row = x;
         final int col = y;
@@ -172,10 +174,10 @@ public class Mine7x7controller {
         updateGameView();
     }
 
-    private void setStageMinSize(int width, int height) {
+    private void setStageMinSize() {
         Stage stage = (Stage) gameGrid.getScene().getWindow();
-        stage.setMinWidth(width);
-        stage.setMinHeight(height);
+        stage.setMinWidth(GameEngine.settings.getSceneMinWidth());
+        stage.setMinHeight(GameEngine.settings.getSceneMinHeight());
     }
 
     /**
