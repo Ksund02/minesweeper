@@ -22,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -47,6 +48,7 @@ public class Mine7x7controller {
     private static final int GRID_WIDTH = 10, GRID_HEIGHT = 10, NUM_BOMBS = 10;
     private static final int SCENE_MIN_WIDTH = 500, SCENE_MIN_HEIGHT = 500;
     private static final int SQUARE_SIZE = 30;
+    private int[] currentSquare;
 
     @FXML
     public void initialize() throws IOException {
@@ -54,7 +56,9 @@ public class Mine7x7controller {
         newGameGrid(GRID_WIDTH, GRID_HEIGHT);
         Platform.runLater(() -> setStageMinSize(SCENE_MIN_WIDTH, SCENE_MIN_HEIGHT));
 
+        spaceBarClickSetup();
         this.timeline = createTimeline();
+        this.currentSquare = null;
     }
 
     @FXML
@@ -146,6 +150,13 @@ public class Mine7x7controller {
                 timeline.play();
             }
         });
+        // CurrentSquare gets updated when mouse hovers over a square
+        imageView.setOnMouseEntered(e -> {
+            currentSquare = new int[] { row, col };
+        });
+        imageView.setOnMouseExited(e -> {
+            currentSquare = null;
+        });
         return imageView;
     }
 
@@ -167,14 +178,43 @@ public class Mine7x7controller {
         stage.setMinHeight(height);
     }
 
+    /**
+     * This method is used to initialize the spacebar click.
+     * The gridpane gets permanent focus, and when the spacebar is clicked, the
+     * method spaceBarClicked() is called.
+     */
+    private void spaceBarClickSetup() {
+        gameGrid.setFocusTraversable(true);
+        gameGrid.requestFocus();
+        gameGrid.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.SPACE) {
+                spaceBarClicked();
+            }
+        });
+    }
+
+    /**
+     * This method handles the logic when the spacebar is clicked.
+     * All non-flagged neighboring tiles are clicked,
+     * unless the number of flags around the tile is not equal to the number of
+     * bombs around the tile.
+     */
+    private void spaceBarClicked() {
+        if (currentSquare == null) {
+            return;
+        }
+        gameEngine.handleSpaceBarClick(currentSquare[0], currentSquare[1]);
+        updateGameView();
+    }
+
     private void updateGameView() {
+        updateTiles();
+
         if (gameEngine.isGameWon())
             updateGameWon();
 
         if (gameEngine.isGameLost())
             updateGameLost();
-
-        updateTiles();
     }
 
     private void updateGameWon() {

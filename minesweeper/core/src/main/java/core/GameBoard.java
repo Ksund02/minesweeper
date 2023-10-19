@@ -85,16 +85,22 @@ public class GameBoard {
         }
     }
 
-    private void incrementNeighborCounts(int x, int y) {
+    public List<Tile> getNeighborTiles(int x, int y) {
+        List<Tile> neighbors = new ArrayList<>();
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
-
                 boolean validCoords = i != -1 && i != width && j != -1 && j != height;
                 if (validCoords) {
-                    getTile(i, j).incrementNumBombsAround();
+                    neighbors.add(getTile(i, j));
                 }
             }
         }
+        return neighbors;
+    }
+
+    private void incrementNeighborCounts(int x, int y) {
+        List<Tile> neighbors = getNeighborTiles(x, y);
+        neighbors.forEach(tile -> tile.incrementNumBombsAround());
     }
 
     /**
