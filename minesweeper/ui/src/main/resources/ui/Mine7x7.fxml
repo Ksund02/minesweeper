@@ -27,8 +27,8 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="94.0" prefWidth="195.0">
                <children>
-                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#switchToHighScoreList" prefHeight="25.0" prefWidth="129.0" text="Leaderboard" />
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#resetGame" prefHeight="25.0" prefWidth="131.0" text="Reset game">
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#switchToHighScoreList" prefHeight="25.0" prefWidth="129.0" text="Leaderboard" focusTraversable="false"/>
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#resetGame" prefHeight="25.0" prefWidth="131.0" text="Reset game" focusTraversable="false">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
