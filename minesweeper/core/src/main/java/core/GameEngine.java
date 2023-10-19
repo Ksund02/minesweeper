@@ -9,6 +9,7 @@ public class GameEngine {
     private Stopwatch stopwatch;
     private List<Tile> latestUpdatedTiles;
     public static GameDifficulty settings = GameDifficulty.EASY;
+    public static boolean darkMode = false;
 
     public GameEngine() {
         gameBoard = new GameBoard(settings);
@@ -173,6 +174,10 @@ public class GameEngine {
 
     public static void setGameDifficulty(GameDifficulty gameDifficulty) {
         GameEngine.settings = gameDifficulty;
+    }
+
+    public static void setDarkMode(boolean darkMode) {
+        GameEngine.darkMode = darkMode;
     }
 
 }

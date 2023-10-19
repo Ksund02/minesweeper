@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.io.IOException;
 import java.util.List;
 
+import core.GameEngine;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,8 +31,6 @@ public class HighscoreListController {
     @FXML
     private AnchorPane anchorPane;
 
-    private boolean isLightMode = true;
-
     @FXML
     public void initialize() {
         List<UserScore> userScores = HighscoreFileManager.readFromHighscore(HighscoreFileManager.getFile());
@@ -53,7 +52,7 @@ public class HighscoreListController {
     public void switchToGame(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
         Parent root = fxmlLoader.load();
-        if (!isLightMode) {
+        if (GameEngine.darkMode) {
             GamePageController controller = fxmlLoader.getController();
             controller.setDarkMode();
         }
@@ -65,6 +64,5 @@ public class HighscoreListController {
 
     public void setDarkMode() {
         anchorPane.setStyle("-fx-background-color: gray");
-        isLightMode = false;
     }
 }

@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 
 public class SettingsController {
     @FXML
-    private Button easyButton, mediumButton, hardButton;
+    private Button easyButton, mediumButton, hardButton, lightModeButton, darkModeButton;
     @FXML
     private Label themeLabel, difficultyLevelLabel;
     @FXML
@@ -84,8 +84,9 @@ public class SettingsController {
         themeLabel.setText("Light mode");
         themeLabel.setStyle("-fx-font-weight: normal");
         anchorPane.setStyle("-fx-background-color: white");
-        // Must also set theme in static variable
-
+        lightModeButton.setDisable(true);
+        darkModeButton.setDisable(false);
+        GameEngine.setDarkMode(false);
     }
 
     @FXML
@@ -93,8 +94,9 @@ public class SettingsController {
         themeLabel.setText("Dark mode");
         themeLabel.setStyle("-fx-font-weight: bold");
         anchorPane.setStyle("-fx-background-color: gray");
-        // Must also set theme in static variable
-
+        lightModeButton.setDisable(false);
+        darkModeButton.setDisable(true);
+        GameEngine.setDarkMode(true);
     }
 
     @FXML
@@ -102,7 +104,7 @@ public class SettingsController {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
         Parent root = fxmlLoader.load();
         GamePageController controller = fxmlLoader.getController();
-        if (themeLabel.getText() == "Dark mode") {
+        if (GameEngine.darkMode) {
             controller.setDarkMode();
         }
         Node eventSource = (Node) event.getSource();
