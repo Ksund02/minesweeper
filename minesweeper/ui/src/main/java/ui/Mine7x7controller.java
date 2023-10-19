@@ -10,6 +10,7 @@ import core.Tile;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,12 +44,15 @@ public class Mine7x7controller {
 
     private GameEngine gameEngine;
     private Timeline timeline;
-    private static final int GRID_WIDTH = 7, GRID_HEIGHT = 7, NUM_BOMBS = 10;
+    private static final int GRID_WIDTH = 10, GRID_HEIGHT = 10, NUM_BOMBS = 10;
+    private static final int SCENE_MIN_WIDTH = 500, SCENE_MIN_HEIGHT = 500;
 
     @FXML
     public void initialize() throws IOException {
         this.gameEngine = new GameEngine(GRID_WIDTH, GRID_WIDTH, NUM_BOMBS);
         newGameGrid(GRID_WIDTH, GRID_HEIGHT);
+        Platform.runLater(() -> setStageMinSize(SCENE_MIN_WIDTH, SCENE_MIN_HEIGHT));
+
         this.timeline = createTimeline();
     }
 
@@ -69,7 +73,7 @@ public class Mine7x7controller {
         feedbackLabel.setVisible(false);
         gameGrid.setDisable(false);
     }
-    
+
     @FXML
     public void switchToHighScoreList(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/HighscoreList.fxml"));
@@ -95,7 +99,6 @@ public class Mine7x7controller {
         leaderBoardNameLabel.setVisible(false);
     }
 
-
     private void setNewImage(Tile tile) {
         String path = tile.getRevealedImagePath();
         ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, tile.getX(), tile.getY());
@@ -116,14 +119,12 @@ public class Mine7x7controller {
                 .orElse(null);
     }
 
-    // Clear the grid to start
     private void newGameGrid(int width, int height) {
         gameGrid.getChildren().clear();
         Image squareImage = new Image(getClass().getResourceAsStream("/images/square.jpg"));
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 ImageView newSquare = newSquare(squareImage, x, y);
-
                 gameGrid.add(newSquare, x, y);
             }
         }
@@ -157,6 +158,12 @@ public class Mine7x7controller {
         }
 
         updateGameView();
+    }
+
+    private void setStageMinSize(int width, int height) {
+        Stage stage = (Stage) gameGrid.getScene().getWindow();
+        stage.setMinWidth(width);
+        stage.setMinHeight(height);
     }
 
     private void updateGameView() {
