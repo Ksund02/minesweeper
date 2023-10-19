@@ -28,14 +28,14 @@ public class MineAppTest extends ApplicationTest {
      * 
      */
 
-    private Mine7x7controller controller;
+    private GamePageController controller;
     private Parent root;
     private GridPane gameGrid;
     private FxRobot robot;
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/Mine7x7.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
         root = fxmlLoader.load();
         controller = fxmlLoader.getController();
         stage.setScene(new Scene(root));

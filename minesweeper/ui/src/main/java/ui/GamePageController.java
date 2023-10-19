@@ -32,7 +32,7 @@ import javafx.util.Duration;
 import storage.HighscoreFileManager;
 import storage.UserScore;
 
-public class Mine7x7controller {
+public class GamePageController {
 
     @FXML
     private Label timeLabel, gameStatusLabel, flagsLeftLabel, leaderBoardNameLabel, feedbackLabel;
@@ -45,8 +45,8 @@ public class Mine7x7controller {
 
     private GameEngine gameEngine;
     private Timeline timeline;
-    //private static final int GRID_WIDTH = 10, GRID_HEIGHT = 10, NUM_BOMBS = 10;
-    //private static final int SCENE_MIN_WIDTH = 500, SCENE_MIN_HEIGHT = 500;
+    // private static final int GRID_WIDTH = 10, GRID_HEIGHT = 10, NUM_BOMBS = 10;
+    // private static final int SCENE_MIN_WIDTH = 500, SCENE_MIN_HEIGHT = 500;
     private int[] currentSquare;
 
     @FXML
@@ -128,7 +128,7 @@ public class Mine7x7controller {
         Image squareImage = new Image(getClass().getResourceAsStream("/images/square.jpg"));
         int height = GameEngine.settings.getGridHeight();
         int width = GameEngine.settings.getGridWidth();
-        
+
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 ImageView newSquare = newSquare(squareImage, x, y);
