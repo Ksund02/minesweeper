@@ -78,7 +78,9 @@ public class SettingsController {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
         Parent root = fxmlLoader.load();
         GamePageController controller = fxmlLoader.getController();
-        controller.setIsLightMode(theme.getText() == "Light mode");
+        if (theme.getText() == "Dark mode") {
+            controller.setDarkMode();
+        }
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
         stage.setScene(new Scene(root));

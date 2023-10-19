@@ -294,12 +294,9 @@ public class GamePageController {
         return gameEngine.getGameBoard();
     }
 
-    public void setIsLightMode(boolean b) {
-        isLightMode = b;
-        // if theme is dark mode
-        if (!isLightMode) {
-            anchor.setStyle("-fx-background-color: gray");
-        }
+    public void setDarkMode() {
+        anchor.setStyle("-fx-background-color: gray");
+        isLightMode = false;
     }
 
 
