@@ -29,14 +29,30 @@ public class GameBoardTest {
     }
 
     @Test
-    @DisplayName("Ensure that clicking on tiles on the gameBoard working as excpected.")
+    @DisplayName("Ensure that clicking on first tiles and tiles around it works correctly")
     public void testClickOnTile() {
         GameBoard gameBoard = new GameBoard(GameDifficulty.MEDIUM);
-        gameBoard.tileClicked(1, 0);
-        Tile clickedTile = gameBoard.getTile(1, 0);
+        gameBoard.tileClicked(1, 1);
 
+        List<int[]> coordinatesWithNoBombs = Arrays.asList(new int[] { 0, 0 }, new int[] { 0, 1 },
+                new int[] { 0, 2 }, new int[] { 1, 0 }, new int[] { 1, 2 }, new int[] { 2, 0 }, new int[] { 2, 1 },
+                new int[] { 2, 2 });
+
+        Tile clickedTile = gameBoard.getTile(1, 1);
         assertEquals(true, clickedTile.isRevealed(),
                 "First click should always be reveald.");
+
+        for (int[] coordinates : coordinatesWithNoBombs) {
+            Tile tile = gameBoard.getTile(coordinates[0], coordinates[1]);
+            assertEquals(false, tile.isBomb(),
+                    "All tiles around first clickes should not be bombs.");
+            assertEquals(true, tile.isRevealed(),
+                    "All tiles around first clickes should be revealed.");
+            gameBoard.tileClicked(coordinates[0], coordinates[1]);
+        }
+
+        assertEquals(false, gameBoard.gameIsWon(),
+                "Game should not be won when all tiles around first click is clicked.");
     }
 
     @Test
