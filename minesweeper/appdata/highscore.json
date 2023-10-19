@@ -1,7 +1,15 @@
 [ {
   "name" : "Christian",
+  "score" : 19,
+  "date" : "2023-10-19"
+}, {
+  "name" : "Christian",
   "score" : 41,
   "date" : "2023-10-08"
+}, {
+  "name" : "Christian",
+  "score" : 61,
+  "date" : "2023-10-19"
 }, {
   "name" : "Bob",
   "score" : 100,

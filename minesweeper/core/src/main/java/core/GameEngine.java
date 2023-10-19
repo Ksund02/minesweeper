@@ -8,15 +8,16 @@ public class GameEngine {
     private GameBoard gameBoard;
     private Stopwatch stopwatch;
     private List<Tile> latestUpdatedTiles;
+    public static GameDifficulty settings = GameDifficulty.EASY;
 
-    public GameEngine(int width, int height, int numBombs) {
-        gameBoard = new GameBoard(width, height, numBombs);
+    public GameEngine() {
+        gameBoard = new GameBoard(settings);
         stopwatch = new Stopwatch();
         latestUpdatedTiles = new ArrayList<>();
     }
 
-    public void resetGame(int width, int height, int numBombs) {
-        this.gameBoard = new GameBoard(width, height, numBombs);
+    public void resetGame() {
+        this.gameBoard = new GameBoard(settings);
         stopwatch.restart();
         latestUpdatedTiles = new ArrayList<>();
     }
@@ -51,6 +52,33 @@ public class GameEngine {
         Tile clickedTile = gameBoard.getTile(x, y);
         if (canToggleFlag(clickedTile))
             toggleTileFlag(clickedTile);
+    }
+
+    public void handleSpaceBarClick(int x, int y) {
+        Tile clickedTile = gameBoard.getTile(x, y);
+        boolean tileRevealedAndGameRunning = gameBoard.gameStarted() && !gameBoard.isGameEnded()
+                && clickedTile.isRevealed();
+        if (!tileRevealedAndGameRunning)
+            return;
+
+        List<Tile> neighbors = gameBoard.getNeighborTiles(x, y);
+        boolean correctNumberOfFlags = clickedTile.getNumBombsAround() == neighbors.stream().filter(Tile::isFlagged)
+                .count();
+
+        // The number of flags around the tile must be equal to the number of bombs
+        // around the tile
+        if (!correctNumberOfFlags) {
+            return;
+        }
+
+        // Clicking on all the neighbors of the tile which are not flagged.
+        // We need to click all of the non-bomb tiles first, such that all clicked tiles
+        // are revealed.
+        neighbors.stream().filter(tile -> !tile.isFlagged() && !tile.isBomb())
+                .forEach(tile -> handleLeftClick(tile.getX(), tile.getY()));
+        neighbors.stream().filter(tile -> !tile.isFlagged() && tile.isBomb())
+                .forEach(tile -> handleLeftClick(tile.getX(), tile.getY()));
+        addRevealedTilesToLatestUpdated();
     }
 
     private void handleBombClicked() {
@@ -142,4 +170,9 @@ public class GameEngine {
     public String getDate() {
         return stopwatch.getDate();
     }
+
+    public static void setGameDifficulty(GameDifficulty gameDifficulty) {
+        GameEngine.settings = gameDifficulty;
+    }
+
 }

@@ -27,7 +27,7 @@ public class Tile {
         return this.getNumBombsAround() > 0;
     }
 
-    private int getNumBombsAround() {
+    public int getNumBombsAround() {
         return numBombsAround;
     }
 

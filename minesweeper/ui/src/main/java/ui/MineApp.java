@@ -30,7 +30,7 @@ public class MineApp extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/Mine7x7.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
         Parent parent = fxmlLoader.load();
         stage.setScene(new Scene(parent));
 

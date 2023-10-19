@@ -10,6 +10,7 @@ import core.Tile;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -31,7 +33,7 @@ import javafx.util.Duration;
 import storage.HighscoreFileManager;
 import storage.UserScore;
 
-public class Mine7x7controller {
+public class GamePageController {
 
     @FXML
     private Label timeLabel, gameStatusLabel, flagsLeftLabel, leaderBoardNameLabel, feedbackLabel;
@@ -47,18 +49,24 @@ public class Mine7x7controller {
     private boolean isLightMode = true;
     private GameEngine gameEngine;
     private Timeline timeline;
-    private static final int GRID_WIDTH = 7, GRID_HEIGHT = 7, NUM_BOMBS = 10;
+    // private static final int GRID_WIDTH = 10, GRID_HEIGHT = 10, NUM_BOMBS = 10;
+    // private static final int SCENE_MIN_WIDTH = 500, SCENE_MIN_HEIGHT = 500;
+    private int[] currentSquare;
 
     @FXML
     public void initialize() throws IOException {
-        this.gameEngine = new GameEngine(GRID_WIDTH, GRID_WIDTH, NUM_BOMBS);
-        newGameGrid(GRID_WIDTH, GRID_HEIGHT);
+        this.gameEngine = new GameEngine();
+        newGameGrid();
+        Platform.runLater(() -> setStageMinSize());
+
+        spaceBarClickSetup();
         this.timeline = createTimeline();
+        this.currentSquare = null;
     }
 
     @FXML
     public void resetGame() {
-        gameEngine.resetGame(GRID_WIDTH, GRID_HEIGHT, NUM_BOMBS);
+        gameEngine.resetGame();
 
         clearGameGrid();
         timeline.stop();
@@ -73,7 +81,7 @@ public class Mine7x7controller {
         feedbackLabel.setVisible(false);
         gameGrid.setDisable(false);
     }
-    
+
     @FXML
     public void switchToHighScoreList(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/HighscoreList.fxml"));
@@ -120,7 +128,6 @@ public class Mine7x7controller {
         leaderBoardNameLabel.setVisible(false);
     }
 
-
     private void setNewImage(Tile tile) {
         // if dark mode add the /dark in the path
         String mode = (isLightMode) ? "/" : "/dark_";
@@ -143,25 +150,27 @@ public class Mine7x7controller {
                 .orElse(null);
     }
 
-    // Clear the grid to start
-    // TODO: make @FXML gamegrid w*h optinal
-    private void newGameGrid(int width, int height) {
+    private void newGameGrid() {
+        gameGrid.getChildren().clear();
         Image squareImage = new Image(getClass().getResourceAsStream("/images/square.jpg"));
+        int height = GameEngine.settings.getGridHeight();
+        int width = GameEngine.settings.getGridWidth();
+
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                newSquare(squareImage, x, y);
+                ImageView newSquare = newSquare(squareImage, x, y);
+                gameGrid.add(newSquare, x, y);
             }
         }
     }
 
-    private void newSquare(Image image, int x, int y) {
+    private ImageView newSquare(Image image, int x, int y) {
         ImageView imageView = new ImageView(image);
 
         // Set dimensions to square
-        imageView.setFitWidth(30);
-        imageView.setFitHeight(30);
+        imageView.setFitWidth(GameEngine.settings.getSquareSize());
+        imageView.setFitHeight(GameEngine.settings.getSquareSize());
 
-        gameGrid.add(imageView, x, y);
         final int row = x;
         final int col = y;
         imageView.setOnMouseClicked(e -> {
@@ -170,6 +179,14 @@ public class Mine7x7controller {
                 timeline.play();
             }
         });
+        // CurrentSquare gets updated when mouse hovers over a square
+        imageView.setOnMouseEntered(e -> {
+            currentSquare = new int[] { row, col };
+        });
+        imageView.setOnMouseExited(e -> {
+            currentSquare = null;
+        });
+        return imageView;
     }
 
     private void squareClicked(MouseEvent e, int row, int col) {
@@ -184,14 +201,49 @@ public class Mine7x7controller {
         updateGameView();
     }
 
+    private void setStageMinSize() {
+        Stage stage = (Stage) gameGrid.getScene().getWindow();
+        stage.setMinWidth(GameEngine.settings.getSceneMinWidth());
+        stage.setMinHeight(GameEngine.settings.getSceneMinHeight());
+    }
+
+    /**
+     * This method is used to initialize the spacebar click.
+     * The gridpane gets permanent focus, and when the spacebar is clicked, the
+     * method spaceBarClicked() is called.
+     */
+    private void spaceBarClickSetup() {
+        gameGrid.setFocusTraversable(true);
+        gameGrid.requestFocus();
+        gameGrid.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.SPACE) {
+                spaceBarClicked();
+            }
+        });
+    }
+
+    /**
+     * This method handles the logic when the spacebar is clicked.
+     * All non-flagged neighboring tiles are clicked,
+     * unless the number of flags around the tile is not equal to the number of
+     * bombs around the tile.
+     */
+    private void spaceBarClicked() {
+        if (currentSquare == null) {
+            return;
+        }
+        gameEngine.handleSpaceBarClick(currentSquare[0], currentSquare[1]);
+        updateGameView();
+    }
+
     private void updateGameView() {
+        updateTiles();
+
         if (gameEngine.isGameWon())
             updateGameWon();
 
         if (gameEngine.isGameLost())
             updateGameLost();
-
-        updateTiles();
     }
 
     private void updateGameWon() {
