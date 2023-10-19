@@ -1,7 +1,7 @@
 package core;
 
 public enum GameDifficulty {
-    
+    TEST(5, 5, 5, 300, 400, 30),
     EASY(9, 9, 10, 300, 400, 30),
     MEDIUM(10, 12, 20, 400, 500, 30),
     HARD(12, 14, 40, 500, 600, 30);
