@@ -19,11 +19,9 @@ import javafx.stage.Stage;
 
 public class SettingsController {
     @FXML
-    private Button easyButton, mediumButton, hardButton;
-    @FXML
     private Label theme, difficultyLevel;
     @FXML
-    private AnchorPane anchor;
+    private AnchorPane anchorPane;
     @FXML
     private Line line;
 
@@ -31,18 +29,18 @@ public class SettingsController {
     public void initialize() {
         switch (GameEngine.settings) {
             case EASY:
-                difficultyLevel.setText("Easy");
-                difficultyLevel.setTextFill(Paint.valueOf("green"));
+                difficultyLevelLabel.setText("Easy");
+                difficultyLevelLabel.setTextFill(Paint.valueOf("green"));
                 easyButton.setDisable(true);
                 break;
             case MEDIUM:
-                difficultyLevel.setText("Medium");
-                difficultyLevel.setTextFill(Paint.valueOf("orange"));
+                difficultyLevelLabel.setText("Medium");
+                difficultyLevelLabel.setTextFill(Paint.valueOf("orange"));
                 mediumButton.setDisable(true);
                 break;
             case HARD:
-                difficultyLevel.setText("Hard");
-                difficultyLevel.setTextFill(Paint.valueOf("red"));
+                difficultyLevelLabel.setText("Hard");
+                difficultyLevelLabel.setTextFill(Paint.valueOf("red"));
                 hardButton.setDisable(true);
                 break;
             default:
@@ -51,8 +49,8 @@ public class SettingsController {
 
     @FXML
     public void setEasy() {
-        difficultyLevel.setText("Easy");
-        difficultyLevel.setTextFill(Paint.valueOf("green"));
+        difficultyLevelLabel.setText("Easy");
+        difficultyLevelLabel.setTextFill(Paint.valueOf("green"));
         easyButton.setDisable(true);
         mediumButton.setDisable(false);
         hardButton.setDisable(false);
@@ -61,8 +59,8 @@ public class SettingsController {
 
     @FXML
     public void setMedium() {
-        difficultyLevel.setText("Medium");
-        difficultyLevel.setTextFill(Paint.valueOf("orange"));
+        difficultyLevelLabel.setText("Medium");
+        difficultyLevelLabel.setTextFill(Paint.valueOf("orange"));
         easyButton.setDisable(false);
         mediumButton.setDisable(true);
         hardButton.setDisable(false);
@@ -71,8 +69,8 @@ public class SettingsController {
 
     @FXML
     public void setHard() {
-        difficultyLevel.setText("Hard");
-        difficultyLevel.setTextFill(Paint.valueOf("red"));
+        difficultyLevelLabel.setText("Hard");
+        difficultyLevelLabel.setTextFill(Paint.valueOf("red"));
         easyButton.setDisable(false);
         mediumButton.setDisable(false);
         hardButton.setDisable(true);
@@ -81,29 +79,28 @@ public class SettingsController {
 
     @FXML
     public void setLightMode() {
-        theme.setText("Light mode");
-        theme.setStyle("-fx-font-weight: normal");
-        anchor.setStyle("-fx-background-color: white");
+        themeLabel.setText("Light mode");
+        themeLabel.setStyle("-fx-font-weight: normal");
+        anchorPane.setStyle("-fx-background-color: white");
         // Must also set theme in static variable
 
     }
 
     @FXML
     public void setDarkMode() {
-        theme.setText("Dark mode");
-        theme.setStyle("-fx-font-weight: bold");
-        anchor.setStyle("-fx-background-color: gray");
+        themeLabel.setText("Dark mode");
+        themeLabel.setStyle("-fx-font-weight: bold");
+        anchorPane.setStyle("-fx-background-color: gray");
         // Must also set theme in static variable
 
     }
-
 
     @FXML
     public void switchToGame(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
         Parent root = fxmlLoader.load();
         GamePageController controller = fxmlLoader.getController();
-        if (theme.getText() == "Dark mode") {
+        if (themeLabel.getText() == "Dark mode") {
             controller.setDarkMode();
         }
         Node eventSource = (Node) event.getSource();
