@@ -18,7 +18,7 @@ public class GameBoardTestUtils {
             convertedBoard.add(newRow);
         }
 
-        GameBoard gameBoard = new GameBoard(5, 5, 5);
+        GameBoard gameBoard = new GameBoard(GameDifficulty.TEST);
         gameBoard.setGameboard(convertedBoard);
         return gameBoard;
     }

@@ -10,6 +10,7 @@ import core.Tile;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,7 +32,7 @@ import javafx.util.Duration;
 import storage.HighscoreFileManager;
 import storage.UserScore;
 
-public class Mine7x7controller {
+public class GamePageController {
 
     @FXML
     private Label timeLabel, gameStatusLabel, flagsLeftLabel, leaderBoardNameLabel, feedbackLabel;
@@ -44,13 +45,16 @@ public class Mine7x7controller {
 
     private GameEngine gameEngine;
     private Timeline timeline;
+    // private static final int GRID_WIDTH = 10, GRID_HEIGHT = 10, NUM_BOMBS = 10;
+    // private static final int SCENE_MIN_WIDTH = 500, SCENE_MIN_HEIGHT = 500;
     private int[] currentSquare;
-    private static final int GRID_WIDTH = 7, GRID_HEIGHT = 7, NUM_BOMBS = 10;
 
     @FXML
     public void initialize() throws IOException {
-        this.gameEngine = new GameEngine(GRID_WIDTH, GRID_WIDTH, NUM_BOMBS);
-        newGameGrid(GRID_WIDTH, GRID_HEIGHT);
+        this.gameEngine = new GameEngine();
+        newGameGrid();
+        Platform.runLater(() -> setStageMinSize());
+
         spaceBarClickSetup();
         this.timeline = createTimeline();
         this.currentSquare = null;
@@ -58,7 +62,7 @@ public class Mine7x7controller {
 
     @FXML
     public void resetGame() {
-        gameEngine.resetGame(GRID_WIDTH, GRID_HEIGHT, NUM_BOMBS);
+        gameEngine.resetGame();
 
         clearGameGrid();
         timeline.stop();
@@ -119,25 +123,27 @@ public class Mine7x7controller {
                 .orElse(null);
     }
 
-    // Clear the grid to start
-    // TODO: make @FXML gamegrid w*h optinal
-    private void newGameGrid(int width, int height) {
+    private void newGameGrid() {
+        gameGrid.getChildren().clear();
         Image squareImage = new Image(getClass().getResourceAsStream("/images/square.jpg"));
+        int height = GameEngine.settings.getGridHeight();
+        int width = GameEngine.settings.getGridWidth();
+
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                newSquare(squareImage, x, y);
+                ImageView newSquare = newSquare(squareImage, x, y);
+                gameGrid.add(newSquare, x, y);
             }
         }
     }
 
-    private void newSquare(Image image, int x, int y) {
+    private ImageView newSquare(Image image, int x, int y) {
         ImageView imageView = new ImageView(image);
 
         // Set dimensions to square
-        imageView.setFitWidth(30);
-        imageView.setFitHeight(30);
+        imageView.setFitWidth(GameEngine.settings.getSquareSize());
+        imageView.setFitHeight(GameEngine.settings.getSquareSize());
 
-        gameGrid.add(imageView, x, y);
         final int row = x;
         final int col = y;
         imageView.setOnMouseClicked(e -> {
@@ -153,6 +159,7 @@ public class Mine7x7controller {
         imageView.setOnMouseExited(e -> {
             currentSquare = null;
         });
+        return imageView;
     }
 
     private void squareClicked(MouseEvent e, int row, int col) {
@@ -165,6 +172,12 @@ public class Mine7x7controller {
         }
 
         updateGameView();
+    }
+
+    private void setStageMinSize() {
+        Stage stage = (Stage) gameGrid.getScene().getWindow();
+        stage.setMinWidth(GameEngine.settings.getSceneMinWidth());
+        stage.setMinHeight(GameEngine.settings.getSceneMinHeight());
     }
 
     /**

@@ -15,12 +15,11 @@ public class GameBoard {
     private HashSet<String> bombCoords;
     protected int tilesLeft, flagsLeft;
 
-    public GameBoard(int width, int height, int numBombs) {
-        validateInput(width, height, numBombs);
+    public GameBoard(GameDifficulty settings) {
+        this.height = settings.getGridHeight();
+        this.width = settings.getGridWidth();
+        this.numBombs = settings.getNumBombs();
 
-        this.height = height;
-        this.width = width;
-        this.numBombs = numBombs;
         this.startingCoords = new int[] { -1, -1 };
         this.tilesLeft = height * width - numBombs;
         this.flagsLeft = numBombs;
@@ -28,24 +27,6 @@ public class GameBoard {
         this.bombCoords = new HashSet<>();
 
         populateBoardWithTiles();
-    }
-
-    private void validateInput(int width, int height, int numBombs) {
-        boolean negativeOrZeroArea = width <= 0 || height <= 0;
-        boolean negativeAmountOfBombs = numBombs < 0;
-        boolean tooManyBombs = numBombs >= width * height;
-
-        if (negativeOrZeroArea)
-            throw new IllegalArgumentException(
-                    "Width and height must be positive integers");
-
-        if (negativeAmountOfBombs)
-            throw new IllegalArgumentException(
-                    "Number of bombs cannot be negative");
-
-        if (tooManyBombs)
-            throw new IllegalArgumentException(
-                    "Cannot have more or equal number of bombs as squares in grid");
     }
 
     private void populateBoardWithTiles() {

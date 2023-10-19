@@ -8,15 +8,16 @@ public class GameEngine {
     private GameBoard gameBoard;
     private Stopwatch stopwatch;
     private List<Tile> latestUpdatedTiles;
+    public static GameDifficulty settings = GameDifficulty.EASY;
 
-    public GameEngine(int width, int height, int numBombs) {
-        gameBoard = new GameBoard(width, height, numBombs);
+    public GameEngine() {
+        gameBoard = new GameBoard(settings);
         stopwatch = new Stopwatch();
         latestUpdatedTiles = new ArrayList<>();
     }
 
-    public void resetGame(int width, int height, int numBombs) {
-        this.gameBoard = new GameBoard(width, height, numBombs);
+    public void resetGame() {
+        this.gameBoard = new GameBoard(settings);
         stopwatch.restart();
         latestUpdatedTiles = new ArrayList<>();
     }
@@ -169,4 +170,9 @@ public class GameEngine {
     public String getDate() {
         return stopwatch.getDate();
     }
+
+    public static void setGameDifficulty(GameDifficulty gameDifficulty) {
+        GameEngine.settings = gameDifficulty;
+    }
+
 }
