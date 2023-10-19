@@ -8,31 +8,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="303.0" prefWidth="342.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.SettingsController">
    <children>
-      <HBox layoutX="-11.0" layoutY="14.0" prefHeight="46.0" prefWidth="353.0">
-         <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#switchToGame" prefHeight="26.0" prefWidth="70.0" text="Back">
-               <HBox.margin>
-                  <Insets left="17.0" top="-5.0" />
-               </HBox.margin>
-            </Button>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Settings" textAlignment="CENTER" wrappingWidth="189.33662033081055">
-               <font>
-                  <Font size="34.0" />
-               </font>
-               <HBox.margin>
-                  <Insets top="-5.0" />
-               </HBox.margin>
-            </Text>
-         </children>
-      </HBox>
+      <Label alignment="CENTER" contentDisplay="TOP" prefHeight="50.0" prefWidth="343.0" text="Settings">
+         <font>
+            <Font size="34.0" />
+         </font>
+      </Label>
+      <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#switchToGame" prefHeight="26.0" prefWidth="48.0" text="Back" />
       <Line fx:id="line" endX="343.0000305175781" endY="0.4000053405761719" layoutX="-1.0" layoutY="55.0" startX="0.999987781047821" startY="0.4000129699707031" />
-      <VBox layoutY="69.0" prefHeight="251.0" prefWidth="343.0">
+      <VBox alignment="TOP_CENTER" layoutY="69.0" prefHeight="251.0" prefWidth="343.0">
          <children>
-            <HBox prefHeight="34.0" prefWidth="223.0">
+            <HBox prefHeight="34.0" prefWidth="341.0">
                <children>
                   <Label text="Difficulty Level: ">
                      <font>
@@ -57,17 +45,17 @@
             </HBox>
             <HBox prefHeight="34.0" prefWidth="223.0">
                <children>
-                  <Button fx:id="easyButton" mnemonicParsing="false" onAction="#setEasy" text="Easy" textFill="GREEN">
+                  <Button fx:id="easyButton" focusTraversable="false" mnemonicParsing="false" onAction="#setEasy" text="Easy" textFill="GREEN">
                      <HBox.margin>
                         <Insets left="94.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="mediumButton" mnemonicParsing="false" onAction="#setMedium" text="Medium" textFill="ORANGE">
+                  <Button fx:id="mediumButton" focusTraversable="false" mnemonicParsing="false" onAction="#setMedium" text="Medium" textFill="ORANGE">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="hardButton" mnemonicParsing="false" onAction="#setHard" text="Hard" textFill="RED">
+                  <Button fx:id="hardButton" focusTraversable="false" mnemonicParsing="false" onAction="#setHard" text="Hard" textFill="RED">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -97,12 +85,12 @@
             </HBox>
             <HBox prefHeight="34.0" prefWidth="386.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#setLightMode" text="Light mode">
+                  <Button fx:id="lightModeButton" focusTraversable="false" mnemonicParsing="false" onAction="#setLightMode" text="Light mode">
                      <HBox.margin>
                         <Insets left="92.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#setDarkMode" text="Dark mode">
+                  <Button fx:id="darkModeButton" focusTraversable="false" mnemonicParsing="false" onAction="#setDarkMode" text="Dark mode">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>

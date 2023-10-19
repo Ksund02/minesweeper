@@ -13,7 +13,7 @@
    <children>
       <HBox prefHeight="45.0" prefWidth="446.0">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#switchToGame" prefHeight="26.0" prefWidth="70.0" text="Back">
+            <Button alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#switchToGame" prefHeight="26.0" prefWidth="70.0" text="Back">
                <HBox.margin>
                   <Insets left="4.0" top="9.0" />
                </HBox.margin>
