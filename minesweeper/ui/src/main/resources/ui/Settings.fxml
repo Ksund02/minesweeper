@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="303.0" prefWidth="342.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.SettingsController">
+   <children>
+      <HBox layoutX="-11.0" layoutY="14.0" prefHeight="46.0" prefWidth="353.0">
+         <children>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#switchToGame" prefHeight="26.0" prefWidth="70.0" text="Back">
+               <HBox.margin>
+                  <Insets left="17.0" top="-5.0" />
+               </HBox.margin>
+            </Button>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Settings" textAlignment="CENTER" wrappingWidth="189.33662033081055">
+               <font>
+                  <Font size="34.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="-5.0" />
+               </HBox.margin>
+            </Text>
+         </children>
+      </HBox>
+      <Line fx:id="line" endX="343.0000305175781" endY="0.4000053405761719" layoutX="-1.0" layoutY="55.0" startX="0.999987781047821" startY="0.4000129699707031" />
+      <VBox layoutY="69.0" prefHeight="251.0" prefWidth="343.0">
+         <children>
+            <HBox prefHeight="34.0" prefWidth="223.0">
+               <children>
+                  <Label fx:id="difficultyTitle" text="Difficulty Level: ">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="87.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="difficultyLevel" prefHeight="18.0" prefWidth="110.0" text="Easy" textFill="#008000">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
+            <HBox prefHeight="34.0" prefWidth="223.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#setEasy" text="Easy" textFill="GREEN">
+                     <HBox.margin>
+                        <Insets left="94.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#setMedium" text="Medium" textFill="ORANGE">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#setHard" text="Hard" textFill="RED">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox prefHeight="34.0" prefWidth="223.0" />
+            <HBox prefHeight="34.0" prefWidth="330.0">
+               <children>
+                  <Label fx:id="themeTitle" text="Theme:">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="95.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="theme" prefHeight="18.0" prefWidth="110.0" text="Light mode" textFill="#404640">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="34.0" prefWidth="386.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#setLightMode" text="Light mode">
+                     <HBox.margin>
+                        <Insets left="92.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#setDarkMode" text="Dark mode">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
