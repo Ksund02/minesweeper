@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
@@ -17,6 +18,8 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 public class SettingsController {
+    @FXML
+    private Button easyButton, mediumButton, hardButton;
     @FXML
     private Label theme, difficultyLevel;
     @FXML
@@ -26,15 +29,33 @@ public class SettingsController {
 
     @FXML
     public void initialize() {
-        // Must set difficultyLevelLabel like it is now in the start
-        // Must set themeLabel and theme like it is now in the start
+        switch (GameEngine.settings) {
+            case EASY:
+                difficultyLevel.setText("Easy");
+                difficultyLevel.setTextFill(Paint.valueOf("green"));
+                easyButton.setDisable(true);
+                break;
+            case MEDIUM:
+                difficultyLevel.setText("Medium");
+                difficultyLevel.setTextFill(Paint.valueOf("orange"));
+                mediumButton.setDisable(true);
+                break;
+            case HARD:
+                difficultyLevel.setText("Hard");
+                difficultyLevel.setTextFill(Paint.valueOf("red"));
+                hardButton.setDisable(true);
+                break;
+            default:
+        }
     }
 
     @FXML
     public void setEasy() {
         difficultyLevel.setText("Easy");
         difficultyLevel.setTextFill(Paint.valueOf("green"));
-        // Must also set difficultyLevel in static variable
+        easyButton.setDisable(true);
+        mediumButton.setDisable(false);
+        hardButton.setDisable(false);
         GameEngine.setGameDifficulty(GameDifficulty.EASY);
     }
 
@@ -42,7 +63,9 @@ public class SettingsController {
     public void setMedium() {
         difficultyLevel.setText("Medium");
         difficultyLevel.setTextFill(Paint.valueOf("orange"));
-        // Must also set difficultyLevel in static variable
+        easyButton.setDisable(false);
+        mediumButton.setDisable(true);
+        hardButton.setDisable(false);
         GameEngine.setGameDifficulty(GameDifficulty.MEDIUM);
     }
 
@@ -50,7 +73,9 @@ public class SettingsController {
     public void setHard() {
         difficultyLevel.setText("Hard");
         difficultyLevel.setTextFill(Paint.valueOf("red"));
-        // Must also set difficultyLevel in static variable
+        easyButton.setDisable(false);
+        mediumButton.setDisable(false);
+        hardButton.setDisable(true);
         GameEngine.setGameDifficulty(GameDifficulty.HARD);
     }
 

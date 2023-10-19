@@ -57,17 +57,17 @@
             </HBox>
             <HBox prefHeight="34.0" prefWidth="223.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#setEasy" text="Easy" textFill="GREEN">
+                  <Button fx:id="easyButton" mnemonicParsing="false" onAction="#setEasy" text="Easy" textFill="GREEN">
                      <HBox.margin>
                         <Insets left="94.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#setMedium" text="Medium" textFill="ORANGE">
+                  <Button fx:id="mediumButton" mnemonicParsing="false" onAction="#setMedium" text="Medium" textFill="ORANGE">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#setHard" text="Hard" textFill="RED">
+                  <Button fx:id="hardButton" mnemonicParsing="false" onAction="#setHard" text="Hard" textFill="RED">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
