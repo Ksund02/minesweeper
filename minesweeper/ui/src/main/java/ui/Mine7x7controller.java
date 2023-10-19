@@ -21,6 +21,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -43,13 +45,16 @@ public class Mine7x7controller {
 
     private GameEngine gameEngine;
     private Timeline timeline;
+    private int[] currentSquare;
     private static final int GRID_WIDTH = 7, GRID_HEIGHT = 7, NUM_BOMBS = 10;
 
     @FXML
     public void initialize() throws IOException {
         this.gameEngine = new GameEngine(GRID_WIDTH, GRID_WIDTH, NUM_BOMBS);
         newGameGrid(GRID_WIDTH, GRID_HEIGHT);
+        spaceBarClickSetup();
         this.timeline = createTimeline();
+        this.currentSquare = null;
     }
 
     @FXML
@@ -143,6 +148,13 @@ public class Mine7x7controller {
                 timeline.play();
             }
         });
+        // CurrentSquare gets updated when mouse hovers over a square
+        imageView.setOnMouseEntered(e -> {
+            currentSquare = new int[] {row, col};
+        });
+        imageView.setOnMouseExited(e -> {
+            currentSquare = null;
+        });
     }
 
     private void squareClicked(MouseEvent e, int row, int col) {
@@ -157,14 +169,40 @@ public class Mine7x7controller {
         updateGameView();
     }
 
+   /**
+    * This method is used to initialize the spacebar click.
+    * The gridpane gets permanent focus, and when the spacebar is clicked, the method spaceBarClicked() is called. 
+    */ 
+   private void spaceBarClickSetup() {
+        gameGrid.setFocusTraversable(true);
+        gameGrid.requestFocus();
+        gameGrid.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.SPACE) {
+                spaceBarClicked();
+            }
+        });
+    } 
+   
+   /**
+    * This method handles the logic when the spacebar is clicked.
+    * All non-flagged neighboring tiles are clicked,
+    * unless the number of flags around the tile is not equal to the number of bombs around the tile.
+    */ 
+   private void spaceBarClicked() {
+        if (currentSquare == null) {return;}
+        gameEngine.handleSpaceBarClick(currentSquare[0], currentSquare[1]);
+        updateGameView();  
+    }
+
+
     private void updateGameView() {
+        updateTiles();
+
         if (gameEngine.isGameWon())
             updateGameWon();
 
         if (gameEngine.isGameLost())
             updateGameLost();
-
-        updateTiles();
     }
 
     private void updateGameWon() {
