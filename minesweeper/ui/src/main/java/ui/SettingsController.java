@@ -12,7 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
@@ -23,7 +23,7 @@ public class SettingsController {
     @FXML
     private Label themeLabel, difficultyLevelLabel;
     @FXML
-    private AnchorPane anchorPane;
+    private VBox vBox;
     @FXML
     private Line line;
 
@@ -83,7 +83,7 @@ public class SettingsController {
     public void setLightMode() {
         themeLabel.setText("Light mode");
         themeLabel.setStyle("-fx-font-weight: normal");
-        anchorPane.setStyle("-fx-background-color: white");
+        vBox.setStyle("-fx-background-color: white");
         lightModeButton.setDisable(true);
         darkModeButton.setDisable(false);
         GameEngine.setDarkMode(false);
@@ -93,7 +93,7 @@ public class SettingsController {
     public void setDarkMode() {
         themeLabel.setText("Dark mode");
         themeLabel.setStyle("-fx-font-weight: bold");
-        anchorPane.setStyle("-fx-background-color: gray");
+        vBox.setStyle("-fx-background-color: gray");
         lightModeButton.setDisable(false);
         darkModeButton.setDisable(true);
         GameEngine.setDarkMode(true);
