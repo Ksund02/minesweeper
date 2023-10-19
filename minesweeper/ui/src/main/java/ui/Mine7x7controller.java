@@ -22,7 +22,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -74,7 +73,7 @@ public class Mine7x7controller {
         feedbackLabel.setVisible(false);
         gameGrid.setDisable(false);
     }
-    
+
     @FXML
     public void switchToHighScoreList(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/HighscoreList.fxml"));
@@ -99,7 +98,6 @@ public class Mine7x7controller {
         nameField.setDisable(true);
         leaderBoardNameLabel.setVisible(false);
     }
-
 
     private void setNewImage(Tile tile) {
         String path = tile.getRevealedImagePath();
@@ -150,7 +148,7 @@ public class Mine7x7controller {
         });
         // CurrentSquare gets updated when mouse hovers over a square
         imageView.setOnMouseEntered(e -> {
-            currentSquare = new int[] {row, col};
+            currentSquare = new int[] { row, col };
         });
         imageView.setOnMouseExited(e -> {
             currentSquare = null;
@@ -169,11 +167,12 @@ public class Mine7x7controller {
         updateGameView();
     }
 
-   /**
-    * This method is used to initialize the spacebar click.
-    * The gridpane gets permanent focus, and when the spacebar is clicked, the method spaceBarClicked() is called. 
-    */ 
-   private void spaceBarClickSetup() {
+    /**
+     * This method is used to initialize the spacebar click.
+     * The gridpane gets permanent focus, and when the spacebar is clicked, the
+     * method spaceBarClicked() is called.
+     */
+    private void spaceBarClickSetup() {
         gameGrid.setFocusTraversable(true);
         gameGrid.requestFocus();
         gameGrid.setOnKeyPressed(e -> {
@@ -181,19 +180,21 @@ public class Mine7x7controller {
                 spaceBarClicked();
             }
         });
-    } 
-   
-   /**
-    * This method handles the logic when the spacebar is clicked.
-    * All non-flagged neighboring tiles are clicked,
-    * unless the number of flags around the tile is not equal to the number of bombs around the tile.
-    */ 
-   private void spaceBarClicked() {
-        if (currentSquare == null) {return;}
-        gameEngine.handleSpaceBarClick(currentSquare[0], currentSquare[1]);
-        updateGameView();  
     }
 
+    /**
+     * This method handles the logic when the spacebar is clicked.
+     * All non-flagged neighboring tiles are clicked,
+     * unless the number of flags around the tile is not equal to the number of
+     * bombs around the tile.
+     */
+    private void spaceBarClicked() {
+        if (currentSquare == null) {
+            return;
+        }
+        gameEngine.handleSpaceBarClick(currentSquare[0], currentSquare[1]);
+        updateGameView();
+    }
 
     private void updateGameView() {
         updateTiles();

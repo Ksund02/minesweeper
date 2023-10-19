@@ -55,22 +55,28 @@ public class GameEngine {
 
     public void handleSpaceBarClick(int x, int y) {
         Tile clickedTile = gameBoard.getTile(x, y);
-        boolean tileRevealedAndGameRunning = gameBoard.gameStarted() && !gameBoard.isGameEnded() && clickedTile.isRevealed();
+        boolean tileRevealedAndGameRunning = gameBoard.gameStarted() && !gameBoard.isGameEnded()
+                && clickedTile.isRevealed();
         if (!tileRevealedAndGameRunning)
             return;
 
         List<Tile> neighbors = gameBoard.getNeighborTiles(x, y);
-        boolean correctNumberOfFlags = clickedTile.getNumBombsAround() == neighbors.stream().filter(Tile::isFlagged).count();
+        boolean correctNumberOfFlags = clickedTile.getNumBombsAround() == neighbors.stream().filter(Tile::isFlagged)
+                .count();
 
-        // The number of flags around the tile must be equal to the number of bombs around the tile
+        // The number of flags around the tile must be equal to the number of bombs
+        // around the tile
         if (!correctNumberOfFlags) {
             return;
         }
-        
+
         // Clicking on all the neighbors of the tile which are not flagged.
-        // We need to click all of the non-bomb tiles first, such that all clicked tiles are revealed.
-        neighbors.stream().filter(tile -> !tile.isFlagged() && !tile.isBomb()).forEach(tile -> handleLeftClick(tile.getX(), tile.getY()));
-        neighbors.stream().filter(tile -> !tile.isFlagged() && tile.isBomb()).forEach(tile -> handleLeftClick(tile.getX(), tile.getY()));
+        // We need to click all of the non-bomb tiles first, such that all clicked tiles
+        // are revealed.
+        neighbors.stream().filter(tile -> !tile.isFlagged() && !tile.isBomb())
+                .forEach(tile -> handleLeftClick(tile.getX(), tile.getY()));
+        neighbors.stream().filter(tile -> !tile.isFlagged() && tile.isBomb())
+                .forEach(tile -> handleLeftClick(tile.getX(), tile.getY()));
         addRevealedTilesToLatestUpdated();
     }
 

@@ -84,7 +84,7 @@ public class GameBoard {
             }
         }
     }
-    
+
     public List<Tile> getNeighborTiles(int x, int y) {
         List<Tile> neighbors = new ArrayList<>();
         for (int i = x - 1; i <= x + 1; i++) {
@@ -102,7 +102,6 @@ public class GameBoard {
         List<Tile> neighbors = getNeighborTiles(x, y);
         neighbors.forEach(tile -> tile.incrementNumBombsAround());
     }
-
 
     /**
      * <pre>
