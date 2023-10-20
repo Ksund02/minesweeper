@@ -1,4 +1,4 @@
-package core;
+package core.settings;
 
 public enum GameDifficulty {
     TEST(5, 5, 5, 300, 400, 30),
@@ -8,7 +8,8 @@ public enum GameDifficulty {
 
     private final int gridWidth, gridHeight, numBombs, sceneMinWidth, sceneMinHeight, squareSize;
 
-    private GameDifficulty(int gridWidth, int gridHeight, int numBombs, int sceneMinWidth, int sceneMinHeight, int squareSize) {
+    private GameDifficulty(int gridWidth, int gridHeight, int numBombs, int sceneMinWidth, int sceneMinHeight,
+            int squareSize) {
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
         this.numBombs = numBombs;
