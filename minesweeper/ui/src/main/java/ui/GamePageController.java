@@ -78,6 +78,7 @@ public class GamePageController {
         leaderBoardNameLabel.setVisible(false);
         feedbackLabel.setVisible(false);
         gameGrid.setDisable(false);
+        gameStatusLabel.setText("");
     }
 
     @FXML
@@ -276,8 +277,6 @@ public class GamePageController {
             ImageView iv = (ImageView) node;
             iv.setImage(squareImage);
         }
-        gameGrid.setDisable(false);
-        gameStatusLabel.setText("");
     }
 
     private Timeline createTimeline() {
