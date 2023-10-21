@@ -3,6 +3,8 @@ package core;
 import java.util.ArrayList;
 import java.util.List;
 
+import core.settings.GameDifficulty;
+
 public class GameBoardTestUtils {
 
     public static GameBoard convertCharacterToGameBoard(List<List<Character>> boardWithText) {

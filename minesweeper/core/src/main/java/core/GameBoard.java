@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
+import core.settings.GameDifficulty;
+
 public class GameBoard {
 
     protected List<List<Tile>> board = new ArrayList<>();

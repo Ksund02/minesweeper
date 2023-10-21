@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.io.IOException;
 import java.util.List;
 
-import core.GameEngine;
+import core.settings.SettingsManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,23 +46,19 @@ public class HighscoreListController {
             scores.get(i).setText("" + userScores.get(i).getScore());
             dates.get(i).setText(userScores.get(i).getDate());
         }
+        anchorPane.setStyle(SettingsManager.themeSettings.getBackgroundStyle());
     }
 
     @FXML
     public void switchToGame(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
         Parent root = fxmlLoader.load();
-        if (GameEngine.darkMode) {
-            GamePageController controller = fxmlLoader.getController();
-            controller.setDarkMode();
-        }
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
         stage.setScene(new Scene(root));
+        stage.setWidth(SettingsManager.gameDifficulty.getStageMinWidth());
+        stage.setHeight(SettingsManager.gameDifficulty.getStageMinHeight());
         stage.show();
     }
 
-    public void setDarkMode() {
-        anchorPane.setStyle("-fx-background-color: gray");
-    }
 }

@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import core.settings.SettingsManager;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -38,7 +39,8 @@ public class MineApp extends Application {
         stage.getIcons().add(icon);
 
         // play_music(0);
-
+        stage.setWidth(SettingsManager.gameDifficulty.getStageMinWidth());
+        stage.setHeight(SettingsManager.gameDifficulty.getStageMinHeight());
         stage.show();
     }
 

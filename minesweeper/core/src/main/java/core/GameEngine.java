@@ -4,21 +4,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import core.settings.SettingsManager;
+
 public class GameEngine {
     private GameBoard gameBoard;
     private Stopwatch stopwatch;
     private List<Tile> latestUpdatedTiles;
-    public static GameDifficulty settings = GameDifficulty.EASY;
     public static boolean darkMode = false;
 
     public GameEngine() {
-        gameBoard = new GameBoard(settings);
+        gameBoard = new GameBoard(SettingsManager.gameDifficulty);
         stopwatch = new Stopwatch();
         latestUpdatedTiles = new ArrayList<>();
     }
 
     public void resetGame() {
-        this.gameBoard = new GameBoard(settings);
+        this.gameBoard = new GameBoard(SettingsManager.gameDifficulty);
         stopwatch.restart();
         latestUpdatedTiles = new ArrayList<>();
     }
@@ -170,14 +171,6 @@ public class GameEngine {
 
     public String getDate() {
         return stopwatch.getDate();
-    }
-
-    public static void setGameDifficulty(GameDifficulty gameDifficulty) {
-        GameEngine.settings = gameDifficulty;
-    }
-
-    public static void setDarkMode(boolean darkMode) {
-        GameEngine.darkMode = darkMode;
     }
 
 }

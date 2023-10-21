@@ -2,8 +2,9 @@ package ui;
 
 import java.io.IOException;
 
-import core.GameDifficulty;
-import core.GameEngine;
+import core.settings.GameDifficulty;
+import core.settings.SettingsManager;
+import core.settings.ThemeSettings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +30,7 @@ public class SettingsController {
 
     @FXML
     public void initialize() {
-        switch (GameEngine.settings) {
+        switch (SettingsManager.gameDifficulty) {
             case EASY:
                 setEasy();
                 break;
@@ -38,6 +39,16 @@ public class SettingsController {
                 break;
             case HARD:
                 setHard();
+                break;
+            default:
+        }
+
+        switch (SettingsManager.themeSettings) {
+            case LIGHT:
+                setLightMode();
+                break;
+            case DARK:
+                setDarkMode();
                 break;
             default:
         }
@@ -50,7 +61,7 @@ public class SettingsController {
         easyButton.setDisable(true);
         mediumButton.setDisable(false);
         hardButton.setDisable(false);
-        GameEngine.setGameDifficulty(GameDifficulty.EASY);
+        SettingsManager.gameDifficulty = GameDifficulty.EASY;
     }
 
     @FXML
@@ -60,7 +71,7 @@ public class SettingsController {
         easyButton.setDisable(false);
         mediumButton.setDisable(true);
         hardButton.setDisable(false);
-        GameEngine.setGameDifficulty(GameDifficulty.MEDIUM);
+        SettingsManager.gameDifficulty = GameDifficulty.MEDIUM;
     }
 
     @FXML
@@ -70,40 +81,36 @@ public class SettingsController {
         easyButton.setDisable(false);
         mediumButton.setDisable(false);
         hardButton.setDisable(true);
-        GameEngine.setGameDifficulty(GameDifficulty.HARD);
+        SettingsManager.gameDifficulty = GameDifficulty.HARD;
     }
 
     @FXML
     public void setLightMode() {
+        SettingsManager.themeSettings = ThemeSettings.LIGHT;
         themeLabel.setText("Light mode");
         themeLabel.setStyle("-fx-font-weight: normal");
-        vBox.setStyle("-fx-background-color: white");
+        vBox.setStyle(SettingsManager.themeSettings.getBackgroundStyle());
         lightModeButton.setDisable(true);
         darkModeButton.setDisable(false);
-        GameEngine.setDarkMode(false);
     }
 
     @FXML
     public void setDarkMode() {
+        SettingsManager.themeSettings = ThemeSettings.DARK;
         themeLabel.setText("Dark mode");
         themeLabel.setStyle("-fx-font-weight: bold");
-        vBox.setStyle("-fx-background-color: gray");
+        vBox.setStyle(SettingsManager.themeSettings.getBackgroundStyle());
         lightModeButton.setDisable(false);
         darkModeButton.setDisable(true);
-        GameEngine.setDarkMode(true);
     }
 
     @FXML
     public void switchToGame(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
         Parent root = fxmlLoader.load();
-        GamePageController controller = fxmlLoader.getController();
-        if (GameEngine.darkMode) {
-            controller.setDarkMode();
-        }
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
-        stage.setScene(new Scene(root));
+        stage.setScene(new Scene(root, SettingsManager.getStageMinWidth(), SettingsManager.getStageMinHeight()));
         stage.show();
     }
 

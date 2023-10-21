@@ -6,6 +6,7 @@ import java.util.List;
 
 import core.GameBoard;
 import core.GameEngine;
+import core.settings.SettingsManager;
 import core.Tile;
 
 import javafx.animation.KeyFrame;
@@ -60,6 +61,7 @@ public class GamePageController {
         flagsLeftLabel.setText(String.valueOf(gameEngine.getFlagsLeft()));
         this.timeline = createTimeline();
         this.currentSquare = null;
+        updateCollorTheme();
     }
 
     @FXML
@@ -85,13 +87,11 @@ public class GamePageController {
     public void switchToHighScoreList(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/HighscoreList.fxml"));
         Parent root = fxmlLoader.load();
-        HighscoreListController controller = fxmlLoader.getController();
-        if (GameEngine.darkMode) {
-            controller.setDarkMode();
-        }
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
         stage.setScene(new Scene(root));
+        stage.setWidth(HighscoreListController.STAGE_WIDTH);
+        stage.setHeight(HighscoreListController.STAGE_HEIGHT);
         stage.show();
     }
 
@@ -99,15 +99,11 @@ public class GamePageController {
     public void switchToSettings(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/Settings.fxml"));
         Parent root = fxmlLoader.load();
-        SettingsController controller = fxmlLoader.getController();
-        if (GameEngine.darkMode) {
-            controller.setDarkMode();
-        } else {
-            controller.setLightMode();
-        }
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
         stage.setScene(new Scene(root));
+        stage.setWidth(SettingsController.STAGE_WIDTH);
+        stage.setHeight(SettingsController.STAGE_HEIGHT);
         stage.show();
     }
 
@@ -128,7 +124,7 @@ public class GamePageController {
 
     private void setNewImage(Tile tile) {
         // if dark mode add the /dark in the path
-        String mode = (GameEngine.darkMode) ? "/dark_" : "/";
+        String mode = SettingsManager.themeSettings.getTilePrefix();
         String path = mode + tile.getRevealedImagePath();
         ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, tile.getX(), tile.getY());
         InputStream inputStream = Tile.class.getResourceAsStream(path);
@@ -150,10 +146,10 @@ public class GamePageController {
 
     private void newGameGrid() {
         gameGrid.getChildren().clear();
-        String mode = (GameEngine.darkMode) ? "/dark_" : "/";
+        String mode = SettingsManager.themeSettings.getTilePrefix();
         Image squareImage = new Image(getClass().getResourceAsStream("/images" + mode + "square.jpg"));
-        int height = GameEngine.settings.getGridHeight();
-        int width = GameEngine.settings.getGridWidth();
+        int height = SettingsManager.gameDifficulty.getGridHeight();
+        int width = SettingsManager.gameDifficulty.getGridWidth();
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -167,8 +163,8 @@ public class GamePageController {
         ImageView imageView = new ImageView(image);
 
         // Set dimensions to square
-        imageView.setFitWidth(GameEngine.settings.getSquareSize());
-        imageView.setFitHeight(GameEngine.settings.getSquareSize());
+        imageView.setFitWidth(SettingsManager.getSquareSize());
+        imageView.setFitHeight(SettingsManager.getSquareSize());
 
         final int row = x;
         final int col = y;
@@ -202,8 +198,8 @@ public class GamePageController {
 
     private void setStageMinSize() {
         Stage stage = (Stage) gameGrid.getScene().getWindow();
-        stage.setMinWidth(GameEngine.settings.getSceneMinWidth());
-        stage.setMinHeight(GameEngine.settings.getSceneMinHeight());
+        stage.setMinWidth(SettingsManager.getStageMinWidth());
+        stage.setMinHeight(SettingsManager.getStageMinHeight());
     }
 
     /**
@@ -271,7 +267,7 @@ public class GamePageController {
     }
 
     private void clearGameGrid() {
-        String mode = (GameEngine.darkMode) ? "/dark_" : "/";
+        String mode = SettingsManager.themeSettings.getTilePrefix();
         Image squareImage = new Image(getClass().getResourceAsStream("/images" + mode + "square.jpg"));
         for (Node node : gameGrid.getChildren()) {
             ImageView iv = (ImageView) node;
@@ -294,8 +290,8 @@ public class GamePageController {
         return gameEngine.getGameBoard();
     }
 
-    public void setDarkMode() {
-        vBox.setStyle("-fx-background-color: gray");
+    public void updateCollorTheme() {
+        vBox.setStyle(SettingsManager.themeSettings.getBackgroundStyle());
     }
 
 }
