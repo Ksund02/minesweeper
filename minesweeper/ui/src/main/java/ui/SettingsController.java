@@ -28,6 +28,9 @@ public class SettingsController {
     @FXML
     private Line line;
 
+    public final static int STAGE_WIDTH = 600;
+    public final static int STAGE_HEIGHT = 500;
+
     @FXML
     public void initialize() {
         switch (SettingsManager.gameDifficulty) {

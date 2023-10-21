@@ -21,6 +21,8 @@ import storage.UserScore;
 
 public class HighscoreListController {
     private final int HIGHESCORE_LENGTH = 10;
+    public final static int STAGE_WIDTH = 500;
+    public final static int STAGE_HEIGHT = 600;
 
     @FXML
     private Label name1, name2, name3, name4, name5, name6, name7, name8, name9, name10;
