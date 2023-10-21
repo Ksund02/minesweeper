@@ -107,7 +107,6 @@ public class GamePageController {
         stage.show();
     }
 
-    // TODO: Name this saveToFIle ?
     @FXML
     public void submitHigescore() {
         HighscoreFileManager.writeToHighscore(
