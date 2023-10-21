@@ -94,8 +94,8 @@ public class MineAppTest extends ApplicationTest {
 
         for (Node n : gameGrid.getChildren()) {
             // Coordinate of the node we click on / (Tile)
-            int rowIndex = gameGrid.getRowIndex(n);
-            int columnIndex = gameGrid.getColumnIndex(n);
+            int rowIndex = GridPane.getRowIndex(n);
+            int columnIndex = GridPane.getColumnIndex(n);
             String coordinate = columnIndex + "." + rowIndex;
 
             // Check if the coordinate is not in the bombCoords set
@@ -119,8 +119,8 @@ public class MineAppTest extends ApplicationTest {
         clickOn((Node) gameGrid.getChildren().get(0));
         for (Node n : gameGrid.getChildren()) {
             // Coordinate of the node we click on / (Tile)
-            int rowIndex = gameGrid.getRowIndex(n);
-            int columnIndex = gameGrid.getColumnIndex(n);
+            int rowIndex = GridPane.getRowIndex(n);
+            int columnIndex = GridPane.getColumnIndex(n);
             String coordinate = columnIndex + "." + rowIndex;
 
             // Check if the coordinate is in the bombCoords set
