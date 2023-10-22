@@ -34,6 +34,8 @@ public class SettingsController {
     @FXML
     public void initialize() {
         switch (SettingsManager.gameDifficulty) {
+            case TEST:
+                break;
             case EASY:
                 setEasy();
                 break;
