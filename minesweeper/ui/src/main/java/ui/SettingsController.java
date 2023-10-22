@@ -43,7 +43,6 @@ public class SettingsController {
             case HARD:
                 setHard();
                 break;
-            default:
         }
 
         switch (SettingsManager.themeSettings) {
@@ -53,7 +52,6 @@ public class SettingsController {
             case DARK:
                 setDarkMode();
                 break;
-            default:
         }
     }
 
