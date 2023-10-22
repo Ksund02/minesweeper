@@ -6,6 +6,7 @@ import java.util.List;
 
 import core.GameBoard;
 import core.GameEngine;
+import core.settings.SettingsManager;
 import core.Tile;
 
 import javafx.animation.KeyFrame;
@@ -26,6 +27,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -42,11 +44,11 @@ public class GamePageController {
     private TextField nameField;
     @FXML
     private Button sendToLeaderBoardButton;
+    @FXML
+    private VBox vBox;
 
     private GameEngine gameEngine;
     private Timeline timeline;
-    // private static final int GRID_WIDTH = 10, GRID_HEIGHT = 10, NUM_BOMBS = 10;
-    // private static final int SCENE_MIN_WIDTH = 500, SCENE_MIN_HEIGHT = 500;
     private int[] currentSquare;
 
     @FXML
@@ -56,8 +58,10 @@ public class GamePageController {
         Platform.runLater(() -> setStageMinSize());
 
         spaceBarClickSetup();
+        flagsLeftLabel.setText(String.valueOf(gameEngine.getFlagsLeft()));
         this.timeline = createTimeline();
         this.currentSquare = null;
+        updateCollorTheme();
     }
 
     @FXML
@@ -76,6 +80,7 @@ public class GamePageController {
         leaderBoardNameLabel.setVisible(false);
         feedbackLabel.setVisible(false);
         gameGrid.setDisable(false);
+        gameStatusLabel.setText("");
     }
 
     @FXML
@@ -85,10 +90,23 @@ public class GamePageController {
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
         stage.setScene(new Scene(root));
+        stage.setWidth(HighscoreListController.STAGE_WIDTH);
+        stage.setHeight(HighscoreListController.STAGE_HEIGHT);
         stage.show();
     }
 
-    // TODO: Name this saveToFIle ?
+    @FXML
+    public void switchToSettings(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/Settings.fxml"));
+        Parent root = fxmlLoader.load();
+        Node eventSource = (Node) event.getSource();
+        Stage stage = (Stage) eventSource.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setWidth(SettingsController.STAGE_WIDTH);
+        stage.setHeight(SettingsController.STAGE_HEIGHT);
+        stage.show();
+    }
+
     @FXML
     public void submitHigescore() {
         HighscoreFileManager.writeToHighscore(
@@ -104,7 +122,9 @@ public class GamePageController {
     }
 
     private void setNewImage(Tile tile) {
-        String path = tile.getRevealedImagePath();
+        // if dark mode add the /dark in the path
+        String mode = SettingsManager.themeSettings.getTilePrefix();
+        String path = mode + tile.getRevealedImagePath();
         ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, tile.getX(), tile.getY());
         InputStream inputStream = Tile.class.getResourceAsStream(path);
 
@@ -125,9 +145,10 @@ public class GamePageController {
 
     private void newGameGrid() {
         gameGrid.getChildren().clear();
-        Image squareImage = new Image(getClass().getResourceAsStream("/images/square.jpg"));
-        int height = GameEngine.settings.getGridHeight();
-        int width = GameEngine.settings.getGridWidth();
+        String mode = SettingsManager.themeSettings.getTilePrefix();
+        Image squareImage = new Image(getClass().getResourceAsStream("/images" + mode + "square.jpg"));
+        int height = SettingsManager.gameDifficulty.getGridHeight();
+        int width = SettingsManager.gameDifficulty.getGridWidth();
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -141,8 +162,8 @@ public class GamePageController {
         ImageView imageView = new ImageView(image);
 
         // Set dimensions to square
-        imageView.setFitWidth(GameEngine.settings.getSquareSize());
-        imageView.setFitHeight(GameEngine.settings.getSquareSize());
+        imageView.setFitWidth(SettingsManager.getSquareSize());
+        imageView.setFitHeight(SettingsManager.getSquareSize());
 
         final int row = x;
         final int col = y;
@@ -176,8 +197,8 @@ public class GamePageController {
 
     private void setStageMinSize() {
         Stage stage = (Stage) gameGrid.getScene().getWindow();
-        stage.setMinWidth(GameEngine.settings.getSceneMinWidth());
-        stage.setMinHeight(GameEngine.settings.getSceneMinHeight());
+        stage.setMinWidth(SettingsManager.getStageMinWidth());
+        stage.setMinHeight(SettingsManager.getStageMinHeight());
     }
 
     /**
@@ -245,13 +266,12 @@ public class GamePageController {
     }
 
     private void clearGameGrid() {
-        Image squareImage = new Image(getClass().getResourceAsStream("/images/square.jpg"));
+        String mode = SettingsManager.themeSettings.getTilePrefix();
+        Image squareImage = new Image(getClass().getResourceAsStream("/images" + mode + "square.jpg"));
         for (Node node : gameGrid.getChildren()) {
             ImageView iv = (ImageView) node;
             iv.setImage(squareImage);
         }
-        gameGrid.setDisable(false);
-        gameStatusLabel.setText("");
     }
 
     private Timeline createTimeline() {
@@ -267,6 +287,10 @@ public class GamePageController {
 
     public GameBoard getGameBoard() {
         return gameEngine.getGameBoard();
+    }
+
+    public void updateCollorTheme() {
+        vBox.setStyle(SettingsManager.themeSettings.getBackgroundStyle());
     }
 
 }

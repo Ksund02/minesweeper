@@ -57,13 +57,13 @@ public class Tile {
 
     public String getRevealedImagePath() {
         if (isFlagged)
-            return "/flag.png";
+            return "flag.png";
         else if (!isRevealed)
-            return "/square.jpg";
+            return "square.jpg";
         else if (isBomb)
-            return "/bomb.png";
+            return "bomb.png";
         else
-            return "/number" + getNumBombsAround() + ".jpg";
+            return "number" + getNumBombsAround() + ".jpg";
     }
 
     @Override

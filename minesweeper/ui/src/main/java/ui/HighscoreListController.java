@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.io.IOException;
 import java.util.List;
 
+import core.settings.SettingsManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import storage.HighscoreFileManager;
@@ -19,6 +21,8 @@ import storage.UserScore;
 
 public class HighscoreListController {
     private final int HIGHESCORE_LENGTH = 10;
+    public final static int STAGE_WIDTH = 500;
+    public final static int STAGE_HEIGHT = 600;
 
     @FXML
     private Label name1, name2, name3, name4, name5, name6, name7, name8, name9, name10;
@@ -26,6 +30,8 @@ public class HighscoreListController {
     private Label score1, score2, score3, score4, score5, score6, score7, score8, score9, score10;
     @FXML
     private Label date1, date2, date3, date4, date5, date6, date7, date8, date9, date10;
+    @FXML
+    private AnchorPane anchorPane;
 
     @FXML
     public void initialize() {
@@ -42,6 +48,7 @@ public class HighscoreListController {
             scores.get(i).setText("" + userScores.get(i).getScore());
             dates.get(i).setText(userScores.get(i).getDate());
         }
+        anchorPane.setStyle(SettingsManager.themeSettings.getBackgroundStyle());
     }
 
     @FXML
@@ -51,6 +58,9 @@ public class HighscoreListController {
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
         stage.setScene(new Scene(root));
+        stage.setWidth(SettingsManager.gameDifficulty.getStageMinWidth());
+        stage.setHeight(SettingsManager.gameDifficulty.getStageMinHeight());
         stage.show();
     }
+
 }
