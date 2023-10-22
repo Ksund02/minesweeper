@@ -10,7 +10,7 @@ public class GameEngine {
     private GameBoard gameBoard;
     private Stopwatch stopwatch;
     private List<Tile> latestUpdatedTiles;
-    public static boolean darkMode = false;
+    public static boolean darkMode;
 
     public GameEngine() {
         gameBoard = new GameBoard(SettingsManager.gameDifficulty);
