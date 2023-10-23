@@ -84,7 +84,7 @@ public class HighscoreFileManager {
     /**
      * Removes all data from the highscore file.
      */
-    static void clearHighscore(File file) {
+    public static void clearHighscore(File file) {
         writeToFile(new ArrayList<UserScore>(), file);
     }
 }
