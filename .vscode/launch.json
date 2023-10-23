@@ -3,6 +3,21 @@
     "configurations": [
         {
             "type": "java",
+            "name": "MinesweeperRestController",
+            "request": "launch",
+            "mainClass": "minesweeperstorage/springBoot.MinesweeperRestController",
+            "projectName": "storage"
+        },
+        {
+            "type": "java",
+            "name": "SpringApp",
+            "request": "launch",
+            "mainClass": "minesweeperstorage/springBoot.SpringApp",
+            "projectName": "storage",
+            "cwd": "${workspaceFolder}/minesweeper/storage"
+        },
+        {
+            "type": "java",
             "name": "GameBoard",
             "request": "launch",
             "mainClass": "minesweepercore/core.GameBoard",

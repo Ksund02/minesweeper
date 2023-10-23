@@ -12,9 +12,15 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target> 
+    </properties>
+    
+
     <dependencies>
 
-        <!-- This module only needs the jackson library. -->
+        <!-- This module needs the jackson library. -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -33,6 +39,61 @@
             <version>2.15.2</version> 
         </dependency>
 
-    </dependencies>
+        
+        
 
+        <!-- The starter pack for building web applications uses Tomcat as default, 
+        we are excluding the standard tomcat-starter, and instead we are 
+        using the jetty servlet container.-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                  <artifactId>spring-boot-starter-tomcat</artifactId>
+                  <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+            <version>3.1.5</version>
+        </dependency>
+
+        <!-- Inserting jetty as servlet container instead of tomcat.-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jetty</artifactId>
+            <version>3.1.5</version>
+        </dependency>
+
+        <!-- Java is complaining about jakarta if we don't have it is a dependency. 
+        Jakarta contains some essential files for the springboot setup. -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+        
+    </dependencies>
+        
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.1.5</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>minesweeperstorage/springBoot.SpringApp</mainClass>
+                </configuration>
+            </plugin>
+        
+        </plugins>
+    
+    </build>
+      
 </project>
