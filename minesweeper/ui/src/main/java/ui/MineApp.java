@@ -39,8 +39,8 @@ public class MineApp extends Application {
         stage.getIcons().add(icon);
 
         // play_music(0);
-        stage.setWidth(SettingsManager.gameDifficulty.getStageMinWidth());
-        stage.setHeight(SettingsManager.gameDifficulty.getStageMinHeight());
+        stage.setWidth(SettingsManager.getGameDifficulty().getStageMinWidth());
+        stage.setHeight(SettingsManager.getGameDifficulty().getStageMinHeight());
         stage.show();
     }
 

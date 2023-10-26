@@ -16,6 +16,7 @@ public class GameBoard {
     private boolean isGameLost;
     private HashSet<String> bombCoords;
     protected int tilesLeft, flagsLeft;
+    private static Random random = new Random();
 
     public GameBoard(GameDifficulty settings) {
         this.height = settings.getGridHeight();
@@ -47,12 +48,11 @@ public class GameBoard {
     }
 
     private void placeBombs() {
-        Random rand = new Random();
         int bombsPlaced = 0;
 
         while (bombsPlaced < numBombs) {
-            int x = rand.nextInt(width);
-            int y = rand.nextInt(height);
+            int x = random.nextInt(width);
+            int y = random.nextInt(height);
             Tile tile = getTile(x, y);
 
             boolean adjacentToStartingX = x >= (startingCoords[0] - 1) && x <= (startingCoords[0] + 1);
@@ -260,7 +260,7 @@ public class GameBoard {
     }
 
     public HashSet<String> getBombCoords() {
-        return bombCoords;
+        return new HashSet<>(bombCoords);
     }
 
     public int getWidth() {

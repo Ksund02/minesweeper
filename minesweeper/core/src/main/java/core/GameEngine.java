@@ -2,6 +2,7 @@ package core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import core.settings.SettingsManager;
@@ -10,16 +11,15 @@ public class GameEngine {
     private GameBoard gameBoard;
     private Stopwatch stopwatch;
     private List<Tile> latestUpdatedTiles;
-    public static boolean darkMode;
 
     public GameEngine() {
-        gameBoard = new GameBoard(SettingsManager.gameDifficulty);
+        gameBoard = new GameBoard(SettingsManager.getGameDifficulty());
         stopwatch = new Stopwatch();
         latestUpdatedTiles = new ArrayList<>();
     }
 
     public void resetGame() {
-        this.gameBoard = new GameBoard(SettingsManager.gameDifficulty);
+        this.gameBoard = new GameBoard(SettingsManager.getGameDifficulty());
         stopwatch.restart();
         latestUpdatedTiles = new ArrayList<>();
     }
@@ -134,7 +134,7 @@ public class GameEngine {
     }
 
     public List<Tile> getLatestUpdatedTiles() {
-        return latestUpdatedTiles;
+        return new ArrayList<>(latestUpdatedTiles);
     }
 
     public int getFlagsLeft() {
@@ -147,10 +147,6 @@ public class GameEngine {
 
     public boolean isGameLost() {
         return gameBoard.isGameLost();
-    }
-
-    public GameBoard getGameBoard() {
-        return gameBoard;
     }
 
     public Tile getTile(int x, int y) {
@@ -171,6 +167,11 @@ public class GameEngine {
 
     public String getDate() {
         return stopwatch.getDate();
+    }
+
+    // For testing
+    public HashSet<String> getBombCoords() {
+        return gameBoard.getBombCoords();
     }
 
 }

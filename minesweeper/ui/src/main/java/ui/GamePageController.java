@@ -2,9 +2,9 @@ package ui;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
 import java.util.List;
 
-import core.GameBoard;
 import core.GameEngine;
 import core.settings.SettingsManager;
 import core.Tile;
@@ -123,7 +123,7 @@ public class GamePageController {
 
     private void setNewImage(Tile tile) {
         // if dark mode add the /dark in the path
-        String mode = SettingsManager.themeSettings.getTilePrefix();
+        String mode = SettingsManager.getThemeSettings().getTilePrefix();
         String path = mode + tile.getRevealedImagePath();
         ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, tile.getX(), tile.getY());
         InputStream inputStream = Tile.class.getResourceAsStream(path);
@@ -145,10 +145,10 @@ public class GamePageController {
 
     private void newGameGrid() {
         gameGrid.getChildren().clear();
-        String mode = SettingsManager.themeSettings.getTilePrefix();
+        String mode = SettingsManager.getThemeSettings().getTilePrefix();
         Image squareImage = new Image(getClass().getResourceAsStream("/images" + mode + "square.jpg"));
-        int height = SettingsManager.gameDifficulty.getGridHeight();
-        int width = SettingsManager.gameDifficulty.getGridWidth();
+        int height = SettingsManager.getGameDifficulty().getGridHeight();
+        int width = SettingsManager.getGameDifficulty().getGridWidth();
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -266,7 +266,7 @@ public class GamePageController {
     }
 
     private void clearGameGrid() {
-        String mode = SettingsManager.themeSettings.getTilePrefix();
+        String mode = SettingsManager.getThemeSettings().getTilePrefix();
         Image squareImage = new Image(getClass().getResourceAsStream("/images" + mode + "square.jpg"));
         for (Node node : gameGrid.getChildren()) {
             ImageView iv = (ImageView) node;
@@ -285,12 +285,12 @@ public class GamePageController {
         timeLabel.setText("" + gameEngine.getTime());
     }
 
-    public GameBoard getGameBoard() {
-        return gameEngine.getGameBoard();
-    }
-
     public void updateCollorTheme() {
-        vBox.setStyle(SettingsManager.themeSettings.getBackgroundStyle());
+        vBox.setStyle(SettingsManager.getThemeSettings().getBackgroundStyle());
     }
 
+    // For testing
+    public HashSet<String> getBombCoords() {
+        return gameEngine.getBombCoords();
+    }
 }
