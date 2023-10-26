@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import core.settings.SettingsManager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -37,9 +38,12 @@ public class HighScoreListTest extends ApplicationTest {
 
     @Test
     public void right_order() {
-        List<UserScore> userScores = null;
-        userScores = HighscoreFileManager.readFromHighscore(HighscoreFileManager.getFile());
-        userScores.sort((a, b) -> a.getScore() - b.getScore());
+        List<UserScore> userScores = HighscoreFileManager.readFromHighscore(HighscoreFileManager.getFile());
+        userScores = userScores.stream()
+                .filter(score -> score.getDifficulty().equals(SettingsManager.getGameDifficultyAsString()))
+                .sorted((a, b) -> a.getScore() - b.getScore())
+                .toList();
+
         for (int i = 1; i < Math.min(11, userScores.size()); i++) {
             Assertions.assertEquals("" + userScores.get(i - 1).getScore(),
                     robot.lookup("#score" + i).queryLabeled().getText());
