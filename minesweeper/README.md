@@ -98,3 +98,11 @@ Red: High Priority 🔴
 
 - What it means: Issues marked red are critical and must be resolved immediately as they either block further development or introduce serious bugs.
 - Action: Prioritize these issues, they must be resolved before attending to tasks of lower priority.
+
+## Code Quality Tools
+
+- _[SpotBugs](https://spotbugs.github.io/)_: is automatically executed during the build process when running "mvn clean install". It serves to analyze the compiled Java bytecode to detect a variety of potential issues in the code.
+- _[Checkstyle](https://checkstyle.sourceforge.io/)_: is helping write Java code that adheres to a coding standard. It automates the process of formating javacode, ensuring that every team member formats the code using the same settings.
+  - [What is Checkstyle?](./FAQ.md#what-is-checkstyle)
+  - [How do i clean my code with checkstyle?](./FAQ.md#how-do-i-clean-my-code-with-checkstyle)
+  - [How do i change checkstyle settings?](./FAQ.md#how-do-i-change-checkstyle-settings)
