@@ -1,37 +1,51 @@
 [ {
   "name" : "Christian",
   "score" : 19,
-  "date" : "2023-10-19"
+  "date" : "2023-10-19",
+  "difficulty" : "EASY"
 }, {
   "name" : "Christian",
   "score" : 26,
-  "date" : "2023-10-22"
+  "date" : "2023-10-22",
+  "difficulty" : "EASY"
 }, {
   "name" : "Christian",
   "score" : 41,
-  "date" : "2023-10-08"
+  "date" : "2023-10-08",
+  "difficulty" : "EASY"
 }, {
   "name" : "Christian",
   "score" : 61,
-  "date" : "2023-10-19"
+  "date" : "2023-10-19",
+  "difficulty" : "EASY"
+}, {
+  "name" : "jada!",
+  "score" : 72,
+  "date" : "2023-10-26",
+  "difficulty" : "MEDIUM"
 }, {
   "name" : "Bob",
   "score" : 100,
-  "date" : "2023-01-01"
+  "date" : "2023-01-01",
+  "difficulty" : "EASY"
 }, {
   "name" : "Dave",
   "score" : 150,
-  "date" : "2023-01-01"
+  "date" : "2023-01-01",
+  "difficulty" : "EASY"
 }, {
   "name" : "Alice",
   "score" : 200,
-  "date" : "2023-01-01"
+  "date" : "2023-01-01",
+  "difficulty" : "EASY"
 }, {
   "name" : "Eve",
   "score" : 250,
-  "date" : "2023-01-01"
+  "date" : "2023-01-01",
+  "difficulty" : "EASY"
 }, {
   "name" : "Charlie",
   "score" : 300,
-  "date" : "2023-01-01"
+  "date" : "2023-01-01",
+  "difficulty" : "EASY"
 } ]
