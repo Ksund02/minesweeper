@@ -31,7 +31,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import storage.HighscoreFileManager;
 import storage.UserScore;
 
 public class GamePageController {
@@ -47,6 +46,7 @@ public class GamePageController {
     @FXML
     private VBox vBox;
 
+    private RestRequest restRequest = new RestRequest("http://localhost:8080");
     private GameEngine gameEngine;
     private Timeline timeline;
     private int[] currentSquare;
@@ -109,9 +109,7 @@ public class GamePageController {
 
     @FXML
     public void submitHigescore() {
-        HighscoreFileManager.writeToHighscore(
-                new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate()),
-                HighscoreFileManager.getFile());
+        restRequest.writeToHighscore(new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate()));
 
         feedbackLabel.setVisible(true);
         sendToLeaderBoardButton.setDisable(true);
