@@ -10,12 +10,16 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Responsible for reading and writing to the highscore file.
+ */
 public class HighscoreFileManager {
 
     private static final File highscoreFile = new File("./../appdata/highscore.json");
 
     /**
      * Private constructor to prevent instantiation, and to make jacoco not complain.
+     * (Jacoco complains if there is no test coverage for a constructor)
      */
     private HighscoreFileManager() {}
 
