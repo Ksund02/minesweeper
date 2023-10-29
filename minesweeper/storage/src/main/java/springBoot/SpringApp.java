@@ -7,7 +7,7 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 
 @SpringBootApplication
 public class SpringApp implements WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
-    
+
     private static int portNumber;
 
     public static void isTest(boolean test) {
@@ -25,9 +25,9 @@ public class SpringApp implements WebServerFactoryCustomizer<ConfigurableServlet
 
     public static Object testRun() {
         isTest(true);
-        return new SpringApp();
+        return SpringApplication.run(SpringApp.class);
     }
-    
+
     @Override
     public void customize(ConfigurableServletWebServerFactory factory) {
         factory.setPort(portNumber);
