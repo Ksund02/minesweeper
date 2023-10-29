@@ -5,6 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * This class is used to represent a user score, which is written to the
+ * highscore file.
+ * It contains the name of the player, the score and the date.
+ */
 public class UserScore {
 
     @JsonProperty("name")
@@ -26,7 +31,9 @@ public class UserScore {
 
     /**
      * Converts the UserScore object to a JSON string
-     * JSONS strings are of the form: {"name":"Roger","score":100,"date":"2021-04-20"}
+     * JSONS strings are of the form:
+     * {"name":"Roger","score":100,"date":"2021-04-20"}
+     * 
      * @return JSON string representation of the UserScore object
      */
     public String toJson() {
