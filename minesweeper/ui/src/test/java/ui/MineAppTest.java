@@ -28,7 +28,7 @@ public class MineAppTest extends ApplicationTest {
      * 
      */
 
-    private GamePageController controller;
+    private GamePageController gamePageController;
     private Parent root;
     private GridPane gameGrid;
     private FxRobot robot;
@@ -37,7 +37,7 @@ public class MineAppTest extends ApplicationTest {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
         root = fxmlLoader.load();
-        controller = fxmlLoader.getController();
+        gamePageController = fxmlLoader.getController();
         stage.setScene(new Scene(root));
         stage.show();
         robot = new FxRobot();
@@ -90,7 +90,8 @@ public class MineAppTest extends ApplicationTest {
         assertEquals(false, !robot.lookup("#nameField").query().isDisabled());
         assertEquals(false, !robot.lookup("#sendToLeaderBoardButton").query().isDisabled());
 
-        HashSet<String> bombCoords = controller.getGameBoard().getBombCoords();
+        clickOn(gameGrid.getChildren().get(0));
+        HashSet<String> bombCoords = gamePageController.getBombCoords();
 
         for (Node n : gameGrid.getChildren()) {
             // Coordinate of the node we click on / (Tile)
@@ -115,8 +116,8 @@ public class MineAppTest extends ApplicationTest {
 
     @Test
     public void testLose() {
-        HashSet<String> bombCoords = controller.getGameBoard().getBombCoords();
         clickOn((Node) gameGrid.getChildren().get(0));
+        HashSet<String> bombCoords = gamePageController.getBombCoords();
         for (Node n : gameGrid.getChildren()) {
             // Coordinate of the node we click on / (Tile)
             int rowIndex = GridPane.getRowIndex(n);

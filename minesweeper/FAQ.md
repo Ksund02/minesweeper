@@ -4,7 +4,7 @@
 
 Checkstyle is a development tool that helps Java developers adhere to certain coding standards. When integrated with an IDE like VSCode, it can automatically highlight and fix code style violations.
 
-### How do i clean my code with checkstyle
+### How do i clean my code with checkstyle?
 
 1. Open the Java file you want to clean.
 2. In windows press 'alt + shif + f' or open command palette (Ctrl+Shift+P) and search for "format document". This will format your code according to Checkstyle rules.

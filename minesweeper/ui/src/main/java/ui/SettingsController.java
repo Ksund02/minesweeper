@@ -33,7 +33,7 @@ public class SettingsController {
 
     @FXML
     public void initialize() {
-        switch (SettingsManager.gameDifficulty) {
+        switch (SettingsManager.getGameDifficulty()) {
             case TEST:
                 break;
             case EASY:
@@ -47,7 +47,7 @@ public class SettingsController {
                 break;
         }
 
-        switch (SettingsManager.themeSettings) {
+        switch (SettingsManager.getThemeSettings()) {
             case LIGHT:
                 setLightMode();
                 break;
@@ -64,7 +64,7 @@ public class SettingsController {
         easyButton.setDisable(true);
         mediumButton.setDisable(false);
         hardButton.setDisable(false);
-        SettingsManager.gameDifficulty = GameDifficulty.EASY;
+        SettingsManager.setGameDifficulty(GameDifficulty.EASY);
     }
 
     @FXML
@@ -74,7 +74,7 @@ public class SettingsController {
         easyButton.setDisable(false);
         mediumButton.setDisable(true);
         hardButton.setDisable(false);
-        SettingsManager.gameDifficulty = GameDifficulty.MEDIUM;
+        SettingsManager.setGameDifficulty(GameDifficulty.MEDIUM);
     }
 
     @FXML
@@ -84,25 +84,25 @@ public class SettingsController {
         easyButton.setDisable(false);
         mediumButton.setDisable(false);
         hardButton.setDisable(true);
-        SettingsManager.gameDifficulty = GameDifficulty.HARD;
+        SettingsManager.setGameDifficulty(GameDifficulty.HARD);
     }
 
     @FXML
     public void setLightMode() {
-        SettingsManager.themeSettings = ThemeSettings.LIGHT;
+        SettingsManager.setThemeSettings(ThemeSettings.LIGHT);
         themeLabel.setText("Light mode");
         themeLabel.setStyle("-fx-font-weight: normal");
-        vBox.setStyle(SettingsManager.themeSettings.getBackgroundStyle());
+        vBox.setStyle(SettingsManager.getThemeSettings().getBackgroundStyle());
         lightModeButton.setDisable(true);
         darkModeButton.setDisable(false);
     }
 
     @FXML
     public void setDarkMode() {
-        SettingsManager.themeSettings = ThemeSettings.DARK;
+        SettingsManager.setThemeSettings(ThemeSettings.DARK);
         themeLabel.setText("Dark mode");
         themeLabel.setStyle("-fx-font-weight: bold");
-        vBox.setStyle(SettingsManager.themeSettings.getBackgroundStyle());
+        vBox.setStyle(SettingsManager.getThemeSettings().getBackgroundStyle());
         lightModeButton.setDisable(false);
         darkModeButton.setDisable(true);
     }
