@@ -6,7 +6,13 @@ module minesweeperui {
 
     requires minesweepercore;
     requires minesweeperstorage;
-    opens ui to javafx.graphics, javafx.fxml;
     requires java.net.http;
     requires javafx.base;
+    
+    // Jackson 
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.annotation;
+    
+    opens ui to javafx.graphics, javafx.fxml, com.fasterxml.jackson.databind;
 }
