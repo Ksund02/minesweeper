@@ -2,13 +2,16 @@
 ![Minesweeper Game](../pictures/minesweeper_game.png)
 
 ## Table of contents 📚
-- [Game Description](#game-description-🕹️)
-- [Features](#features-🎈)
-- [Optional Features](#optional-features-🔨)
-- [Intended Use](#intended-use-🎮)
-- [How to check test coverage](#check-test-coverage🧪)
-- [Environment setup](#environment-setup🕶️)
-- [Priority Labels](#issue-priority-labels-🚩)
+- [Minesweeper code base](#minesweeper-code-base)
+  - [Table of contents 📚](#table-of-contents-)
+  - [Game Description 🕹️](#game-description-️)
+  - [Features 🎈](#features-)
+  - [Optional Features 🔨](#optional-features-)
+  - [Intended Use 🎮](#intended-use-)
+  - [Check test coverage🧪](#check-test-coverage)
+  - [Launch springboot](#launch-springboot)
+  - [Environment setup🕶️](#environment-setup️)
+  - [Issue Priority Labels 🚩](#issue-priority-labels-)
 
 
 ## Game Description 🕹️
@@ -56,6 +59,23 @@ mvn test
 3. **Check the results**
 - A jacoco report is made automatically, once a test is run.
 - To check the results, navigate to minesweeper\core\site\jacoco, minesweeper\storage\site\jacoco or minesweeper\ui\site\jacoco and open index.html
+
+## Launch springboot
+1. **Navigate to storage**
+```
+cd storage
+```
+2. **Run the restAPI**
+```
+mvn javafx:run
+```
+3. **Kill the server if already running**
+```
+netstat -ano | findstr :6969
+taskkill /PID [PID-number] /F
+```
+4. **Go to web browser**
+http://localhost:6969/highscores
 
 ## Environment setup🕶️
 - Java: JDK 17
