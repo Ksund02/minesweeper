@@ -55,11 +55,4 @@ public class UserScore {
     public String getDate() {
         return date;
     }
-
-
-    public static void main(String[] args) {
-        UserScore userScore = new UserScore("Roger", 100, "2021-04-20");
-        System.out.println(userScore.toString());
-        System.out.println(userScore.toJson());
-    }
 }
