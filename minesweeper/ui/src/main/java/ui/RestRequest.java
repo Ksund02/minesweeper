@@ -85,7 +85,7 @@ public class RestRequest {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
                 // Status code 200 means that the HTTP operation was received, understood and
-                // accepted.
+                // accepted. If the status code is not 200, something unexpected happened.
                 System.out.println("Something went wrong when writing to highscore");
             }
         } catch (IOException | InterruptedException e) {
