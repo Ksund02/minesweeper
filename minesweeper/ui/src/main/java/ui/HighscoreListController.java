@@ -61,8 +61,8 @@ public class HighscoreListController {
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
         stage.setScene(new Scene(root));
-        stage.setWidth(SettingsManager.getGameDifficulty().getStageMinWidth());
-        stage.setHeight(SettingsManager.getGameDifficulty().getStageMinHeight());
+        stage.setWidth(SettingsManager.getGameDifficulty().getStageMinWidth()+1);
+        stage.setHeight(SettingsManager.getGameDifficulty().getStageMinHeight()+1);
         stage.show();
     }
 

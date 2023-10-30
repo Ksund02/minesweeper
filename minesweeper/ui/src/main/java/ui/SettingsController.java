@@ -117,7 +117,7 @@ public class SettingsController {
         Parent root = fxmlLoader.load();
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
-        stage.setScene(new Scene(root, SettingsManager.getStageMinWidth(), SettingsManager.getStageMinHeight()));
+        stage.setScene(new Scene(root, SettingsManager.getStageMinWidth()+1, SettingsManager.getStageMinHeight()+1));
         stage.show();
     }
 
