@@ -118,6 +118,13 @@ public class MineAppTest extends ApplicationTest {
         assertEquals(true, robot.lookup("#sendToLeaderBoardButton").query().isVisible());
         assertEquals(true, !robot.lookup("#nameField").query().isDisabled());
         assertEquals(true, !robot.lookup("#sendToLeaderBoardButton").query().isDisabled());
+
+        robot.lookup("#nameField").queryTextInputControl().setText("testerAAAAAAA");
+        click("OK");
+        assertEquals(true, HighscoreFileManager.readFromHighscore(new File("./../appdata/highscore.json")).stream()
+                .anyMatch(score -> score.getName().equals("testerAAAAAAA")));
+        HighscoreFileManager.deleteFromHighscore("testerAAAAAAA", controller.getTime(), controller.getDate());
+
     }
 
     @Test

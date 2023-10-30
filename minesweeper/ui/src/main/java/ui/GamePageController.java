@@ -136,7 +136,7 @@ public class GamePageController {
         }
     }
 
-    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+    public Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
         return gridPane.getChildren().stream()
                 .filter(node -> GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row)
                 .findFirst()
@@ -285,12 +285,22 @@ public class GamePageController {
         timeLabel.setText("" + gameEngine.getTime());
     }
 
-    public GameBoard getGameBoard() {
-        return gameEngine.getGameBoard();
-    }
-
     public void updateCollorTheme() {
         vBox.setStyle(SettingsManager.themeSettings.getBackgroundStyle());
     }
 
+    // THIS GETTER IS FOR THE UI-TEST:
+    public GameBoard getGameBoard() {
+        return gameEngine.getGameBoard();
+    }
+
+    // This is for ui-test
+    public int getTime() {
+        return gameEngine.getStopwatch().getTime();
+    }
+
+    // This is for ui-test
+    public String getDate() {
+        return gameEngine.getStopwatch().getDate();
+    }
 }

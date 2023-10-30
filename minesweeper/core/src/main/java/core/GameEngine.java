@@ -173,4 +173,8 @@ public class GameEngine {
         return stopwatch.getDate();
     }
 
+    // This is only for testing purposes
+    public Stopwatch getStopwatch() {
+        return this.stopwatch;
+    }
 }
