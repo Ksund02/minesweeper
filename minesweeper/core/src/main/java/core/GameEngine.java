@@ -174,4 +174,17 @@ public class GameEngine {
         return gameBoard.getBombCoords();
     }
 
+    public Stopwatch getStopwatch() {
+        return stopwatch;
+    }
+
+    protected GameBoard getGameBoard() {
+        return gameBoard;
+    }
+
+    public List<Tile> getNeighborTiles(int x, int y) {
+        return gameBoard.getNeighborTiles(x, y);
+    }
+
 }
+

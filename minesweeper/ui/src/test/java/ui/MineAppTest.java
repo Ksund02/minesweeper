@@ -3,22 +3,29 @@ package ui;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.PrintStream;
 import java.util.HashSet;
+import java.util.List;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.control.LabeledMatchers;
 
+import core.Tile;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import storage.HighscoreFileManager;
 
 public class MineAppTest extends ApplicationTest {
 
@@ -69,7 +76,7 @@ public class MineAppTest extends ApplicationTest {
         System.setOut(new PrintStream(buffer));
 
         click("Reset game");
-
+        assertFalse(gamePageController.getStarted());
         // We must trim the text, since the terminal will have a newline at the end.
         // String terminal_text = buffer.toString().trim();
 
@@ -112,6 +119,13 @@ public class MineAppTest extends ApplicationTest {
         assertEquals(true, robot.lookup("#sendToLeaderBoardButton").query().isVisible());
         assertEquals(true, !robot.lookup("#nameField").query().isDisabled());
         assertEquals(true, !robot.lookup("#sendToLeaderBoardButton").query().isDisabled());
+
+        robot.lookup("#nameField").queryTextInputControl().setText("testerAAAAAAA");
+        click("OK");
+        assertEquals(true, HighscoreFileManager.readFromHighscore(new File("./../appdata/highscore.json")).stream()
+                .anyMatch(score -> score.getName().equals("testerAAAAAAA")));
+        HighscoreFileManager.deleteFromHighscore("testerAAAAAAA", gamePageController.getTime(), gamePageController.getDate());
+
     }
 
     @Test
@@ -131,5 +145,53 @@ public class MineAppTest extends ApplicationTest {
             }
         }
         assertEquals("Game over!", robot.lookup("#gameStatusLabel").queryLabeled().getText());
+    }
+
+    @Test
+    @DisplayName("Ensure that the choording works")
+    public void testChoording() {
+        clickOn((Node) gameGrid.getChildren().get(0));
+        push(KeyCode.SPACE);
+
+        Tile tileToClick = null;
+        for (Node n : gameGrid.getChildren()) {
+            int rowIndex = GridPane.getRowIndex(n);
+            int columnIndex = GridPane.getColumnIndex(n);
+
+            Tile tile = gamePageController.getTile(columnIndex, rowIndex);
+            if (!tile.isBomb() && tile.hasAdjacentBomb() && tile.isRevealed()) {
+                tileToClick = tile;
+                break;
+            }
+        }
+
+        List<Tile> neighborTiles = gamePageController.getNeighborTiles(tileToClick.getX(), tileToClick.getY());
+        for (Tile tile : neighborTiles) {
+            if (tile.isBomb()) {
+                rightClickOn(gamePageController.getNodeFromGridPane(gameGrid, tile.getX(), tile.getY()));
+            }
+        }
+        Node tileToClickNode = gamePageController.getNodeFromGridPane(gameGrid, tileToClick.getX(), tileToClick.getY());
+        clickOn(tileToClickNode);
+        push(KeyCode.SPACE);
+
+        for (Tile tile : neighborTiles) {
+            assertEquals(true, tile.isRevealed() || tile.isFlagged(),
+                    "Tiles should be flagged or revealed after choording");
+        }
+    }
+
+    @Test
+    public void testSwitchToSettings() {
+        assertEquals(false, robot.lookup("#easyButton").tryQuery().isPresent());
+        click("Settings");
+        assertEquals(true, robot.lookup("#easyButton").tryQuery().isPresent());
+    }
+
+    @Test
+    public void testSwitchToLeaderboard() {
+        assertEquals(false, robot.lookup("#score1").tryQuery().isPresent());
+        click("Leaderboard");
+        assertEquals(true, robot.lookup("#score1").tryQuery().isPresent());
     }
 }
