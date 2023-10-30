@@ -33,4 +33,8 @@ public class SettingsManager {
         return gameDifficulty.getSquareSize();
     }
 
+    public static String getGameDifficultyAsString() {
+        return gameDifficulty.toString();
+    }
+
 }

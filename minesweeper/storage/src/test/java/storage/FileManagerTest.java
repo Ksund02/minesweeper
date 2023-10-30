@@ -1,5 +1,7 @@
 package storage;
 
+import core.settings.SettingsManager;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -31,9 +33,9 @@ public class FileManagerTest {
 
     @Test
     public void clearHighscore() throws Exception {
-        UserScore bert = new UserScore("Bert", 100, "2020-10-04");
-        UserScore bernard = new UserScore("Bernard", 30, "2021-09-08");
-        UserScore alfred = new UserScore("Alfred", 50, "2021-09-15");
+        UserScore bert = new UserScore("Bert", 100, "2020-10-04", SettingsManager.getGameDifficultyAsString());
+        UserScore bernard = new UserScore("Bernard", 30, "2021-09-08", SettingsManager.getGameDifficultyAsString());
+        UserScore alfred = new UserScore("Alfred", 50, "2021-09-15", SettingsManager.getGameDifficultyAsString());
         HighscoreFileManager.writeToHighscore(bert, testFile);
         HighscoreFileManager.writeToHighscore(bernard, testFile);
         HighscoreFileManager.writeToHighscore(alfred, testFile);
@@ -48,7 +50,7 @@ public class FileManagerTest {
 
     @Test
     public void writeToEmptyHighscore() throws Exception {
-        UserScore pedor = new UserScore("Pedor", 50, "2023-10-04");
+        UserScore pedor = new UserScore("Pedor", 50, "2023-10-04", SettingsManager.getGameDifficultyAsString());
         HighscoreFileManager.writeToHighscore(pedor, testFile);
         ObjectMapper jsonReader = new ObjectMapper();
         List<UserScore> userScores = jsonReader.readValue(testFile, new TypeReference<List<UserScore>>() {
@@ -62,10 +64,10 @@ public class FileManagerTest {
 
     @Test
     public void testHighscoreSorting() throws Exception {
-        UserScore alfa = new UserScore("Alfa", 100, "1908-01-04");
-        UserScore beta = new UserScore("Beta", 30, "1945-05-08");
-        UserScore gamma = new UserScore("Gamma", 50, "1940-04-09");
-        UserScore zeta = new UserScore("Zeta", 480, "2021-09-15");
+        UserScore alfa = new UserScore("Alfa", 100, "1908-01-04", SettingsManager.getGameDifficultyAsString());
+        UserScore beta = new UserScore("Beta", 30, "1945-05-08", SettingsManager.getGameDifficultyAsString());
+        UserScore gamma = new UserScore("Gamma", 50, "1940-04-09", SettingsManager.getGameDifficultyAsString());
+        UserScore zeta = new UserScore("Zeta", 480, "2021-09-15", SettingsManager.getGameDifficultyAsString());
         HighscoreFileManager.writeToHighscore(alfa, testFile);
         HighscoreFileManager.writeToHighscore(beta, testFile);
         HighscoreFileManager.writeToHighscore(gamma, testFile);
@@ -102,9 +104,9 @@ public class FileManagerTest {
      */
     @Test
     public void readFromHighscore() throws Exception {
-        UserScore bert = new UserScore("Bert", 100, "2020-10-04");
-        UserScore bernard = new UserScore("Bernard", 200, "2021-09-08");
-        UserScore alfred = new UserScore("Alfred", 300, "2021-09-15");
+        UserScore bert = new UserScore("Bert", 100, "2020-10-04", SettingsManager.getGameDifficultyAsString());
+        UserScore bernard = new UserScore("Bernard", 200, "2021-09-08", SettingsManager.getGameDifficultyAsString());
+        UserScore alfred = new UserScore("Alfred", 300, "2021-09-15", SettingsManager.getGameDifficultyAsString());
         HighscoreFileManager.writeToHighscore(bert, testFile);
         HighscoreFileManager.writeToHighscore(bernard, testFile);
         HighscoreFileManager.writeToHighscore(alfred, testFile);

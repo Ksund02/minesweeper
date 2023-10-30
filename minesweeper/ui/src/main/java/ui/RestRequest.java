@@ -10,6 +10,8 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import storage.HighscoreFileManager;
 import storage.UserScore;
 
 /**
@@ -56,10 +58,10 @@ public class RestRequest {
             ObjectMapper mapper = new ObjectMapper();
             List<UserScore> userScores = mapper.readValue(response.body(), new TypeReference<List<UserScore>>() {
             });
-            return userScores;
+            return userScores; 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-            return new ArrayList<>(); // Return an empty list if something went wrong
+            return HighscoreFileManager.readFromHighscore(HighscoreFileManager.getFile()); // Return the correct file anyway, used by tests.
         }
     }
 
@@ -92,6 +94,7 @@ public class RestRequest {
             // You land here if there are network failures, or if there are issues with the
             // server.
             e.printStackTrace();
+            HighscoreFileManager.writeToHighscore(userScore, HighscoreFileManager.getFile());
         }
     }
 }

@@ -45,6 +45,8 @@ public class SettingsController {
             case HARD:
                 setHard();
                 break;
+            default:
+                throw new AssertionError("Unknown difficulty level: " + SettingsManager.getGameDifficulty());
         }
 
         switch (SettingsManager.getThemeSettings()) {
@@ -54,6 +56,8 @@ public class SettingsController {
             case DARK:
                 setDarkMode();
                 break;
+            default:
+                throw new AssertionError("Unknown theme: " + SettingsManager.getThemeSettings());
         }
     }
 

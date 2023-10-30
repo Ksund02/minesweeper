@@ -109,7 +109,7 @@ public class GamePageController {
 
     @FXML
     public void submitHigescore() {
-        restRequest.writeToHighscore(new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate()));
+        restRequest.writeToHighscore(new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate(), SettingsManager.getGameDifficultyAsString()));
 
         feedbackLabel.setVisible(true);
         sendToLeaderBoardButton.setDisable(true);

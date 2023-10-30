@@ -21,12 +21,16 @@ public class UserScore {
     @JsonProperty("date")
     private String date;
 
+    @JsonProperty("difficulty")
+    private String difficulty;
+
     @JsonCreator
     public UserScore(@JsonProperty("name") String name, @JsonProperty("score") int score,
-            @JsonProperty("date") String date) {
+            @JsonProperty("date") String date, @JsonProperty("difficulty") String difficulty) {
         this.name = name;
         this.score = score;
         this.date = date;
+        this.difficulty = difficulty;
     }
 
     /**
@@ -48,7 +52,7 @@ public class UserScore {
 
     @Override
     public String toString() {
-        return "UserScore [name=" + name + ", score=" + score + ", date=" + date + "]";
+        return "UserScore [name=" + name + ", score=" + score + ", date=" + date + ", difficulty=" + difficulty + "]";
     }
 
     public String getName() {
@@ -61,5 +65,9 @@ public class UserScore {
 
     public String getDate() {
         return date;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
     }
 }
