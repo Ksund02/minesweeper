@@ -110,7 +110,7 @@ public class GamePageController {
     @FXML
     public void submitHigescore() {
         HighscoreFileManager.writeToHighscore(
-                new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate()),
+                new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate(), SettingsManager.getGameDifficultyAsString()),
                 HighscoreFileManager.getFile());
 
         feedbackLabel.setVisible(true);

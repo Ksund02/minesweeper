@@ -3,6 +3,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "SettingsController",
+            "request": "launch",
+            "mainClass": "minesweeperui/ui.SettingsController",
+            "projectName": "ui"
+        },
+        {
+            "type": "java",
+            "name": "SettingsManager",
+            "request": "launch",
+            "mainClass": "minesweepercore/core.settings.SettingsManager",
+            "projectName": "core"
+        },
+        {
+            "type": "java",
             "name": "GameBoard",
             "request": "launch",
             "mainClass": "minesweepercore/core.GameBoard",
