@@ -291,4 +291,8 @@ public class GamePageController {
     public HashSet<String> getBombCoords() {
         return gameEngine.getBombCoords();
     }
+
+    protected GameEngine getGameEngine() {
+        return gameEngine;
+    }
 }
