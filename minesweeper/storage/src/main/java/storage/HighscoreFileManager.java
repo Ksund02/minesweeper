@@ -85,6 +85,14 @@ public class HighscoreFileManager {
         }
     }
 
+    public static void deleteFromHighscore(String name, int time, String date) {
+        List<UserScore> userScores = readFromHighscore(highscoreFile);
+        userScores = userScores.stream()
+                .filter(score -> !score.getName().equals(name) || score.getScore() != time || !score.getDate().equals(date))
+                .toList();
+        writeToFile(userScores, highscoreFile);
+    }
+
     /**
      * Removes all data from the highscore file.
      */
