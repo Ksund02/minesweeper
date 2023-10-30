@@ -3,17 +3,18 @@
     "configurations": [
         {
             "type": "java",
-            "name": "SettingsController",
+            "name": "MinesweeperRestController",
             "request": "launch",
-            "mainClass": "minesweeperui/ui.SettingsController",
-            "projectName": "ui"
+            "mainClass": "minesweeperstorage/springBoot.MinesweeperRestController",
+            "projectName": "storage"
         },
         {
             "type": "java",
-            "name": "SettingsManager",
+            "name": "SpringApp",
             "request": "launch",
-            "mainClass": "minesweepercore/core.settings.SettingsManager",
-            "projectName": "core"
+            "mainClass": "minesweeperstorage/springBoot.SpringApp",
+            "projectName": "storage",
+            "cwd": "${workspaceFolder}/minesweeper/storage"
         },
         {
             "type": "java",

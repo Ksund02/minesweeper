@@ -3,14 +3,17 @@
 ![Minesweeper Game](../pictures/minesweeper_game.png)
 
 ## Table of contents 📚
-
-- [Game Description](#game-description-🕹️)
-- [Features](#features-🎈)
-- [Optional Features](#optional-features-🔨)
-- [Intended Use](#intended-use-🎮)
-- [How to check test coverage](#check-test-coverage🧪)
-- [Environment setup](#environment-setup🕶️)
-- [Priority Labels](#issue-priority-labels-🚩)
+- [Minesweeper code base](#minesweeper-code-base)
+  - [Table of contents 📚](#table-of-contents-)
+  - [Game Description 🕹️](#game-description-️)
+  - [Features 🎈](#features-)
+  - [Optional Features 🔨](#optional-features-)
+  - [Intended Use 🎮](#intended-use-)
+  - [Check test coverage🧪](#check-test-coverage)
+  - [Launch springboot](#launch-springboot)
+  - [Environment setup🕶️](#environment-setup️)
+  - [Issue Priority Labels 🚩](#issue-priority-labels-)
+  - [Code Quality Tools](#code-quality-tools)
 
 ## Game Description 🕹️
 
@@ -74,6 +77,23 @@ mvn verify
 - Locate the **index.html** file. You can open this file in your preferred web browser to view the test coverage results.
 - _Optionally, if you have a live server extension in your code editor (such as Visual Studio Code), you can right-click on the index.html file and select "Open with Live Server" to view the results._
 - _Optionally, if you want its possible to view test result in the jacocco.csv and jacocco.xml as well._
+
+## Launch springboot
+1. **Navigate to storage**
+```
+cd storage
+```
+2. **Run the restAPI**
+```
+mvn javafx:run
+```
+3. **Kill the server if already running**
+```
+netstat -ano | findstr :6969
+taskkill /PID [PID-number] /F
+```
+4. **Go to web browser**
+http://localhost:6969/highscores
 
 ## Environment setup🕶️
 

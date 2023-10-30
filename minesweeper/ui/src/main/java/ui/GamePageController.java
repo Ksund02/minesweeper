@@ -32,7 +32,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import storage.HighscoreFileManager;
 import storage.UserScore;
 
 public class GamePageController {
@@ -48,6 +47,7 @@ public class GamePageController {
     @FXML
     private VBox vBox;
 
+    private RestRequest restRequest = new RestRequest("http://localhost:8080");
     private GameEngine gameEngine;
     private Timeline timeline;
     private int[] currentSquare;
@@ -56,7 +56,7 @@ public class GamePageController {
     public void initialize() throws IOException {
         this.gameEngine = new GameEngine();
         newGameGrid();
-        Platform.runLater(() -> setStageMinSize());
+        Platform.runLater(() -> setStageSize());
 
         spaceBarClickSetup();
         flagsLeftLabel.setText(String.valueOf(gameEngine.getFlagsLeft()));
@@ -110,9 +110,7 @@ public class GamePageController {
 
     @FXML
     public void submitHigescore() {
-        HighscoreFileManager.writeToHighscore(
-                new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate(), SettingsManager.getGameDifficultyAsString()),
-                HighscoreFileManager.getFile());
+        restRequest.writeToHighscore(new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate(), SettingsManager.getGameDifficultyAsString()));
 
         feedbackLabel.setVisible(true);
         sendToLeaderBoardButton.setDisable(true);
@@ -196,10 +194,13 @@ public class GamePageController {
         updateGameView();
     }
 
-    private void setStageMinSize() {
+    private void setStageSize() {
         Stage stage = (Stage) gameGrid.getScene().getWindow();
         stage.setMinWidth(SettingsManager.getStageMinWidth());
         stage.setMinHeight(SettingsManager.getStageMinHeight());
+
+        stage.setHeight(SettingsManager.getStageMinWidth()+1);
+        stage.setWidth(SettingsManager.getStageMinWidth()+1);
     }
 
     /**
@@ -321,4 +322,7 @@ public class GamePageController {
         return gameEngine.getBombCoords();
     }
 
+    protected GameEngine getGameEngine() {
+        return gameEngine;
+    }
 }

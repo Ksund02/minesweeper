@@ -57,5 +57,4 @@ public class Stopwatch {
         this.finished = false;
         this.started = false;
     }
-
 }

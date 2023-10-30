@@ -211,6 +211,16 @@ public class GameBoard {
         }
     }
 
+    /**
+     * Retrieves a Tile object from the game board at the specified coordinates.
+     * We are using the computer-graphics convention, where the origin is in the
+     * top-left corner of the screen. This means that the x-coordinate increases
+     * from left to right, and the y-coordinate increases from top to bottom.
+     * 
+     * @param x The zero-based column index of the Tile to retrieve.
+     * @param y The zero-based row index of the Tile to retrieve.
+     * @return The Tile object located at the specified coordinates.
+     */
     public Tile getTile(int x, int y) {
         return board.get(y).get(x);
     }

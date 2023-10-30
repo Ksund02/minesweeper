@@ -17,6 +17,7 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.control.LabeledMatchers;
 
+import core.GameEngine;
 import core.Tile;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -91,12 +92,9 @@ public class MineAppTest extends ApplicationTest {
     // test where we click on the tiles that are not bombs and win:
     @Test
     public void testWin() {
-        assertEquals(false, robot.lookup("#leaderBoardNameLabel").queryLabeled().isVisible());
-        assertEquals(false, robot.lookup("#nameField").query().isVisible());
-        assertEquals(false, robot.lookup("#sendToLeaderBoardButton").query().isVisible());
-        assertEquals(false, !robot.lookup("#nameField").query().isDisabled());
-        assertEquals(false, !robot.lookup("#sendToLeaderBoardButton").query().isDisabled());
+        assertInitialState();
 
+        GameEngine engine = gamePageController.getGameEngine();
         clickOn(gameGrid.getChildren().get(0));
         HashSet<String> bombCoords = gamePageController.getBombCoords();
 
@@ -104,6 +102,10 @@ public class MineAppTest extends ApplicationTest {
             // Coordinate of the node we click on / (Tile)
             int rowIndex = GridPane.getRowIndex(n);
             int columnIndex = GridPane.getColumnIndex(n);
+            if (engine.getTile(columnIndex, rowIndex).isRevealed()) {
+                continue; // Skip the tile if it is already revealed
+            }
+            
             String coordinate = columnIndex + "." + rowIndex;
 
             // Check if the coordinate is not in the bombCoords set
@@ -113,7 +115,18 @@ public class MineAppTest extends ApplicationTest {
                 rightClickOn(n);
             }
         }
+        assertGameWon();
+    }
 
+    private void assertInitialState() {
+        assertEquals(false, robot.lookup("#leaderBoardNameLabel").queryLabeled().isVisible());
+        assertEquals(false, robot.lookup("#nameField").query().isVisible());
+        assertEquals(false, robot.lookup("#sendToLeaderBoardButton").query().isVisible());
+        assertEquals(false, !robot.lookup("#nameField").query().isDisabled());
+        assertEquals(false, !robot.lookup("#sendToLeaderBoardButton").query().isDisabled());
+    }
+
+    private void assertGameWon() {
         assertEquals(true, robot.lookup("#leaderBoardNameLabel").queryLabeled().isVisible());
         assertEquals(true, robot.lookup("#nameField").query().isVisible());
         assertEquals(true, robot.lookup("#sendToLeaderBoardButton").query().isVisible());
