@@ -63,7 +63,7 @@ public class SettingsControllerTest extends ApplicationTest {
         assertEquals(false, robot.lookup("#easyButton").query().isDisabled());
         assertEquals(true, robot.lookup("#mediumButton").query().isDisabled());
         assertEquals(false, robot.lookup("#hardButton").query().isDisabled());
-        assertTrue((GameDifficulty.MEDIUM == SettingsManager.gameDifficulty));
+        assertTrue((GameDifficulty.MEDIUM == SettingsManager.getGameDifficulty()));
     }
 
     @Test
@@ -74,7 +74,7 @@ public class SettingsControllerTest extends ApplicationTest {
         assertEquals(false, robot.lookup("#easyButton").query().isDisabled());
         assertEquals(false, robot.lookup("#mediumButton").query().isDisabled());
         assertEquals(true, robot.lookup("#hardButton").query().isDisabled());
-        assertTrue((GameDifficulty.HARD == SettingsManager.gameDifficulty));
+        assertTrue((GameDifficulty.HARD == SettingsManager.getGameDifficulty()));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class SettingsControllerTest extends ApplicationTest {
         assertEquals(true, robot.lookup("#easyButton").query().isDisabled());
         assertEquals(false, robot.lookup("#mediumButton").query().isDisabled());
         assertEquals(false, robot.lookup("#hardButton").query().isDisabled());
-        assertTrue((GameDifficulty.EASY == SettingsManager.gameDifficulty));
+        assertTrue((GameDifficulty.EASY == SettingsManager.getGameDifficulty()));
     }
 
     @Test
@@ -93,7 +93,7 @@ public class SettingsControllerTest extends ApplicationTest {
         clickOn(robot.lookup("#darkModeButton").queryButton());
         assertEquals("Dark mode", robot.lookup("#themeLabel").queryLabeled().getText());
         assertEquals("-fx-font-weight: bold",robot.lookup("#themeLabel").queryLabeled().getStyle());
-        assertEquals(true, (SettingsManager.themeSettings.getBackgroundStyle() == robot.lookup("#vBox").query().getStyle()));
+        assertEquals(true, (SettingsManager.getThemeSettings().getBackgroundStyle() == robot.lookup("#vBox").query().getStyle()));
         assertEquals(false, robot.lookup("#lightModeButton").query().isDisabled());
         assertEquals(true, robot.lookup("#darkModeButton").query().isDisabled());
     }
@@ -103,7 +103,7 @@ public class SettingsControllerTest extends ApplicationTest {
         clickOn(robot.lookup("#lightModeButton").queryButton());
         assertEquals("Light mode", robot.lookup("#themeLabel").queryLabeled().getText());
         assertEquals("-fx-font-weight: normal",robot.lookup("#themeLabel").queryLabeled().getStyle());
-        assertEquals(true, (SettingsManager.themeSettings.getBackgroundStyle() == robot.lookup("#vBox").query().getStyle()));
+        assertEquals(true, (SettingsManager.getThemeSettings().getBackgroundStyle() == robot.lookup("#vBox").query().getStyle()));
         assertEquals(true, robot.lookup("#lightModeButton").query().isDisabled());
         assertEquals(false, robot.lookup("#darkModeButton").query().isDisabled());
     }

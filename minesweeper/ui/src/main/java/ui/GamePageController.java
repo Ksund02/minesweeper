@@ -2,6 +2,7 @@ package ui;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
 import java.util.List;
 
 import core.GameBoard;
@@ -110,7 +111,7 @@ public class GamePageController {
     @FXML
     public void submitHigescore() {
         HighscoreFileManager.writeToHighscore(
-                new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate()),
+                new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate(), SettingsManager.getGameDifficultyAsString()),
                 HighscoreFileManager.getFile());
 
         feedbackLabel.setVisible(true);
@@ -123,7 +124,7 @@ public class GamePageController {
 
     private void setNewImage(Tile tile) {
         // if dark mode add the /dark in the path
-        String mode = SettingsManager.themeSettings.getTilePrefix();
+        String mode = SettingsManager.getThemeSettings().getTilePrefix();
         String path = mode + tile.getRevealedImagePath();
         ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, tile.getX(), tile.getY());
         InputStream inputStream = Tile.class.getResourceAsStream(path);
@@ -145,10 +146,10 @@ public class GamePageController {
 
     private void newGameGrid() {
         gameGrid.getChildren().clear();
-        String mode = SettingsManager.themeSettings.getTilePrefix();
+        String mode = SettingsManager.getThemeSettings().getTilePrefix();
         Image squareImage = new Image(getClass().getResourceAsStream("/images" + mode + "square.jpg"));
-        int height = SettingsManager.gameDifficulty.getGridHeight();
-        int width = SettingsManager.gameDifficulty.getGridWidth();
+        int height = SettingsManager.getGameDifficulty().getGridHeight();
+        int width = SettingsManager.getGameDifficulty().getGridWidth();
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -266,7 +267,7 @@ public class GamePageController {
     }
 
     private void clearGameGrid() {
-        String mode = SettingsManager.themeSettings.getTilePrefix();
+        String mode = SettingsManager.getThemeSettings().getTilePrefix();
         Image squareImage = new Image(getClass().getResourceAsStream("/images" + mode + "square.jpg"));
         for (Node node : gameGrid.getChildren()) {
             ImageView iv = (ImageView) node;
@@ -286,12 +287,23 @@ public class GamePageController {
     }
 
     public void updateCollorTheme() {
-        vBox.setStyle(SettingsManager.themeSettings.getBackgroundStyle());
+        vBox.setStyle(SettingsManager.getThemeSettings().getBackgroundStyle());
     }
 
-    // THIS GETTER IS FOR THE UI-TEST:
-    public GameBoard getGameBoard() {
-        return gameEngine.getGameBoard();
+    // This is for ui-test
+    public Tile getTile(int columnIndex, int rowIndex) {
+        return gameEngine.getTile(columnIndex, rowIndex);
+    }
+    
+
+    // This is for ui-test
+    public List<Tile> getNeighborTiles(int x, int y) {
+        return gameEngine.getNeighborTiles(x,y);
+    }
+
+    // This is for ui-test:
+    public boolean getStarted() {
+        return gameEngine.gameIsStarted();
     }
 
     // This is for ui-test
@@ -303,4 +315,10 @@ public class GamePageController {
     public String getDate() {
         return gameEngine.getStopwatch().getDate();
     }
+    
+    // For testing
+    public HashSet<String> getBombCoords() {
+        return gameEngine.getBombCoords();
+    }
+
 }

@@ -35,7 +35,7 @@ public class MineAppTest extends ApplicationTest {
      * 
      */
 
-    private GamePageController controller;
+    private GamePageController gamePageController;
     private Parent root;
     private GridPane gameGrid;
     private FxRobot robot;
@@ -44,7 +44,7 @@ public class MineAppTest extends ApplicationTest {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
         root = fxmlLoader.load();
-        controller = fxmlLoader.getController();
+        gamePageController = fxmlLoader.getController();
         stage.setScene(new Scene(root));
         stage.show();
         robot = new FxRobot();
@@ -76,7 +76,7 @@ public class MineAppTest extends ApplicationTest {
         System.setOut(new PrintStream(buffer));
 
         click("Reset game");
-        assertFalse(controller.getGameBoard().gameStarted());
+        assertFalse(gamePageController.getStarted());
         // We must trim the text, since the terminal will have a newline at the end.
         // String terminal_text = buffer.toString().trim();
 
@@ -97,7 +97,8 @@ public class MineAppTest extends ApplicationTest {
         assertEquals(false, !robot.lookup("#nameField").query().isDisabled());
         assertEquals(false, !robot.lookup("#sendToLeaderBoardButton").query().isDisabled());
 
-        HashSet<String> bombCoords = controller.getGameBoard().getBombCoords();
+        clickOn(gameGrid.getChildren().get(0));
+        HashSet<String> bombCoords = gamePageController.getBombCoords();
 
         for (Node n : gameGrid.getChildren()) {
             // Coordinate of the node we click on / (Tile)
@@ -123,14 +124,14 @@ public class MineAppTest extends ApplicationTest {
         click("OK");
         assertEquals(true, HighscoreFileManager.readFromHighscore(new File("./../appdata/highscore.json")).stream()
                 .anyMatch(score -> score.getName().equals("testerAAAAAAA")));
-        HighscoreFileManager.deleteFromHighscore("testerAAAAAAA", controller.getTime(), controller.getDate());
+        HighscoreFileManager.deleteFromHighscore("testerAAAAAAA", gamePageController.getTime(), gamePageController.getDate());
 
     }
 
     @Test
     public void testLose() {
-        HashSet<String> bombCoords = controller.getGameBoard().getBombCoords();
         clickOn((Node) gameGrid.getChildren().get(0));
+        HashSet<String> bombCoords = gamePageController.getBombCoords();
         for (Node n : gameGrid.getChildren()) {
             // Coordinate of the node we click on / (Tile)
             int rowIndex = GridPane.getRowIndex(n);
@@ -157,20 +158,20 @@ public class MineAppTest extends ApplicationTest {
             int rowIndex = GridPane.getRowIndex(n);
             int columnIndex = GridPane.getColumnIndex(n);
 
-            Tile tile = controller.getGameBoard().getTile(columnIndex, rowIndex);
+            Tile tile = gamePageController.getTile(columnIndex, rowIndex);
             if (!tile.isBomb() && tile.hasAdjacentBomb() && tile.isRevealed()) {
                 tileToClick = tile;
                 break;
             }
         }
 
-        List<Tile> neighborTiles = controller.getGameBoard().getNeighborTiles(tileToClick.getX(), tileToClick.getY());
+        List<Tile> neighborTiles = gamePageController.getNeighborTiles(tileToClick.getX(), tileToClick.getY());
         for (Tile tile : neighborTiles) {
             if (tile.isBomb()) {
-                rightClickOn(controller.getNodeFromGridPane(gameGrid, tile.getX(), tile.getY()));
+                rightClickOn(gamePageController.getNodeFromGridPane(gameGrid, tile.getX(), tile.getY()));
             }
         }
-        Node tileToClickNode = controller.getNodeFromGridPane(gameGrid, tileToClick.getX(), tileToClick.getY());
+        Node tileToClickNode = gamePageController.getNodeFromGridPane(gameGrid, tileToClick.getX(), tileToClick.getY());
         clickOn(tileToClickNode);
         push(KeyCode.SPACE);
 

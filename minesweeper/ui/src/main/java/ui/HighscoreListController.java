@@ -20,9 +20,8 @@ import storage.HighscoreFileManager;
 import storage.UserScore;
 
 public class HighscoreListController {
-    private final int HIGHESCORE_LENGTH = 10;
-    public final static int STAGE_WIDTH = 500;
-    public final static int STAGE_HEIGHT = 600;
+    private final static int HIGHESCORE_LENGTH = 10;
+    public final static int STAGE_WIDTH = 500, STAGE_HEIGHT = 600;
 
     @FXML
     private Label name1, name2, name3, name4, name5, name6, name7, name8, name9, name10;
@@ -36,6 +35,10 @@ public class HighscoreListController {
     @FXML
     public void initialize() {
         List<UserScore> userScores = HighscoreFileManager.readFromHighscore(HighscoreFileManager.getFile());
+        userScores = userScores.stream()
+                .filter(score -> score.getDifficulty().equals(SettingsManager.getGameDifficultyAsString()))
+                .toList();
+        
         List<Label> names = new ArrayList<>(
                 Arrays.asList(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10));
         List<Label> scores = new ArrayList<>(
@@ -48,7 +51,7 @@ public class HighscoreListController {
             scores.get(i).setText("" + userScores.get(i).getScore());
             dates.get(i).setText(userScores.get(i).getDate());
         }
-        anchorPane.setStyle(SettingsManager.themeSettings.getBackgroundStyle());
+        anchorPane.setStyle(SettingsManager.getThemeSettings().getBackgroundStyle());
     }
 
     @FXML
@@ -58,8 +61,8 @@ public class HighscoreListController {
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
         stage.setScene(new Scene(root));
-        stage.setWidth(SettingsManager.gameDifficulty.getStageMinWidth());
-        stage.setHeight(SettingsManager.gameDifficulty.getStageMinHeight());
+        stage.setWidth(SettingsManager.getGameDifficulty().getStageMinWidth());
+        stage.setHeight(SettingsManager.getGameDifficulty().getStageMinHeight());
         stage.show();
     }
 

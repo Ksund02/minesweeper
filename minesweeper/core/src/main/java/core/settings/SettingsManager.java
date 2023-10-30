@@ -2,8 +2,24 @@ package core.settings;
 
 public class SettingsManager {
 
-    public static GameDifficulty gameDifficulty = GameDifficulty.EASY;
-    public static ThemeSettings themeSettings = ThemeSettings.LIGHT;
+    private static GameDifficulty gameDifficulty = GameDifficulty.EASY;
+    private static ThemeSettings themeSettings = ThemeSettings.LIGHT;
+
+    public static void setGameDifficulty(GameDifficulty gameDifficulty) {
+        SettingsManager.gameDifficulty = gameDifficulty;
+    }
+
+    public static void setThemeSettings(ThemeSettings themeSettings) {
+        SettingsManager.themeSettings = themeSettings;
+    }
+
+    public static GameDifficulty getGameDifficulty() {
+        return gameDifficulty;
+    }
+
+    public static ThemeSettings getThemeSettings() {
+        return themeSettings;
+    }
 
     public static int getStageMinHeight() {
         return gameDifficulty.getStageMinHeight();
@@ -15,6 +31,10 @@ public class SettingsManager {
 
     public static int getSquareSize() {
         return gameDifficulty.getSquareSize();
+    }
+
+    public static String getGameDifficultyAsString() {
+        return gameDifficulty.toString();
     }
 
 }
