@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.List;
 
+import core.GameBoard;
 import core.GameEngine;
 import core.settings.SettingsManager;
 import core.Tile;
@@ -55,7 +56,7 @@ public class GamePageController {
     public void initialize() throws IOException {
         this.gameEngine = new GameEngine();
         newGameGrid();
-        Platform.runLater(() -> setStageMinSize());
+        Platform.runLater(() -> setStageSize());
 
         spaceBarClickSetup();
         flagsLeftLabel.setText(String.valueOf(gameEngine.getFlagsLeft()));
@@ -109,7 +110,7 @@ public class GamePageController {
 
     @FXML
     public void submitHigescore() {
-        restRequest.writeToHighscore(new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate()));
+        restRequest.writeToHighscore(new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate(), SettingsManager.getGameDifficultyAsString()));
 
         feedbackLabel.setVisible(true);
         sendToLeaderBoardButton.setDisable(true);
@@ -134,7 +135,7 @@ public class GamePageController {
         }
     }
 
-    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+    public Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
         return gridPane.getChildren().stream()
                 .filter(node -> GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row)
                 .findFirst()
@@ -193,10 +194,13 @@ public class GamePageController {
         updateGameView();
     }
 
-    private void setStageMinSize() {
+    private void setStageSize() {
         Stage stage = (Stage) gameGrid.getScene().getWindow();
         stage.setMinWidth(SettingsManager.getStageMinWidth());
         stage.setMinHeight(SettingsManager.getStageMinHeight());
+
+        stage.setHeight(SettingsManager.getStageMinWidth()+1);
+        stage.setWidth(SettingsManager.getStageMinWidth()+1);
     }
 
     /**
@@ -287,6 +291,32 @@ public class GamePageController {
         vBox.setStyle(SettingsManager.getThemeSettings().getBackgroundStyle());
     }
 
+    // This is for ui-test
+    public Tile getTile(int columnIndex, int rowIndex) {
+        return gameEngine.getTile(columnIndex, rowIndex);
+    }
+    
+
+    // This is for ui-test
+    public List<Tile> getNeighborTiles(int x, int y) {
+        return gameEngine.getNeighborTiles(x,y);
+    }
+
+    // This is for ui-test:
+    public boolean getStarted() {
+        return gameEngine.gameIsStarted();
+    }
+
+    // This is for ui-test
+    public int getTime() {
+        return gameEngine.getStopwatch().getTime();
+    }
+
+    // This is for ui-test
+    public String getDate() {
+        return gameEngine.getStopwatch().getDate();
+    }
+    
     // For testing
     public HashSet<String> getBombCoords() {
         return gameEngine.getBombCoords();

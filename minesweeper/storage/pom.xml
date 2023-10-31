@@ -76,6 +76,12 @@
             <version>3.1.5</version>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>it1901</groupId>
+            <artifactId>core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 

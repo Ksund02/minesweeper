@@ -35,6 +35,10 @@ public class HighscoreListController {
     @FXML
     public void initialize() {
         List<UserScore> userScores = restRequest.readFromHighscore();
+        userScores = userScores.stream()
+                .filter(score -> score.getDifficulty().equals(SettingsManager.getGameDifficultyAsString()))
+                .toList();
+        
         List<Label> names = new ArrayList<>(
                 Arrays.asList(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10));
         List<Label> scores = new ArrayList<>(
@@ -57,8 +61,8 @@ public class HighscoreListController {
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
         stage.setScene(new Scene(root));
-        stage.setWidth(SettingsManager.getGameDifficulty().getStageMinWidth());
-        stage.setHeight(SettingsManager.getGameDifficulty().getStageMinHeight());
+        stage.setWidth(SettingsManager.getGameDifficulty().getStageMinWidth()+1);
+        stage.setHeight(SettingsManager.getGameDifficulty().getStageMinHeight()+1);
         stage.show();
     }
 

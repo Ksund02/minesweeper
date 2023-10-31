@@ -45,6 +45,8 @@ public class SettingsController {
             case HARD:
                 setHard();
                 break;
+            default:
+                throw new AssertionError("Unknown difficulty level: " + SettingsManager.getGameDifficulty());
         }
 
         switch (SettingsManager.getThemeSettings()) {
@@ -54,6 +56,8 @@ public class SettingsController {
             case DARK:
                 setDarkMode();
                 break;
+            default:
+                throw new AssertionError("Unknown theme: " + SettingsManager.getThemeSettings());
         }
     }
 
@@ -113,7 +117,7 @@ public class SettingsController {
         Parent root = fxmlLoader.load();
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
-        stage.setScene(new Scene(root, SettingsManager.getStageMinWidth(), SettingsManager.getStageMinHeight()));
+        stage.setScene(new Scene(root, SettingsManager.getStageMinWidth()+1, SettingsManager.getStageMinHeight()+1));
         stage.show();
     }
 
