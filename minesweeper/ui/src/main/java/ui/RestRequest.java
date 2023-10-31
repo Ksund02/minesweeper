@@ -59,7 +59,7 @@ public class RestRequest {
             });
             return userScores; 
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            System.out.println("Connection to server failed!");
             return HighscoreFileManager.readFromHighscore(HighscoreFileManager.getFile()); // Return the correct file anyway, used by tests.
         }
     }
@@ -92,7 +92,7 @@ public class RestRequest {
         } catch (IOException | InterruptedException e) {
             // You land here if there are network failures, or if there are issues with the
             // server.
-            e.printStackTrace();
+            System.out.println("Connection to server failed!");
             HighscoreFileManager.writeToHighscore(userScore, HighscoreFileManager.getFile());
         }
     }
