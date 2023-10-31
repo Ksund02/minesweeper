@@ -16,7 +16,7 @@ module minesweeperstorage {
     
     // Jackson needs access to the readAndWriteFile package
     exports storage;
-    opens storage to com.fasterxml.jackson.databind;
+    opens storage;
 
     // SpringBoot needs access to the springBoot package, so called 'deep reflection'.
     opens springBoot;
