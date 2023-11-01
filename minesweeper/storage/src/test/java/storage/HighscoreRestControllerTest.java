@@ -28,16 +28,16 @@ import springBoot.SpringApp;
 @AutoConfigureMockMvc
 public class HighscoreRestControllerTest {
 
+    // This guy is used to simulate HTTP interactions. It's a mock, so it's not a real server.
     @Autowired
-    private MockMvc mockMvc; // This guy is used to simulate HTTP interactions. It's a mock, so it's not a
-                             // real server.
+    private MockMvc mockMvc; 
 
     @MockBean
     private HighscoreService highscoreService;
-
+    
+    // Instantiating a new field variable of type ObjectMapper with the @Autowired annotation.
     @Autowired
-    private ObjectMapper objectMapper; // Instantiating a new field variable of type ObjectMapper with the @Autowired
-                                       // annotation.
+    private ObjectMapper objectMapper;
 
     @Test
     public void testGetAllHighscores() throws Exception {
