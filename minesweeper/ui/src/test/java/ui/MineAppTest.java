@@ -19,6 +19,7 @@ import org.testfx.matcher.control.LabeledMatchers;
 
 import core.GameEngine;
 import core.Tile;
+import core.TileReadable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -105,7 +106,7 @@ public class MineAppTest extends ApplicationTest {
             if (engine.getTile(columnIndex, rowIndex).isRevealed()) {
                 continue; // Skip the tile if it is already revealed
             }
-            
+
             String coordinate = columnIndex + "." + rowIndex;
 
             // Check if the coordinate is not in the bombCoords set
@@ -137,7 +138,8 @@ public class MineAppTest extends ApplicationTest {
         click("OK");
         assertEquals(true, HighscoreFileManager.readFromHighscore(new File("./../appdata/highscore.json")).stream()
                 .anyMatch(score -> score.getName().equals("testerAAAAAAA")));
-        HighscoreFileManager.deleteFromHighscore("testerAAAAAAA", gamePageController.getTime(), gamePageController.getDate());
+        HighscoreFileManager.deleteFromHighscore("testerAAAAAAA", gamePageController.getTime(),
+                gamePageController.getDate());
 
     }
 
@@ -166,12 +168,12 @@ public class MineAppTest extends ApplicationTest {
         clickOn((Node) gameGrid.getChildren().get(0));
         push(KeyCode.SPACE);
 
-        Tile tileToClick = null;
+        TileReadable tileToClick = null;
         for (Node n : gameGrid.getChildren()) {
             int rowIndex = GridPane.getRowIndex(n);
             int columnIndex = GridPane.getColumnIndex(n);
 
-            Tile tile = gamePageController.getTile(columnIndex, rowIndex);
+            TileReadable tile = gamePageController.getTile(columnIndex, rowIndex);
             if (!tile.isBomb() && tile.hasAdjacentBomb() && tile.isRevealed()) {
                 tileToClick = tile;
                 break;
