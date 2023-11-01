@@ -77,4 +77,26 @@ public class HighscoreServiceTest {
         // Delete oskar from the highscore file, he is only there for tsting purposes.
         HighscoreFileManager.deleteFromHighscore(oskar.getName(), oskar.getScore(), oskar.getDate());
     }
+
+    @Test
+    public void clearAllHighscores() throws Exception {
+
+        // Start by saving the original highscores.
+        List<UserScore> highscores = objectMapper.readValue(new FileInputStream("./../appdata/highscore.json"),
+                new TypeReference<List<UserScore>>() {
+                });
+
+        mockMvc.perform(delete("/highscores")) // Perform a DELETE request to the /highscores endpoint.
+                .andExpect(status().isOk()); // Expect the status code to be 200 (OK).
+
+        List<UserScore> shouldBeEmpty = objectMapper.readValue(new FileInputStream("./../appdata/highscore.json"),
+                new TypeReference<List<UserScore>>() {
+                }); // Read in the userScores from the highscore.json file.
+
+        // Check that the highscores list is empty.
+        assertTrue(shouldBeEmpty.isEmpty());
+        
+        // Write the original highscores back to the highscore file.
+        highscores.stream().forEach(highscore -> HighscoreFileManager.writeToHighscore(highscore, HighscoreFileManager.getFile()));
+    }
 }
