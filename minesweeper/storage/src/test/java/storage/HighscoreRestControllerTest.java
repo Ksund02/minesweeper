@@ -1,6 +1,7 @@
 package storage;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -10,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -62,7 +64,14 @@ public class HighscoreRestControllerTest {
                 .content(objectMapper.writeValueAsString(oskar))) // Write the UserScore object as a JSON string.
                 .andExpect(status().isOk()); // Expect the status code to be 200 (OK).
 
-        verify(highscoreService, times(1)).addHighscore(oskar); // Verify that the addHighscore method in highscoreService is called once with the oskar object as an argument.
-    
+        ArgumentCaptor<UserScore> captor = ArgumentCaptor.forClass(UserScore.class); // Capture the UserScore object which is passed to the addHighscore method.
+        verify(highscoreService, times(1)).addHighscore(captor.capture()); // Verify that the addHighscore method is called exactly once, and capture the UserScore object which is passed to the method.
+
+        UserScore capturedUser = captor.getValue(); // Getting the object which was sent in the original request.
+        
+        assertEquals("oskar", capturedUser.getName());
+        assertEquals(15, capturedUser.getScore());
+        assertEquals("2023-10-15", capturedUser.getDate());
+        assertEquals("EASY", capturedUser.getDifficulty());
     }
 }
