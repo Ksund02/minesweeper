@@ -169,7 +169,7 @@ public class GamePageController {
         final int col = y;
         imageView.setOnMouseClicked(e -> {
             squareClicked(e, row, col);
-            if (gameEngine.gameIsStarted() && gameEngine.stopWatchIsStarted()) {
+            if (gameEngine.isGameStarted() && gameEngine.stopWatchIsStarted()) {
                 timeline.play();
             }
         });
@@ -304,7 +304,7 @@ public class GamePageController {
 
     // This is for ui-test:
     public boolean getStarted() {
-        return gameEngine.gameIsStarted();
+        return gameEngine.isGameStarted();
     }
 
     // This is for ui-test
@@ -315,11 +315,6 @@ public class GamePageController {
     // This is for ui-test
     public String getDate() {
         return gameEngine.getStopwatch().getDate();
-    }
-
-    // For testing
-    public HashSet<String> getBombCoords() {
-        return gameEngine.getBombCoords();
     }
 
     protected GameEngine getGameEngine() {
