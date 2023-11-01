@@ -71,8 +71,8 @@ public class HighscoreServiceTest {
 
         // Check that the oskar UserScore object is in the highscores list.
         assertTrue(highscores.stream()
-                .anyMatch(userScore -> userScore.getName().equals(oskar.getName()) && userScore.getScore() == 15
-                        && userScore.getDate() == "2023-10-15" && userScore.getDifficulty() == "EASY"));
+                .anyMatch(userScore -> userScore.getName().equals(oskar.getName()) && userScore.getScore() == oskar.getScore()
+                        && userScore.getDate().equals(oskar.getDate()) && userScore.getDifficulty().equals(oskar.getDifficulty())));
 
         // Delete oskar from the highscore file, he is only there for tsting purposes.
         HighscoreFileManager.deleteFromHighscore(oskar.getName(), oskar.getScore(), oskar.getDate());
