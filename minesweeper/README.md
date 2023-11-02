@@ -3,6 +3,7 @@
 ![Minesweeper Game](../pictures/minesweeper_game.png)
 
 ## Table of contents 📚
+
 - [Minesweeper code base](#minesweeper-code-base)
   - [Table of contents 📚](#table-of-contents-)
   - [Game Description 🕹️](#game-description-️)
@@ -79,21 +80,28 @@ mvn verify
 - _Optionally, if you want its possible to view test result in the jacocco.csv and jacocco.xml as well._
 
 ## Launch springboot
+
 1. **Navigate to storage**
+
 ```
 cd storage
 ```
+
 2. **Run the restAPI**
+
 ```
 mvn javafx:run
 ```
+
 3. **Kill the server if already running**
+
 ```
 netstat -ano | findstr :6969
 taskkill /PID [PID-number] /F
 ```
+
 4. **Go to web browser**
-http://localhost:6969/highscores
+   http://localhost:6969/highscores
 
 ## Environment setup🕶️
 
@@ -122,7 +130,8 @@ Red: High Priority 🔴
 ## Code Quality Tools
 
 - _[SpotBugs](https://spotbugs.github.io/)_: is automatically executed during the build process when running "mvn clean install". It serves to analyze the compiled Java bytecode to detect a variety of potential issues in the code.
-- _[Checkstyle](https://checkstyle.sourceforge.io/)_: is helping write Java code that adheres to a coding standard. It automates the process of formating javacode, ensuring that every team member formats the code using the same settings.
+- _[Checkstyle](https://checkstyle.sourceforge.io/)_: is helping write Java code that adheres to a coding standard. It automates the check the code for miss match in formating in code and google_checks.xml when running 'mvn clean install'.
+- _Java-formater_: is a file specified in vscode to automaticly format code. This formating is similar to checkstyle and checkstyle test will pass if this is used. This tool is save a lot of time.
   - [What is Checkstyle?](./FAQ.md#what-is-checkstyle)
-  - [How do i clean my code with checkstyle?](./FAQ.md#how-do-i-clean-my-code-with-checkstyle)
-  - [How do i change checkstyle settings?](./FAQ.md#how-do-i-change-checkstyle-settings)
+  - [How do i standarize my code to pass checkstyle?](./FAQ.md#how-do-i-standarize-my-code-to-pass-checkstyle)
+  - [How do i change java-formatter settings?](./FAQ.md#how-do-i-change-java-formatter-settings)
