@@ -20,9 +20,13 @@ import javafx.stage.Stage;
 import storage.UserScore;
 
 public class HighscoreListController {
+
     private final static int HIGHESCORE_LENGTH = 10;
     public final static int STAGE_WIDTH = 500, STAGE_HEIGHT = 600;
     private final RestRequest restRequest = new RestRequest("http://localhost:8080");
+    private String[] difficulties = { "EASY", "MEDIUM", "HARD" };
+    private List<UserScore> userScores, scoresToShow;
+    private List<Label> names, scores, dates;
 
     @FXML
     private Label name1, name2, name3, name4, name5, name6, name7, name8, name9, name10;
@@ -37,14 +41,10 @@ public class HighscoreListController {
     @FXML
     private ChoiceBox<String> difficultyChoiceBox;
 
-    private String[] difficulties = { "EASY", "MEDIUM", "HARD" };
-    private List<UserScore> userScores, scoresToShow;
-    private List<Label> names, scores, dates;
-
     @FXML
     public void initialize() {
         userScores = restRequest.readFromHighscore();
-        
+
         names = new ArrayList<>(
                 Arrays.asList(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10));
         scores = new ArrayList<>(
@@ -53,7 +53,6 @@ public class HighscoreListController {
                 Arrays.asList(date1, date2, date3, date4, date5, date6, date7, date8, date9, date10));
 
         anchorPane.setStyle(SettingsManager.getThemeSettings().getBackgroundStyle());
-
         difficultyChoiceBox.getItems().addAll(difficulties);
         difficultyChoiceBox.setValue(SettingsManager.getGameDifficultyAsString());
         difficultyChoiceBox.setOnAction(event -> switchLeaderboardDifficulty(event));
@@ -67,8 +66,8 @@ public class HighscoreListController {
         Node eventSource = (Node) event.getSource();
         Stage stage = (Stage) eventSource.getScene().getWindow();
         stage.setScene(new Scene(root));
-        stage.setWidth(SettingsManager.getGameDifficulty().getStageMinWidth()+1);
-        stage.setHeight(SettingsManager.getGameDifficulty().getStageMinHeight()+1);
+        stage.setWidth(SettingsManager.getGameDifficulty().getStageMinWidth() + 1);
+        stage.setHeight(SettingsManager.getGameDifficulty().getStageMinHeight() + 1);
         stage.show();
     }
 
