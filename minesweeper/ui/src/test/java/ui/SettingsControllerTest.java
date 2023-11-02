@@ -20,7 +20,6 @@ import javafx.stage.Stage;
 
 public class SettingsControllerTest extends ApplicationTest {
 
-    private SettingsController controller;
     private Parent root;
     private FxRobot robot;
 
@@ -28,11 +27,11 @@ public class SettingsControllerTest extends ApplicationTest {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/Settings.fxml"));
         root = fxmlLoader.load();
-        controller = fxmlLoader.getController();
         stage.setScene(new Scene(root));
         stage.show();
         robot = new FxRobot();
     }
+
     /**
      * Clicks on the labels in the fxml-file which has the same name as the string
      * parameters.
@@ -92,8 +91,9 @@ public class SettingsControllerTest extends ApplicationTest {
     public void testSetDarkMode() {
         clickOn(robot.lookup("#darkModeButton").queryButton());
         assertEquals("Dark mode", robot.lookup("#themeLabel").queryLabeled().getText());
-        assertEquals("-fx-font-weight: bold",robot.lookup("#themeLabel").queryLabeled().getStyle());
-        assertEquals(true, (SettingsManager.getThemeSettings().getBackgroundStyle() == robot.lookup("#vBox").query().getStyle()));
+        assertEquals("-fx-font-weight: bold", robot.lookup("#themeLabel").queryLabeled().getStyle());
+        assertEquals(true,
+                (SettingsManager.getThemeSettings().getBackgroundStyle() == robot.lookup("#vBox").query().getStyle()));
         assertEquals(false, robot.lookup("#lightModeButton").query().isDisabled());
         assertEquals(true, robot.lookup("#darkModeButton").query().isDisabled());
     }
@@ -102,8 +102,9 @@ public class SettingsControllerTest extends ApplicationTest {
     public void testSetLightMode() {
         clickOn(robot.lookup("#lightModeButton").queryButton());
         assertEquals("Light mode", robot.lookup("#themeLabel").queryLabeled().getText());
-        assertEquals("-fx-font-weight: normal",robot.lookup("#themeLabel").queryLabeled().getStyle());
-        assertEquals(true, (SettingsManager.getThemeSettings().getBackgroundStyle() == robot.lookup("#vBox").query().getStyle()));
+        assertEquals("-fx-font-weight: normal", robot.lookup("#themeLabel").queryLabeled().getStyle());
+        assertEquals(true,
+                (SettingsManager.getThemeSettings().getBackgroundStyle() == robot.lookup("#vBox").query().getStyle()));
         assertEquals(true, robot.lookup("#lightModeButton").query().isDisabled());
         assertEquals(false, robot.lookup("#darkModeButton").query().isDisabled());
     }

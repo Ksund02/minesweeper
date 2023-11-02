@@ -30,10 +30,10 @@ public class GameBoardTestUtils {
     }
 
     public static void clickOnAllEmptyTiles(GameBoard gameBoard, int tilesLeft) {
-        for (int i = 0; i < gameBoard.getHeight(); i++) {
-            for (int j = 0; j < gameBoard.getWidth(); j++) {
-                if (!gameBoard.getTile(i, j).isBomb() && gameBoard.getTilesLeft() > tilesLeft) {
-                    gameBoard.testTileClicked(i, j);
+        for (int x = 0; x < gameBoard.getHeight(); x++) {
+            for (int y = 0; y < gameBoard.getWidth(); y++) {
+                if (!gameBoard.getTile(x, y).isBomb() && gameBoard.getTilesLeft() > tilesLeft) {
+                    gameBoard.testTileClicked(x, y);
                 }
             }
         }
