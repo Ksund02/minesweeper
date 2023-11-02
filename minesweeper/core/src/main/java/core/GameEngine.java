@@ -10,7 +10,7 @@ import core.settings.SettingsManager;
 public class GameEngine {
     private GameBoard gameBoard;
     private Stopwatch stopwatch;
-    private List<Tile> latestUpdatedTiles;
+    private List<TileReadable> latestUpdatedTiles;
 
     public GameEngine() {
         gameBoard = new GameBoard(SettingsManager.getGameDifficulty());
@@ -32,7 +32,7 @@ public class GameEngine {
         gameBoard.tileClicked(x, y);
         latestUpdatedTiles = new ArrayList<>();
 
-        Tile clickedTile = getTile(x, y);
+        TileReadable clickedTile = getTile(x, y);
         if (clickedTile.isBomb()) {
             handleBombClicked();
             return;
@@ -106,7 +106,7 @@ public class GameEngine {
     private void addRevealedTilesToLatestUpdated() {
         for (int i = 0; i < gameBoard.getWidth(); i++) {
             for (int j = 0; j < gameBoard.getHeight(); j++) {
-                Tile tile = getTile(i, j);
+                TileReadable tile = getTile(i, j);
                 if (tile.isRevealed())
                     latestUpdatedTiles.add(tile);
             }
@@ -133,7 +133,7 @@ public class GameEngine {
         return stopwatch.isStarted();
     }
 
-    public List<Tile> getLatestUpdatedTiles() {
+    public List<TileReadable> getLatestUpdatedTiles() {
         return new ArrayList<>(latestUpdatedTiles);
     }
 
@@ -149,7 +149,7 @@ public class GameEngine {
         return gameBoard.isGameLost();
     }
 
-    public Tile getTile(int x, int y) {
+    public TileReadable getTile(int x, int y) {
         return gameBoard.getTile(x, y);
     }
 
@@ -182,9 +182,9 @@ public class GameEngine {
         return gameBoard;
     }
 
+    // For testing
     public List<Tile> getNeighborTiles(int x, int y) {
         return gameBoard.getNeighborTiles(x, y);
     }
 
 }
-
