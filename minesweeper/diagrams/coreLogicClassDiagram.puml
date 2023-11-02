@@ -1,0 +1,159 @@
+@startuml coreLogicClassDiagram
+
+package core {
+    class GameBoard {
+        # board : List<List<Tile>>
+        - width : int
+        - height : int
+        - numBombs : int
+        - startingCoords : int[]
+        - isGameLost : boolean
+        - bombTiles : List<Tile>
+        # tilesLeft : int
+        # flagsLeft : int
+        - random : Random
+        + GameBoard(GameDifficulty)
+        - void populateBoardWithTiles()
+        - void setStartingCoords(int, int)
+        - void placeBombs()
+        + List<Tile> getNeighborTiles(int, int)
+        - void incrementNeighborCounts(int, int)
+        + void tileClicked(int, int)
+        + void testTileClicked(int, int)
+        - void initializeGame(int, int)
+        - void revealTileAndAdjacentIfZero(int, int)
+        - void revealAdjacent(int, int)
+        # void setGameboard(List<List<Tile>>)
+        # List<int[]> findBombLocations()
+        # void placeBombs(List<int[]>)
+        + Tile getTile(int, int)
+        + boolean gameIsWon()
+        + boolean isGameStarted()
+        + boolean canRevealTile(Tile)
+        - boolean isValidCoordinateNotRevealedNotFlagged(int, int)
+        + boolean isNewGame()
+        + int getFlagsLeft()
+        + void decrementFlagsLeft()
+        + void incrementFlagsLeft()
+        + boolean hasFlagsLeft()
+        + boolean isGameEnded()
+        + boolean isGameLost()
+        + List<Tile> getBombTiles()
+        + int getWidth()
+        + int getHeight()
+        + public int getNumBombs()
+        + public int getTilesLeft()
+    }
+
+    class Tile {
+        - isBomb : boolean
+        - isFlagged : boolean
+        - isRevealed : boolean
+        - numBombsAround : int
+        - x : int
+        - y : int
+        + boolean isBomb()
+        + boolean isFlagged()
+        + boolean isRevealed()
+        + boolean hasAdjacentBomb()
+        + int getNumBombsAround()
+        + void toggleFlag()
+        + void reveal()
+        + int getX()
+        + int getY()
+        # void makeBomb()
+        # void incrementNumBombsAround()
+        + String getRevealedImagePath()
+        + String toString()
+    }
+
+    class Stopwatch {
+        - date : String
+        - timeWhenStarted : long
+        - endTime : int
+        - finished : boolean
+        - started : boolean
+        + Stopwatch()
+        + void start()
+        + void stop()
+        + int getTime()
+        + String getDate()
+        + boolean isStarted()
+        + void restart()
+    }
+
+    class GameEngine {
+        - gameBoard : GameBoard
+        - stopwatch : Stopwatch
+        - latestUpdateTiles : List<TileReadable>
+        + GameEngine()
+        + void resetGame()
+        + void handleLeftClick(int, int)
+        + void handleRightClick(int, int)
+        + void handleSpaceBarClick(int, int)
+        - void handleBombClicked()
+        - void toggleTileFlag(Tile)
+        - boolean canToggleFlag(Tile)
+        - void addRevealedTilesToLatestUpdated()
+        + boolean stopWatchIsStarted()
+        + List<TileReadable> getLatestUpdatedTiles()
+        + int getFlagsLeft()
+        + boolean isGameWon()
+        + boolean isGameLost()
+        + boolean isGameStarted()
+        + int getTime()
+        + boolean isGameEnded()
+        + String getDate()
+        + Stopwatch getStopwatch()
+        # GameBoard getGameBoard()
+        + List<Tile> getNeighborTiles(int, int)
+    }
+
+    enum GameDifficulty {
+        TEST
+        EASY
+        MEDIUM
+        HARD
+        + int getGridWidth()
+        + int getGridHeight()
+        + int getNumBombs()
+        + int getStageMinWidth()
+        + int getStageMinHeight()
+        + int getSquareSize()
+    }
+
+    enum ThemeSettings {
+        LIGHT
+        DARK
+        + String getBackgroundStyle()
+        + String getTilePrefix()
+    }
+
+    class SettingsManager {
+        - gameDifficulty : GameDifficulty
+        - themeSettings : ThemeSettings
+        + void setGameDifficulty(GameDifficulty)
+        + void setThemeSettings(ThemeSetting)
+        + GameDifficulty getGameDifficulty()
+    }
+
+    interface TileReadable {
+        + boolean isBomb()
+        + boolean isFlagged()
+        + boolean isRevealed()
+        + boolean hasAdjacentBomb()
+        + int getX()
+        + int getY()
+        + String getRevealedImagePath()
+    }
+
+    SettingsManager --> GameDifficulty : Uses
+    SettingsManager --> ThemeSettings : Uses
+    GameBoard --> Tile : Uses
+    GameEngine --> SettingsManager : Uses
+    GameEngine --> Stopwatch : Uses
+    GameEngine --> GameBoard : Uses
+    Tile --> TileReadable: Uses
+}
+
+@enduml
