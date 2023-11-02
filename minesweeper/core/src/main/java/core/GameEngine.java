@@ -90,7 +90,11 @@ public class GameEngine {
      */
     private void handleBombClicked() {
         List<Tile> bombTiles = gameBoard.getBombTiles();
-        bombTiles.forEach(tile -> tile.reveal());
+        bombTiles.forEach(tile -> {
+            if (tile.isFlagged())
+                tile.toggleFlag();
+            tile.reveal();
+        });
         latestUpdatedTiles.addAll(bombTiles);
 
         stopwatch.stop();
