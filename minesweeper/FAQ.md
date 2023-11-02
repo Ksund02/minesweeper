@@ -2,12 +2,12 @@
 
 ### What is Checkstyle?
 
-Checkstyle is a development tool that helps Java developers adhere to certain coding standards. When integrated in the POM it can be configure to not build the project unleast its formated with the defined standard (google_checks.xml).
+Checkstyle is a development tool that helps Java developers adhere to certain coding standards. When integrated in the POM it can be configured to not build the project unleess it's formated with the defined standard (google_checks.xml).
 
 ### How do i standarize my code to pass checkstyle?
 
 1. Open the Java file you want to clean.
-2. In windows press 'alt + shif + f' or open command palette (Ctrl+Shift+P) and search for "format document". This will format your code according to /.vscode/java-formatter rules. This should match the checkstyle
+2. In windows press 'alt + shift + f' or open command palette (Ctrl+Shift+P) and search for "format document". This will format your code according to /.vscode/java-formatter rules. This should match the checkstyle
 
 ### How do i change java-formatter settings?
 
