@@ -181,10 +181,10 @@ public class MineAppTest extends ApplicationTest {
         List<Tile> neighborTiles = gamePageController.getNeighborTiles(tileToClick.getX(), tileToClick.getY());
         for (Tile tile : neighborTiles) {
             if (tile.isBomb()) {
-                rightClickOn(gamePageController.getNodeFromGridPane(gameGrid, tile.getX(), tile.getY()));
+                rightClickOn(getNodeFromGridPane(gameGrid, tile.getX(), tile.getY()));
             }
         }
-        Node tileToClickNode = gamePageController.getNodeFromGridPane(gameGrid, tileToClick.getX(), tileToClick.getY());
+        Node tileToClickNode = getNodeFromGridPane(gameGrid, tileToClick.getX(), tileToClick.getY());
         clickOn(tileToClickNode);
         push(KeyCode.SPACE);
 
@@ -206,5 +206,14 @@ public class MineAppTest extends ApplicationTest {
         assertEquals(false, robot.lookup("#score1").tryQuery().isPresent());
         click("Leaderboard");
         assertEquals(true, robot.lookup("#score1").tryQuery().isPresent());
+    }
+
+    // For testing
+    public static Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+        return gridPane.getChildren().stream()
+                .filter(node -> GridPane.getColumnIndex(node) == col &&
+                        GridPane.getRowIndex(node) == row)
+                .findFirst()
+                .orElse(null);
     }
 }
