@@ -130,7 +130,7 @@ Red: High Priority 🔴
 ## Code Quality Tools
 
 - _[SpotBugs](https://spotbugs.github.io/)_: is automatically executed during the build process when running "mvn clean install". It serves to analyze the compiled Java bytecode to detect a variety of potential issues in the code.
-- _[Checkstyle](https://checkstyle.sourceforge.io/)_: is helping write Java code that adheres to a coding standard. It automates the check the code for miss match in formating in code and google_checks.xml when running 'mvn clean install'.
+- _[Checkstyle](https://checkstyle.sourceforge.io/)_: is helping write Java code that adheres to a coding standard. It automaticly check for miss match in the defined formating in code and [google_checks.xml](./google_checks.xml) and the code when running 'mvn clean install' (the google_checks.xml is [downloaded here](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml)).
 - _Java-formater_: is a file specified in vscode to automaticly format code. This formating is similar to checkstyle and checkstyle test will pass if this is used. This tool is save a lot of time.
   - [What is Checkstyle?](./FAQ.md#what-is-checkstyle)
   - [How do i standarize my code to pass checkstyle?](./FAQ.md#how-do-i-standarize-my-code-to-pass-checkstyle)
