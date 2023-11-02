@@ -130,6 +130,12 @@ public class GamePageController {
     // Dynamic programming: For faster excecution store already importet images
     private HashMap<String, Image> imageMap = new HashMap<>();
 
+    /**
+     * Sets a new image for a given tile.
+     * If the image is not already imported, it will be imported.
+     *
+     * @param tile The tile to set the image for.
+     */
     private void setNewImage(TileReadable tile) {
         String collorThemePath = SettingsManager.getThemeSettings().getTilePrefix();
         String tileImagePath = collorThemePath + tile.getRevealedImagePath();
@@ -150,15 +156,16 @@ public class GamePageController {
 
     private void newGameGrid() {
         gameGrid.getChildren().clear();
-        imageViewList = new ImageView[SettingsManager.getGameDifficulty().getGridWidth()][SettingsManager
-                .getGameDifficulty().getGridHeight()];
-        String mode = SettingsManager.getThemeSettings().getTilePrefix();
-        Image squareImage = new Image(getClass().getResourceAsStream("/images" + mode + "square.jpg"));
-        int height = SettingsManager.getGameDifficulty().getGridHeight();
-        int width = SettingsManager.getGameDifficulty().getGridWidth();
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        int gridWidth = SettingsManager.getGameDifficulty().getGridWidth();
+        int gridHeight = SettingsManager.getGameDifficulty().getGridHeight();
+        imageViewList = new ImageView[gridWidth][gridHeight];
+
+        String collorThemePath = SettingsManager.getThemeSettings().getTilePrefix();
+        Image squareImage = new Image(getClass().getResourceAsStream("/images" + collorThemePath + "square.jpg"));
+
+        for (int y = 0; y < gridHeight; y++) {
+            for (int x = 0; x < gridWidth; x++) {
                 ImageView newSquare = newSquare(squareImage, x, y);
                 gameGrid.add(newSquare, x, y);
                 imageViewList[x][y] = newSquare;
@@ -208,8 +215,8 @@ public class GamePageController {
         stage.setMinWidth(SettingsManager.getStageMinWidth());
         stage.setMinHeight(SettingsManager.getStageMinHeight());
 
-        stage.setHeight(SettingsManager.getStageMinWidth()+1);
-        stage.setWidth(SettingsManager.getStageMinWidth()+1);
+        stage.setHeight(SettingsManager.getStageMinWidth() + 1);
+        stage.setWidth(SettingsManager.getStageMinWidth() + 1);
     }
 
     /**
