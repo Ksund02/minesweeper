@@ -5,10 +5,10 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.List;
 
-import core.GameBoard;
 import core.GameEngine;
 import core.settings.SettingsManager;
 import core.Tile;
+import core.TileReadable;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -110,7 +110,8 @@ public class GamePageController {
 
     @FXML
     public void submitHigescore() {
-        restRequest.writeToHighscore(new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate(), SettingsManager.getGameDifficultyAsString()));
+        restRequest.writeToHighscore(new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate(),
+                SettingsManager.getGameDifficultyAsString()));
 
         feedbackLabel.setVisible(true);
         sendToLeaderBoardButton.setDisable(true);
@@ -120,7 +121,7 @@ public class GamePageController {
         leaderBoardNameLabel.setVisible(false);
     }
 
-    private void setNewImage(Tile tile) {
+    private void setNewImage(TileReadable tile) {
         // if dark mode add the /dark in the path
         String mode = SettingsManager.getThemeSettings().getTilePrefix();
         String path = mode + tile.getRevealedImagePath();
@@ -261,8 +262,8 @@ public class GamePageController {
     }
 
     private void updateTiles() {
-        List<Tile> updatedTiles = gameEngine.getLatestUpdatedTiles();
-        for (Tile tile : updatedTiles) {
+        List<TileReadable> updatedTiles = gameEngine.getLatestUpdatedTiles();
+        for (TileReadable tile : updatedTiles) {
             setNewImage(tile);
         }
     }
@@ -292,14 +293,13 @@ public class GamePageController {
     }
 
     // This is for ui-test
-    public Tile getTile(int columnIndex, int rowIndex) {
+    public TileReadable getTile(int columnIndex, int rowIndex) {
         return gameEngine.getTile(columnIndex, rowIndex);
     }
-    
 
     // This is for ui-test
     public List<Tile> getNeighborTiles(int x, int y) {
-        return gameEngine.getNeighborTiles(x,y);
+        return gameEngine.getNeighborTiles(x, y);
     }
 
     // This is for ui-test:
@@ -316,7 +316,7 @@ public class GamePageController {
     public String getDate() {
         return gameEngine.getStopwatch().getDate();
     }
-    
+
     // For testing
     public HashSet<String> getBombCoords() {
         return gameEngine.getBombCoords();
