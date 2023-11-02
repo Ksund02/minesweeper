@@ -36,10 +36,16 @@ public class Tile implements TileReadable {
     }
 
     public void toggleFlag() {
+        if (this.isRevealed())
+            throw new IllegalStateException("Can not flag a revealed tile");
+
         isFlagged = !isFlagged;
     }
 
     public void reveal() {
+        if (this.isFlagged())
+            throw new IllegalStateException("Can not reveal a flagged tile");
+
         isRevealed = true;
     }
 

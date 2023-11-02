@@ -1,8 +1,6 @@
 package core;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 import core.settings.SettingsManager;
@@ -10,29 +8,29 @@ import core.settings.SettingsManager;
 public class GameEngine {
     private GameBoard gameBoard;
     private Stopwatch stopwatch;
-    private List<TileReadable> latestUpdatedTiles;
+    private List<TileReadable> latestUpdatedTiles = new ArrayList<>();
 
     public GameEngine() {
         gameBoard = new GameBoard(SettingsManager.getGameDifficulty());
         stopwatch = new Stopwatch();
-        latestUpdatedTiles = new ArrayList<>();
     }
 
     public void resetGame() {
         this.gameBoard = new GameBoard(SettingsManager.getGameDifficulty());
         stopwatch.restart();
-        latestUpdatedTiles = new ArrayList<>();
+        latestUpdatedTiles.clear();
     }
 
     public void handleLeftClick(int x, int y) {
-        boolean tileFlaggedAfterStart = gameIsStarted() && getTile(x, y).isFlagged();
+        latestUpdatedTiles.clear();
+
+        TileReadable clickedTile = getTile(x, y);
+        boolean tileFlaggedAfterStart = isGameStarted() && clickedTile.isFlagged();
         if (gameBoard.isGameEnded() || tileFlaggedAfterStart)
             return;
 
         gameBoard.tileClicked(x, y);
-        latestUpdatedTiles = new ArrayList<>();
 
-        TileReadable clickedTile = getTile(x, y);
         if (clickedTile.isBomb()) {
             handleBombClicked();
             return;
@@ -40,7 +38,7 @@ public class GameEngine {
 
         addRevealedTilesToLatestUpdated();
 
-        if (gameIsStarted() && !stopWatchIsStarted())
+        if (isGameStarted() && !stopWatchIsStarted())
             stopwatch.start();
 
         if (isGameEnded())
@@ -48,7 +46,8 @@ public class GameEngine {
     }
 
     public void handleRightClick(int x, int y) {
-        if (!gameBoard.gameStarted() || gameBoard.isGameEnded())
+        latestUpdatedTiles.clear();
+        if (!gameBoard.isGameStarted() || gameBoard.isGameEnded())
             return;
 
         Tile clickedTile = gameBoard.getTile(x, y);
@@ -58,7 +57,7 @@ public class GameEngine {
 
     public void handleSpaceBarClick(int x, int y) {
         Tile clickedTile = gameBoard.getTile(x, y);
-        boolean tileRevealedAndGameRunning = gameBoard.gameStarted() && !gameBoard.isGameEnded()
+        boolean tileRevealedAndGameRunning = gameBoard.isGameStarted() && !gameBoard.isGameEnded()
                 && clickedTile.isRevealed();
         if (!tileRevealedAndGameRunning)
             return;
@@ -83,8 +82,21 @@ public class GameEngine {
         addRevealedTilesToLatestUpdated();
     }
 
+    /**
+     * Handles the event when a bomb is clicked. This stops the game's stopwatch and
+     * updates the list of tiles
+     * that were affected by the bomb click. The affected tiles are set to be the
+     * list of bomb tiles from the game board.
+     */
     private void handleBombClicked() {
-        addBombsToLatestUpdated();
+        List<Tile> bombTiles = gameBoard.getBombTiles();
+        bombTiles.forEach(tile -> {
+            if (tile.isFlagged())
+                tile.toggleFlag();
+            tile.reveal();
+        });
+        latestUpdatedTiles.addAll(bombTiles);
+
         stopwatch.stop();
     }
 
@@ -96,7 +108,7 @@ public class GameEngine {
         else
             gameBoard.incrementFlagsLeft();
 
-        this.latestUpdatedTiles = Arrays.asList(tile);
+        latestUpdatedTiles.add(tile);
     }
 
     private boolean canToggleFlag(Tile tile) {
@@ -109,22 +121,6 @@ public class GameEngine {
                 TileReadable tile = getTile(i, j);
                 if (tile.isRevealed())
                     latestUpdatedTiles.add(tile);
-            }
-        }
-    }
-
-    private void addBombsToLatestUpdated() {
-        latestUpdatedTiles = new ArrayList<>();
-        for (int x = 0; x < gameBoard.getWidth(); x++) {
-            for (int y = 0; y < gameBoard.getHeight(); y++) {
-                Tile tile = gameBoard.getTile(x, y);
-                if (!tile.isBomb())
-                    continue;
-                if (tile.isFlagged())
-                    tile.toggleFlag();
-
-                tile.reveal();
-                latestUpdatedTiles.add(tile);
             }
         }
     }
@@ -153,8 +149,8 @@ public class GameEngine {
         return gameBoard.getTile(x, y);
     }
 
-    public boolean gameIsStarted() {
-        return gameBoard.gameStarted();
+    public boolean isGameStarted() {
+        return gameBoard.isGameStarted();
     }
 
     public int getTime() {
@@ -167,11 +163,6 @@ public class GameEngine {
 
     public String getDate() {
         return stopwatch.getDate();
-    }
-
-    // For testing
-    public HashSet<String> getBombCoords() {
-        return gameBoard.getBombCoords();
     }
 
     public Stopwatch getStopwatch() {

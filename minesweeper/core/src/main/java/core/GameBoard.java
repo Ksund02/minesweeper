@@ -1,7 +1,6 @@
 package core;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -14,7 +13,7 @@ public class GameBoard {
     private final int numBombs;
     private final int[] startingCoords;
     private boolean isGameLost;
-    private HashSet<String> bombCoords;
+    private List<Tile> bombTiles = new ArrayList<>();;
     protected int tilesLeft, flagsLeft;
     private static Random random = new Random();
 
@@ -26,8 +25,6 @@ public class GameBoard {
         this.startingCoords = new int[] { -1, -1 };
         this.tilesLeft = height * width - numBombs;
         this.flagsLeft = numBombs;
-
-        this.bombCoords = new HashSet<>();
 
         populateBoardWithTiles();
     }
@@ -62,7 +59,7 @@ public class GameBoard {
             if (validBombTile) {
                 tile.makeBomb();
                 incrementNeighborCounts(x, y);
-                bombCoords.add(x + "." + y);
+                bombTiles.add(tile);
                 bombsPlaced++;
             }
         }
@@ -166,7 +163,7 @@ public class GameBoard {
     /**
      * Method for testing purposes.
      * 
-     * @param gameBoard The custom gameBoard you want to play with.
+     * @param gameBoard The custom gameBoard
      */
     protected void setGameboard(List<List<Tile>> gameBoard) {
         this.board = gameBoard;
@@ -175,9 +172,6 @@ public class GameBoard {
     }
 
     protected List<int[]> findBombLocations() {
-        // I am really not sure about these coordinates, should not try to make some
-        // non-square board,
-        // since that could quickly become a mess.
         List<int[]> bombLocations = new ArrayList<>();
         for (int x = 0; x < height; x++) {
             for (int y = 0; y < width; y++) {
@@ -229,7 +223,7 @@ public class GameBoard {
         return tilesLeft == 0 & !isGameLost;
     }
 
-    public boolean gameStarted() {
+    public boolean isGameStarted() {
         return tilesLeft != width * height - numBombs;
     }
 
@@ -269,8 +263,8 @@ public class GameBoard {
         return isGameLost;
     }
 
-    public HashSet<String> getBombCoords() {
-        return new HashSet<>(bombCoords);
+    public List<Tile> getBombTiles() {
+        return new ArrayList<>(bombTiles);
     }
 
     public int getWidth() {
