@@ -61,14 +61,6 @@
             <version>3.1.5</version>
         </dependency>
 
-        <!-- Java is complaining about jakarta if we don't have it is a dependency. 
-        Jakarta contains some essential files for the springboot setup. -->
-        <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <version>5.0.0</version>
-        </dependency>
-
         <!-- This dependency is needed for the springboot testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
