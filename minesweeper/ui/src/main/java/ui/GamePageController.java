@@ -2,13 +2,13 @@ package ui;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 
-import core.GameBoard;
 import core.GameEngine;
 import core.settings.SettingsManager;
 import core.Tile;
+import core.TileReadable;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -51,6 +51,12 @@ public class GamePageController {
     private GameEngine gameEngine;
     private Timeline timeline;
     private int[] currentSquare;
+
+    /*
+     * To access the imageView in the 'gameGrid' in O(1) time
+     * we need to store them in a 2D array.
+     */
+    private ImageView[][] imageViewList;
 
     @FXML
     public void initialize() throws IOException {
@@ -110,7 +116,8 @@ public class GamePageController {
 
     @FXML
     public void submitHigescore() {
-        restRequest.writeToHighscore(new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate(), SettingsManager.getGameDifficultyAsString()));
+        restRequest.writeToHighscore(new UserScore(nameField.getText(), gameEngine.getTime(), gameEngine.getDate(),
+                SettingsManager.getGameDifficultyAsString()));
 
         feedbackLabel.setVisible(true);
         sendToLeaderBoardButton.setDisable(true);
@@ -120,39 +127,48 @@ public class GamePageController {
         leaderBoardNameLabel.setVisible(false);
     }
 
-    private void setNewImage(Tile tile) {
-        // if dark mode add the /dark in the path
-        String mode = SettingsManager.getThemeSettings().getTilePrefix();
-        String path = mode + tile.getRevealedImagePath();
-        ImageView imageView = (ImageView) getNodeFromGridPane(gameGrid, tile.getX(), tile.getY());
-        InputStream inputStream = Tile.class.getResourceAsStream(path);
+    // Dynamic programming: For faster excecution store already importet images
+    private HashMap<String, Image> imageMap = new HashMap<>();
 
-        // Path = /number0.jpg returns null.
-        if (inputStream == null) {
-            imageView.setImage(null);
-        } else {
-            imageView.setImage(new Image(inputStream));
+    /**
+     * Sets a new image for a given tile.
+     * If the image is not already imported, it will be imported.
+     *
+     * @param tile The tile to set the image for.
+     */
+    private void setNewImage(TileReadable tile) {
+        String collorThemePath = SettingsManager.getThemeSettings().getTilePrefix();
+        String tileImagePath = collorThemePath + tile.getRevealedImagePath();
+
+        // Tiles with value zero has no image
+        boolean tileIsZero = tileImagePath.contains("number0");
+        if (tileIsZero)
+            imageMap.put(tileImagePath, null);
+
+        if (!imageMap.containsKey(tileImagePath)) {
+            InputStream inputStream = Tile.class.getResourceAsStream(tileImagePath);
+            imageMap.put(tileImagePath, new Image(inputStream));
         }
-    }
 
-    public Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
-        return gridPane.getChildren().stream()
-                .filter(node -> GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row)
-                .findFirst()
-                .orElse(null);
+        ImageView imageView = imageViewList[tile.getX()][tile.getY()];
+        imageView.setImage(imageMap.get(tileImagePath));
     }
 
     private void newGameGrid() {
         gameGrid.getChildren().clear();
-        String mode = SettingsManager.getThemeSettings().getTilePrefix();
-        Image squareImage = new Image(getClass().getResourceAsStream("/images" + mode + "square.jpg"));
-        int height = SettingsManager.getGameDifficulty().getGridHeight();
-        int width = SettingsManager.getGameDifficulty().getGridWidth();
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        int gridWidth = SettingsManager.getGameDifficulty().getGridWidth();
+        int gridHeight = SettingsManager.getGameDifficulty().getGridHeight();
+        imageViewList = new ImageView[gridWidth][gridHeight];
+
+        String collorThemePath = SettingsManager.getThemeSettings().getTilePrefix();
+        Image squareImage = new Image(getClass().getResourceAsStream("/images" + collorThemePath + "square.jpg"));
+
+        for (int y = 0; y < gridHeight; y++) {
+            for (int x = 0; x < gridWidth; x++) {
                 ImageView newSquare = newSquare(squareImage, x, y);
                 gameGrid.add(newSquare, x, y);
+                imageViewList[x][y] = newSquare;
             }
         }
     }
@@ -168,7 +184,7 @@ public class GamePageController {
         final int col = y;
         imageView.setOnMouseClicked(e -> {
             squareClicked(e, row, col);
-            if (gameEngine.gameIsStarted() && gameEngine.stopWatchIsStarted()) {
+            if (gameEngine.isGameStarted() && gameEngine.stopWatchIsStarted()) {
                 timeline.play();
             }
         });
@@ -199,8 +215,8 @@ public class GamePageController {
         stage.setMinWidth(SettingsManager.getStageMinWidth());
         stage.setMinHeight(SettingsManager.getStageMinHeight());
 
-        stage.setHeight(SettingsManager.getStageMinWidth()+1);
-        stage.setWidth(SettingsManager.getStageMinWidth()+1);
+        stage.setHeight(SettingsManager.getStageMinWidth() + 1);
+        stage.setWidth(SettingsManager.getStageMinWidth() + 1);
     }
 
     /**
@@ -261,8 +277,8 @@ public class GamePageController {
     }
 
     private void updateTiles() {
-        List<Tile> updatedTiles = gameEngine.getLatestUpdatedTiles();
-        for (Tile tile : updatedTiles) {
+        List<TileReadable> updatedTiles = gameEngine.getLatestUpdatedTiles();
+        for (TileReadable tile : updatedTiles) {
             setNewImage(tile);
         }
     }
@@ -292,19 +308,18 @@ public class GamePageController {
     }
 
     // This is for ui-test
-    public Tile getTile(int columnIndex, int rowIndex) {
+    public TileReadable getTile(int columnIndex, int rowIndex) {
         return gameEngine.getTile(columnIndex, rowIndex);
     }
-    
 
     // This is for ui-test
     public List<Tile> getNeighborTiles(int x, int y) {
-        return gameEngine.getNeighborTiles(x,y);
+        return gameEngine.getNeighborTiles(x, y);
     }
 
     // This is for ui-test:
     public boolean getStarted() {
-        return gameEngine.gameIsStarted();
+        return gameEngine.isGameStarted();
     }
 
     // This is for ui-test
@@ -315,11 +330,6 @@ public class GamePageController {
     // This is for ui-test
     public String getDate() {
         return gameEngine.getStopwatch().getDate();
-    }
-    
-    // For testing
-    public HashSet<String> getBombCoords() {
-        return gameEngine.getBombCoords();
     }
 
     protected GameEngine getGameEngine() {

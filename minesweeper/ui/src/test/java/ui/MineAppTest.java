@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
-import java.util.HashSet;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +18,7 @@ import org.testfx.matcher.control.LabeledMatchers;
 
 import core.GameEngine;
 import core.Tile;
+import core.TileReadable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -96,23 +96,22 @@ public class MineAppTest extends ApplicationTest {
 
         GameEngine engine = gamePageController.getGameEngine();
         clickOn(gameGrid.getChildren().get(0));
-        HashSet<String> bombCoords = gamePageController.getBombCoords();
 
-        for (Node n : gameGrid.getChildren()) {
+        for (Node node : gameGrid.getChildren()) {
             // Coordinate of the node we click on / (Tile)
-            int rowIndex = GridPane.getRowIndex(n);
-            int columnIndex = GridPane.getColumnIndex(n);
-            if (engine.getTile(columnIndex, rowIndex).isRevealed()) {
-                continue; // Skip the tile if it is already revealed
-            }
-            
-            String coordinate = columnIndex + "." + rowIndex;
+            int x = GridPane.getColumnIndex(node);
+            int y = GridPane.getRowIndex(node);
 
-            // Check if the coordinate is not in the bombCoords set
-            if (!bombCoords.contains(coordinate)) {
-                clickOn(n);
+            TileReadable tile = engine.getTile(x, y);
+            if (tile.isRevealed()) {
+                continue;
+            }
+
+            if (tile.isBomb()) {
+                rightClickOn(node);
+
             } else {
-                rightClickOn(n);
+                clickOn(node);
             }
         }
         assertGameWon();
@@ -137,27 +136,28 @@ public class MineAppTest extends ApplicationTest {
         click("OK");
         assertEquals(true, HighscoreFileManager.readFromHighscore(new File("./../appdata/highscore.json")).stream()
                 .anyMatch(score -> score.getName().equals("testerAAAAAAA")));
-        HighscoreFileManager.deleteFromHighscore("testerAAAAAAA", gamePageController.getTime(), gamePageController.getDate());
+        HighscoreFileManager.deleteFromHighscore("testerAAAAAAA", gamePageController.getTime(),
+                gamePageController.getDate());
 
     }
 
     @Test
+    @DisplayName("Ensure clicking on a bomb make you lose")
     public void testLose() {
         clickOn((Node) gameGrid.getChildren().get(0));
-        HashSet<String> bombCoords = gamePageController.getBombCoords();
-        for (Node n : gameGrid.getChildren()) {
-            // Coordinate of the node we click on / (Tile)
-            int rowIndex = GridPane.getRowIndex(n);
-            int columnIndex = GridPane.getColumnIndex(n);
-            String coordinate = columnIndex + "." + rowIndex;
+        for (Node node : gameGrid.getChildren()) {
+            // Coordinate of the node we click on
+            int x = GridPane.getColumnIndex(node);
+            int y = GridPane.getRowIndex(node);
 
-            // Check if the coordinate is in the bombCoords set
-            if (bombCoords.contains(coordinate)) {
-                clickOn(n);
+            TileReadable tile = gamePageController.getTile(x, y);
+
+            if (tile.isBomb()) {
+                clickOn(node);
                 break;
             }
         }
-        assertEquals("Game over!", robot.lookup("#gameStatusLabel").queryLabeled().getText());
+        assertEquals("Game over!", robot.lookup("#gameStatusLabel").queryLabeled().getText(), "Game should be over");
     }
 
     @Test
@@ -166,12 +166,12 @@ public class MineAppTest extends ApplicationTest {
         clickOn((Node) gameGrid.getChildren().get(0));
         push(KeyCode.SPACE);
 
-        Tile tileToClick = null;
-        for (Node n : gameGrid.getChildren()) {
-            int rowIndex = GridPane.getRowIndex(n);
-            int columnIndex = GridPane.getColumnIndex(n);
+        TileReadable tileToClick = null;
+        for (Node node : gameGrid.getChildren()) {
+            int rowIndex = GridPane.getRowIndex(node);
+            int columnIndex = GridPane.getColumnIndex(node);
 
-            Tile tile = gamePageController.getTile(columnIndex, rowIndex);
+            TileReadable tile = gamePageController.getTile(columnIndex, rowIndex);
             if (!tile.isBomb() && tile.hasAdjacentBomb() && tile.isRevealed()) {
                 tileToClick = tile;
                 break;
@@ -181,10 +181,10 @@ public class MineAppTest extends ApplicationTest {
         List<Tile> neighborTiles = gamePageController.getNeighborTiles(tileToClick.getX(), tileToClick.getY());
         for (Tile tile : neighborTiles) {
             if (tile.isBomb()) {
-                rightClickOn(gamePageController.getNodeFromGridPane(gameGrid, tile.getX(), tile.getY()));
+                rightClickOn(getNodeFromGridPane(gameGrid, tile.getX(), tile.getY()));
             }
         }
-        Node tileToClickNode = gamePageController.getNodeFromGridPane(gameGrid, tileToClick.getX(), tileToClick.getY());
+        Node tileToClickNode = getNodeFromGridPane(gameGrid, tileToClick.getX(), tileToClick.getY());
         clickOn(tileToClickNode);
         push(KeyCode.SPACE);
 
@@ -206,5 +206,14 @@ public class MineAppTest extends ApplicationTest {
         assertEquals(false, robot.lookup("#score1").tryQuery().isPresent());
         click("Leaderboard");
         assertEquals(true, robot.lookup("#score1").tryQuery().isPresent());
+    }
+
+    // For testing
+    public static Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+        return gridPane.getChildren().stream()
+                .filter(node -> GridPane.getColumnIndex(node) == col &&
+                        GridPane.getRowIndex(node) == row)
+                .findFirst()
+                .orElse(null);
     }
 }

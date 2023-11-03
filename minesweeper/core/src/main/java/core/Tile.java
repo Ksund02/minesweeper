@@ -1,6 +1,6 @@
 package core;
 
-public class Tile {
+public class Tile implements TileReadable {
 
     private boolean isBomb, isFlagged, isRevealed;
     private int numBombsAround;
@@ -11,18 +11,22 @@ public class Tile {
         this.y = y;
     }
 
+    @Override
     public boolean isBomb() {
         return isBomb;
     }
 
+    @Override
     public boolean isFlagged() {
         return isFlagged;
     }
 
+    @Override
     public boolean isRevealed() {
         return isRevealed;
     }
 
+    @Override
     public boolean hasAdjacentBomb() {
         return this.getNumBombsAround() > 0;
     }
@@ -32,17 +36,25 @@ public class Tile {
     }
 
     public void toggleFlag() {
+        if (this.isRevealed())
+            throw new IllegalStateException("Can not flag a revealed tile");
+
         isFlagged = !isFlagged;
     }
 
     public void reveal() {
+        if (this.isFlagged())
+            throw new IllegalStateException("Can not reveal a flagged tile");
+
         isRevealed = true;
     }
 
+    @Override
     public int getX() {
         return x;
     }
 
+    @Override
     public int getY() {
         return y;
     }
