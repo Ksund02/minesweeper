@@ -18,5 +18,5 @@ module minesweeperstorage {
     opens storage;
 
     // SpringBoot needs access to the springBoot package, so called 'deep reflection'.
-    opens springBoot;
+    opens springboot;
 }
