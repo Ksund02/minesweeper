@@ -93,7 +93,7 @@ public class SettingsControllerTest extends ApplicationTest {
         assertEquals("Dark mode", robot.lookup("#themeLabel").queryLabeled().getText());
         assertEquals("-fx-font-weight: bold", robot.lookup("#themeLabel").queryLabeled().getStyle());
         assertEquals(true,
-                (SettingsManager.getThemeSettings().getBackgroundStyle() == robot.lookup("#vBox").query().getStyle()));
+                (SettingsManager.getThemeSettings().getBackgroundStyle() == robot.lookup("#vbox").query().getStyle()));
         assertEquals(false, robot.lookup("#lightModeButton").query().isDisabled());
         assertEquals(true, robot.lookup("#darkModeButton").query().isDisabled());
     }
@@ -104,7 +104,7 @@ public class SettingsControllerTest extends ApplicationTest {
         assertEquals("Light mode", robot.lookup("#themeLabel").queryLabeled().getText());
         assertEquals("-fx-font-weight: normal", robot.lookup("#themeLabel").queryLabeled().getStyle());
         assertEquals(true,
-                (SettingsManager.getThemeSettings().getBackgroundStyle() == robot.lookup("#vBox").query().getStyle()));
+                (SettingsManager.getThemeSettings().getBackgroundStyle() == robot.lookup("#vbox").query().getStyle()));
         assertEquals(true, robot.lookup("#lightModeButton").query().isDisabled());
         assertEquals(false, robot.lookup("#darkModeButton").query().isDisabled());
     }
