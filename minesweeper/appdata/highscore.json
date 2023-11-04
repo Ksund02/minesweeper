@@ -35,6 +35,11 @@
   "difficulty" : "EASY"
 }, {
   "name" : "Christian",
+  "score" : 47,
+  "date" : "2023-11-04",
+  "difficulty" : "MEDIUM"
+}, {
+  "name" : "Christian",
   "score" : 61,
   "date" : "2023-10-19",
   "difficulty" : "EASY"
