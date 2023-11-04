@@ -13,11 +13,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-    </properties>
-
     <dependencies>
 
         <!-- This module needs the jackson library. -->
@@ -51,21 +46,21 @@
                     <groupId>org.springframework.boot</groupId>
                 </exclusion>
             </exclusions>
-            <version>3.1.5</version>
+            <version>2.6.8</version>
         </dependency>
 
         <!-- Inserting jetty as servlet container instead of tomcat.-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jetty</artifactId>
-            <version>3.1.5</version>
+            <version>2.6.8</version>
         </dependency>
 
         <!-- This dependency is needed for the springboot testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>3.1.5</version>
+            <version>2.6.8</version>
             <scope>test</scope>
         </dependency>
         
