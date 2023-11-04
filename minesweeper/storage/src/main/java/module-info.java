@@ -12,7 +12,6 @@ module minesweeperstorage {
     requires spring.beans;
     requires spring.core;
     requires spring.context;
-    requires jakarta.servlet;
     
     // Jackson needs access to the readAndWriteFile package
     exports storage;
