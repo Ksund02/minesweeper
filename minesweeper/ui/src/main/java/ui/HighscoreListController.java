@@ -1,11 +1,10 @@
 package ui;
 
+import core.settings.SettingsManager;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.io.IOException;
 import java.util.List;
-
-import core.settings.SettingsManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,55 +14,127 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
 import storage.UserScore;
 
+/**
+ * This class is used to control the highscore list page. Upon initialization,
+ * it reads the highscore file and displays the top 10 scores. 
+ * also sets the background color of the page, depending on the theme settings.
+ */
 public class HighscoreListController {
-    private final static int HIGHESCORE_LENGTH = 10;
-    public final static int STAGE_WIDTH = 500, STAGE_HEIGHT = 600;
-    private final RestRequest restRequest = new RestRequest("http://localhost:8080");
+  private static final int HIGHESCORE_LENGTH = 10;
+  public static final int STAGE_WIDTH = 500;
+  public static final int STAGE_HEIGHT = 600;
+  private final RestRequest restRequest = new RestRequest("http://localhost:8080");
 
-    @FXML
-    private Label name1, name2, name3, name4, name5, name6, name7, name8, name9, name10;
-    @FXML
-    private Label score1, score2, score3, score4, score5, score6, score7, score8, score9, score10;
-    @FXML
-    private Label date1, date2, date3, date4, date5, date6, date7, date8, date9, date10;
-    @FXML
-    private AnchorPane anchorPane;
+  @FXML
+  private Label name1;
+  @FXML
+  private Label name2;
+  @FXML
+  private Label name3;
+  @FXML
+  private Label name4;
+  @FXML
+  private Label name5;
+  @FXML
+  private Label name6;
+  @FXML
+  private Label name7;
+  @FXML
+  private Label name8;
+  @FXML
+  private Label name9;
+  @FXML
+  private Label name10;
+  @FXML
+  private Label score1;
+  @FXML
+  private Label score2;
+  @FXML
+  private Label score3;
+  @FXML
+  private Label score4;
+  @FXML
+  private Label score5;
+  @FXML
+  private Label score6;
+  @FXML
+  private Label score7;
+  @FXML
+  private Label score8;
+  @FXML
+  private Label score9;
+  @FXML
+  private Label score10;
+  @FXML
+  private Label date1;
+  @FXML
+  private Label date2;
+  @FXML
+  private Label date3;
+  @FXML
+  private Label date4;
+  @FXML
+  private Label date5;
+  @FXML
+  private Label date6;
+  @FXML
+  private Label date7;
+  @FXML
+  private Label date8;
+  @FXML
+  private Label date9;
+  @FXML
+  private Label date10;
+  @FXML
+  private AnchorPane anchorPane;
 
-    @FXML
-    public void initialize() {
-        List<UserScore> userScores = restRequest.readFromHighscore();
-        userScores = userScores.stream()
-                .filter(score -> score.getDifficulty().equals(SettingsManager.getGameDifficultyAsString()))
-                .toList();
-        
-        List<Label> names = new ArrayList<>(
-                Arrays.asList(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10));
-        List<Label> scores = new ArrayList<>(
-                Arrays.asList(score1, score2, score3, score4, score5, score6, score7, score8, score9, score10));
-        List<Label> dates = new ArrayList<>(
-                Arrays.asList(date1, date2, date3, date4, date5, date6, date7, date8, date9, date10));
+  /**
+   * Initializes the highscore list page. Reads the highscore file and displays the top 10 scores.
+   * Also sets the background color of the page, depending on the theme settings.
 
-        for (int i = 0; i < Math.min(HIGHESCORE_LENGTH, userScores.size()); i++) {
-            names.get(i).setText(userScores.get(i).getName());
-            scores.get(i).setText("" + userScores.get(i).getScore());
-            dates.get(i).setText(userScores.get(i).getDate());
-        }
-        anchorPane.setStyle(SettingsManager.getThemeSettings().getBackgroundStyle());
+   * @throws IOException If the FXML file for the game page could not be found.
+   */
+  @FXML
+  public void initialize() {
+    List<UserScore> userScores = restRequest.readFromHighscore();
+    userScores = userScores.stream()
+        .filter(score -> score.getDifficulty().equals(
+            SettingsManager.getGameDifficultyAsString())).toList();
+
+    List<Label> names = new ArrayList<>(
+        Arrays.asList(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10));
+    List<Label> scores = new ArrayList<>(
+        Arrays.asList(score1, score2, score3, score4,
+        score5, score6, score7, score8, score9, score10));
+    List<Label> dates = new ArrayList<>(
+        Arrays.asList(date1, date2, date3, date4, date5, date6, date7, date8, date9, date10));
+
+    for (int i = 0; i < Math.min(HIGHESCORE_LENGTH, userScores.size()); i++) {
+      names.get(i).setText(userScores.get(i).getName());
+      scores.get(i).setText("" + userScores.get(i).getScore());
+      dates.get(i).setText(userScores.get(i).getDate());
     }
+    anchorPane.setStyle(SettingsManager.getThemeSettings().getBackgroundStyle());
+  }
 
-    @FXML
-    public void switchToGame(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
-        Parent root = fxmlLoader.load();
-        Node eventSource = (Node) event.getSource();
-        Stage stage = (Stage) eventSource.getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.setWidth(SettingsManager.getGameDifficulty().getStageMinWidth()+1);
-        stage.setHeight(SettingsManager.getGameDifficulty().getStageMinHeight()+1);
-        stage.show();
-    }
+  /**
+   * Switches to the game page.
+
+   * @param event The event that triggered this method.
+   * @throws IOException If the FXML file for the game page could not be found.
+   */
+  @FXML
+  public void switchToGame(ActionEvent event) throws IOException {
+    FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
+    Parent root = fxmlLoader.load();
+    Node eventSource = (Node) event.getSource();
+    Stage stage = (Stage) eventSource.getScene().getWindow();
+    stage.setScene(new Scene(root));
+    stage.setWidth(SettingsManager.getGameDifficulty().getStageMinWidth() + 1);
+    stage.setHeight(SettingsManager.getGameDifficulty().getStageMinHeight() + 1);
+    stage.show();
+  }
 
 }
