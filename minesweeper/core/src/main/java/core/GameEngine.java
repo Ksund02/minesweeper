@@ -1,181 +1,219 @@
 package core;
 
+import core.settings.SettingsManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import core.settings.SettingsManager;
-
+/**
+ * This is a class which serves as a bridge between the GameBoard and the GUI.
+ * It is responsible for handling user input and updating the GameBoard accordingly.
+ * It also keeps track of the game's stopwatch.
+ * 
+ * <p>What essentially happens is that the GUI calls the GameEngine's methods when the user
+ * interacts with the GUI. The GameEngine then updates the GameBoard accordingly, and
+ * returns a list of tiles which were affected by the user's action. The GUI then updates
+ * the affected tiles.
+ */
 public class GameEngine {
-    private GameBoard gameBoard;
-    private Stopwatch stopwatch;
-    private List<TileReadable> latestUpdatedTiles = new ArrayList<>();
+  private GameBoard gameBoard;
+  private Stopwatch stopwatch;
+  private List<TileReadable> latestUpdatedTiles = new ArrayList<>();
 
-    public GameEngine() {
-        gameBoard = new GameBoard(SettingsManager.getGameDifficulty());
-        stopwatch = new Stopwatch();
+  /**
+   * Initializes a new game with default settings.
+   */
+  public GameEngine() {
+    gameBoard = new GameBoard(SettingsManager.getGameDifficulty());
+    stopwatch = new Stopwatch();
+  }
+
+  /**
+   * Resets the game to its initial state.
+   */
+  public void resetGame() {
+    this.gameBoard = new GameBoard(SettingsManager.getGameDifficulty());
+    stopwatch.restart();
+    latestUpdatedTiles.clear();
+  }
+
+  /**
+   * Handles a left click action at the specified coordinates.
+
+   * @param x the x coordinate
+   * @param y the y coordinate
+   */
+  public void handleLeftClick(int x, int y) {
+    latestUpdatedTiles.clear();
+
+    TileReadable clickedTile = getTile(x, y);
+    boolean tileFlaggedAfterStart = isGameStarted() && clickedTile.isFlagged();
+    if (gameBoard.isGameEnded() || tileFlaggedAfterStart) {
+      return;
     }
 
-    public void resetGame() {
-        this.gameBoard = new GameBoard(SettingsManager.getGameDifficulty());
-        stopwatch.restart();
-        latestUpdatedTiles.clear();
+    gameBoard.tileClicked(x, y);
+
+    if (clickedTile.isBomb()) {
+      handleBombClicked();
+      return;
     }
 
-    public void handleLeftClick(int x, int y) {
-        latestUpdatedTiles.clear();
+    addRevealedTilesToLatestUpdated();
 
-        TileReadable clickedTile = getTile(x, y);
-        boolean tileFlaggedAfterStart = isGameStarted() && clickedTile.isFlagged();
-        if (gameBoard.isGameEnded() || tileFlaggedAfterStart)
-            return;
-
-        gameBoard.tileClicked(x, y);
-
-        if (clickedTile.isBomb()) {
-            handleBombClicked();
-            return;
-        }
-
-        addRevealedTilesToLatestUpdated();
-
-        if (isGameStarted() && !stopWatchIsStarted())
-            stopwatch.start();
-
-        if (isGameEnded())
-            stopwatch.stop();
+    if (isGameStarted() && !stopWatchIsStarted()) {
+      stopwatch.start();
     }
 
-    public void handleRightClick(int x, int y) {
-        latestUpdatedTiles.clear();
-        if (!gameBoard.isGameStarted() || gameBoard.isGameEnded())
-            return;
+    if (isGameEnded()) {
+      stopwatch.stop();
+    }
+  }
 
-        Tile clickedTile = gameBoard.getTile(x, y);
-        if (canToggleFlag(clickedTile))
-            toggleTileFlag(clickedTile);
+  /**
+   * Handles a right click action at the specified coordinates.
+
+   * @param x the x coordinate
+   * @param y the y coordinate
+   */
+  public void handleRightClick(int x, int y) {
+    latestUpdatedTiles.clear();
+    if (!gameBoard.isGameStarted() || gameBoard.isGameEnded()) {
+      return;
     }
 
-    public void handleSpaceBarClick(int x, int y) {
-        Tile clickedTile = gameBoard.getTile(x, y);
-        boolean tileRevealedAndGameRunning = gameBoard.isGameStarted() && !gameBoard.isGameEnded()
-                && clickedTile.isRevealed();
-        if (!tileRevealedAndGameRunning)
-            return;
+    Tile clickedTile = gameBoard.getTile(x, y);
+    if (canToggleFlag(clickedTile)) {
+      toggleTileFlag(clickedTile);
+    }
+  }
 
-        List<Tile> neighbors = gameBoard.getNeighborTiles(x, y);
-        boolean correctNumberOfFlags = clickedTile.getNumBombsAround() == neighbors.stream().filter(Tile::isFlagged)
-                .count();
+  /**
+   * Handles a space bar click action at the specified coordinates.
 
-        // The number of flags around the tile must be equal to the number of bombs
-        // around the tile
-        if (!correctNumberOfFlags) {
-            return;
-        }
-
-        // Clicking on all the neighbors of the tile which are not flagged.
-        // We need to click all of the non-bomb tiles first, such that all clicked tiles
-        // are revealed.
-        neighbors.stream().filter(tile -> !tile.isFlagged() && !tile.isBomb())
-                .forEach(tile -> handleLeftClick(tile.getX(), tile.getY()));
-        neighbors.stream().filter(tile -> !tile.isFlagged() && tile.isBomb())
-                .forEach(tile -> handleLeftClick(tile.getX(), tile.getY()));
-        addRevealedTilesToLatestUpdated();
+   * @param x the x coordinate
+   * @param y the y coordinate
+   */
+  public void handleSpaceBarClick(int x, int y) {
+    Tile clickedTile = gameBoard.getTile(x, y);
+    boolean tileRevealedAndGameRunning = gameBoard.isGameStarted() && !gameBoard.isGameEnded()
+        && clickedTile.isRevealed();
+    if (!tileRevealedAndGameRunning) {
+      return;
     }
 
-    /**
-     * Handles the event when a bomb is clicked. This stops the game's stopwatch and
-     * updates the list of tiles
-     * that were affected by the bomb click. The affected tiles are set to be the
-     * list of bomb tiles from the game board.
-     */
-    private void handleBombClicked() {
-        List<Tile> bombTiles = gameBoard.getBombTiles();
-        bombTiles.forEach(tile -> {
-            if (tile.isFlagged())
-                tile.toggleFlag();
-            tile.reveal();
-        });
-        latestUpdatedTiles.addAll(bombTiles);
+    List<Tile> neighbors = gameBoard.getNeighborTiles(x, y);
+    boolean correctNumberOfFlags = clickedTile.getNumBombsAround()
+        == neighbors.stream().filter(Tile::isFlagged).count();
 
-        stopwatch.stop();
+    if (!correctNumberOfFlags) {
+      return;
     }
 
-    private void toggleTileFlag(Tile tile) {
+    neighbors.stream()
+             .filter(tile -> !tile.isFlagged() && !tile.isBomb())
+             .forEach(tile -> handleLeftClick(tile.getX(), tile.getY()));
+    neighbors.stream()
+             .filter(tile -> !tile.isFlagged() && tile.isBomb())
+             .forEach(tile -> handleLeftClick(tile.getX(), tile.getY()));
+
+    addRevealedTilesToLatestUpdated();
+  }
+
+
+  /**
+   * Handles the event when a bomb is clicked. 
+   * It stops the game's stopwatch and reveals all bomb tiles.
+   */
+  private void handleBombClicked() {
+    List<Tile> bombTiles = gameBoard.getBombTiles();
+    bombTiles.forEach(tile -> {
+      if (tile.isFlagged()) {
         tile.toggleFlag();
+      }
+      tile.reveal();
+    });
+    latestUpdatedTiles.addAll(bombTiles);
 
-        if (tile.isFlagged())
-            gameBoard.decrementFlagsLeft();
-        else
-            gameBoard.incrementFlagsLeft();
+    stopwatch.stop();
+  }
 
-        latestUpdatedTiles.add(tile);
+  private void toggleTileFlag(Tile tile) {
+    tile.toggleFlag();
+
+    if (tile.isFlagged()) {
+      gameBoard.decrementFlagsLeft();
+    } else {
+      gameBoard.incrementFlagsLeft();
     }
+    latestUpdatedTiles.add(tile);
+  }
 
-    private boolean canToggleFlag(Tile tile) {
-        return !tile.isRevealed() && gameBoard.hasFlagsLeft() && !tile.isFlagged() || tile.isFlagged();
-    }
+  private boolean canToggleFlag(Tile tile) {
+    return !tile.isRevealed() && gameBoard.hasFlagsLeft() && !tile.isFlagged() || tile.isFlagged();
+  }
 
-    private void addRevealedTilesToLatestUpdated() {
-        for (int i = 0; i < gameBoard.getWidth(); i++) {
-            for (int j = 0; j < gameBoard.getHeight(); j++) {
-                TileReadable tile = getTile(i, j);
-                if (tile.isRevealed())
-                    latestUpdatedTiles.add(tile);
-            }
+  private void addRevealedTilesToLatestUpdated() {
+    for (int i = 0; i < gameBoard.getWidth(); i++) {
+      for (int j = 0; j < gameBoard.getHeight(); j++) {
+        TileReadable tile = getTile(i, j);
+        if (tile.isRevealed()) {
+          latestUpdatedTiles.add(tile);
         }
+      }  
     }
+  }
 
-    public boolean stopWatchIsStarted() {
-        return stopwatch.isStarted();
-    }
+  public boolean stopWatchIsStarted() {
+    return stopwatch.isStarted();
+  }
 
-    public List<TileReadable> getLatestUpdatedTiles() {
-        return new ArrayList<>(latestUpdatedTiles);
-    }
+  public List<TileReadable> getLatestUpdatedTiles() {
+    return new ArrayList<>(latestUpdatedTiles);
+  }
 
-    public int getFlagsLeft() {
-        return gameBoard.getFlagsLeft();
-    }
+  public int getFlagsLeft() {
+    return gameBoard.getFlagsLeft();
+  }
 
-    public boolean isGameWon() {
-        return gameBoard.gameIsWon();
-    }
+  public boolean isGameWon() {
+    return gameBoard.gameIsWon();
+  }
 
-    public boolean isGameLost() {
-        return gameBoard.isGameLost();
-    }
+  public boolean isGameLost() {
+    return gameBoard.isGameLost();
+  }
 
-    public TileReadable getTile(int x, int y) {
-        return gameBoard.getTile(x, y);
-    }
+  public TileReadable getTile(int x, int y) {
+    return gameBoard.getTile(x, y);
+  }
 
-    public boolean isGameStarted() {
-        return gameBoard.isGameStarted();
-    }
+  public boolean isGameStarted() {
+    return gameBoard.isGameStarted();
+  }
 
-    public int getTime() {
-        return stopwatch.getTime();
-    }
+  public int getTime() {
+    return stopwatch.getTime();
+  }
 
-    public boolean isGameEnded() {
-        return gameBoard.isGameEnded();
-    }
+  public boolean isGameEnded() {
+    return gameBoard.isGameEnded();
+  }
 
-    public String getDate() {
-        return stopwatch.getDate();
-    }
+  public String getDate() {
+    return stopwatch.getDate();
+  }
 
-    public Stopwatch getStopwatch() {
-        return stopwatch;
-    }
+  public Stopwatch getStopwatch() {
+    return stopwatch;
+  }
 
-    protected GameBoard getGameBoard() {
-        return gameBoard;
-    }
+  protected GameBoard getGameBoard() {
+    return gameBoard;
+  }
 
-    // For testing
-    public List<Tile> getNeighborTiles(int x, int y) {
-        return gameBoard.getNeighborTiles(x, y);
-    }
+  // For testing
+  public List<Tile> getNeighborTiles(int x, int y) {
+    return gameBoard.getNeighborTiles(x, y);
+  }
 
 }
