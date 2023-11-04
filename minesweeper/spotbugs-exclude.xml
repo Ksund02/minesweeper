@@ -6,7 +6,7 @@ like.
 
 <FindBugsFilter>
     <Match>
-        <Class name="~springBoot\.HighscoreRestController" /> <!-- ~ marks that this is a regex, and
+        <Class name="~springboot\.HighscoreRestController" /> <!-- ~ marks that this is a regex, and
         we must use \ to escape the ., which otherwise would match any character -->
         <Bug pattern="EI_EXPOSE_REP2" /> <!-- This is the bug we are excluding -->
     </Match>
