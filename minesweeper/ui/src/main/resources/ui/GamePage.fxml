@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GamePageController">
+<VBox fx:id="vbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GamePageController">
    <children>
       <HBox alignment="CENTER" prefHeight="71.0" prefWidth="500.0">
          <children>
@@ -74,7 +74,7 @@
                   <HBox alignment="TOP_CENTER" prefHeight="22.0" prefWidth="133.0">
                      <children>
                         <TextField fx:id="nameField" disable="true" prefHeight="25.0" prefWidth="98.0" promptText="name ..." visible="false" />
-                        <Button fx:id="sendToLeaderBoardButton" disable="true" mnemonicParsing="false" onAction="#submitHigescore" text="OK" visible="false" />
+                        <Button fx:id="sendToLeaderBoardButton" disable="true" mnemonicParsing="false" onAction="#submitHighscore" text="OK" visible="false" />
                      </children>
                   </HBox>
                   <Label fx:id="feedbackLabel" text="Sent to leaderboard!" visible="false" />
