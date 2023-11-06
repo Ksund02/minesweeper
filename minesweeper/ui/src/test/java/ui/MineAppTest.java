@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.control.LabeledMatchers;
@@ -27,14 +28,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import storage.HighscoreFileManager;
+import storage.UserScore;
 
 public class MineAppTest extends ApplicationTest {
-
-    /*
-     * Mockito is mentioned in the lecture notes, but is not currently used.
-     * 
-     * 
-     */
 
     private GamePageController gamePageController;
     private Parent root;
@@ -43,7 +39,19 @@ public class MineAppTest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) throws IOException {
+
+        // Setting up a mock of HTTP requests.
+        RestRequest mockz = Mockito.mock(RestRequest.class);
+        Mockito.doAnswer(inv -> {
+          UserScore score = inv.getArgument(0, UserScore.class);
+          HighscoreFileManager.writeToHighscore(score, HighscoreFileManager.getFile());
+          return null;
+        }).when(mockz).writeToHighscore(Mockito.any(UserScore.class));
+
+        GamePageController ctrl = new GamePageController();
+        ctrl.setRestRequest(mockz);
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
+        fxmlLoader.setControllerFactory(cls -> ctrl);
         root = fxmlLoader.load();
         gamePageController = fxmlLoader.getController();
         stage.setScene(new Scene(root));
@@ -60,36 +68,21 @@ public class MineAppTest extends ApplicationTest {
      *               click on.
      */
     private void click(String... labels) {
-        // The button class is a sublass of the Labeled class.
-        // So when searching for matching labels, we will also find buttons.
         for (String label : labels) {
             clickOn(LabeledMatchers.hasText(label));
         }
     }
 
-    // TODO: Make a updated reset game test. It it not writing anything
-    // to terminal anymore
     @Test
     public void testResetGame() {
-
-        // Redirecting the printing from the terminal to a buffer
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(buffer));
-
         click("Reset game");
         assertFalse(gamePageController.getStarted());
-        // We must trim the text, since the terminal will have a newline at the end.
-        // String terminal_text = buffer.toString().trim();
-
-        // Not printing to terminal
-        // assertEquals("reset game er trykket inn", terminal_text);
     }
 
-    // Parameterized test, the test will be run multiple times, but each time with
-    // slightly different parameters.
-    // We should probably add those once we have more interesting things to test.
-
-    // test where we click on the tiles that are not bombs and win:
+    /**
+     * A test where we click on all the tiles that are not bombs.
+     * The game should be won after this.
+     */
     @Test
     public void testWin() {
         assertInitialState();
@@ -201,11 +194,21 @@ public class MineAppTest extends ApplicationTest {
         assertEquals(true, robot.lookup("#easyButton").tryQuery().isPresent());
     }
 
+    /**
+     * This method tests if the leaderboard is shown when the leaderboard button is
+     * clicked. The standard output is redirected to a ByteArrayOutputStream, such
+     * that we don't get the error messages caused by the fact that the HTTP-
+     * requests are not working, since we are not running the server.
+     */
     @Test
     public void testSwitchToLeaderboard() {
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
         assertEquals(false, robot.lookup("#score1").tryQuery().isPresent());
         click("Leaderboard");
         assertEquals(true, robot.lookup("#score1").tryQuery().isPresent());
+        System.setOut(originalOut);
     }
 
     // For testing
