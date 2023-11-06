@@ -34,6 +34,14 @@
             <version>19</version>
         </dependency>
 
+        <!-- Mockito, used in testing -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.7.0</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- These dependencies are used when creating these graphical tests,
         where you have a player clicking around in the app. -->
         <dependency>
