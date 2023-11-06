@@ -21,7 +21,7 @@ import storage.UserScore;
 
 public class HighscoreListController {
 
-    private final static int HIGHESCORE_LENGTH = 10;
+    private final static int HIGHSCORE_LENGTH = 10;
     public final static int STAGE_WIDTH = 500, STAGE_HEIGHT = 600;
     private final RestRequest restRequest = new RestRequest("http://localhost:8080");
     private String[] difficulties = { "EASY", "MEDIUM", "HARD" };
@@ -55,8 +55,8 @@ public class HighscoreListController {
         anchorPane.setStyle(SettingsManager.getThemeSettings().getBackgroundStyle());
         difficultyChoiceBox.getItems().addAll(difficulties);
         difficultyChoiceBox.setValue(SettingsManager.getGameDifficultyAsString());
-        difficultyChoiceBox.setOnAction(event -> switchLeaderboardDifficulty(event));
-        this.switchLeaderboardDifficulty(null);
+        difficultyChoiceBox.setOnAction(event -> switchLeaderboardDifficulty());
+        switchLeaderboardDifficulty(); // Show the highscores for the selected difficulty.
     }
 
     @FXML
@@ -71,7 +71,11 @@ public class HighscoreListController {
         stage.show();
     }
 
-    public void switchLeaderboardDifficulty(ActionEvent event) {
+    /**
+     * Displays the highscores for the selected difficulty.
+     * Difficulty is selected by clicking in the user interface.
+     */
+    public void switchLeaderboardDifficulty() {
         String difficulty = difficultyChoiceBox.getValue();
         difficultyLabel.setText(difficulty);
         switch (difficulty) {
@@ -92,7 +96,7 @@ public class HighscoreListController {
                 .filter(score -> score.getDifficulty().equals(difficulty))
                 .toList();
 
-        for (int i = 0; i < HIGHESCORE_LENGTH; i++) {
+        for (int i = 0; i < HIGHSCORE_LENGTH; i++) {
             if (i < scoresToShow.size()) {
                 names.get(i).setText(scoresToShow.get(i).getName());
                 scores.get(i).setText("" + scoresToShow.get(i).getScore());
