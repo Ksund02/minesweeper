@@ -7,8 +7,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
-import storage.HighscoreFileManager;
 import storage.UserScore;
 
 /**
@@ -59,8 +59,8 @@ public class RestRequest {
       return userScores;
     } catch (IOException | InterruptedException e) {
       System.out.println("Connection to server failed!");
-      return HighscoreFileManager.readFromHighscore(HighscoreFileManager.getFile()); 
-      // Return the correct file anyway, used by tests.
+      // Return an empty list as default, such that the game can still be played.
+      return new ArrayList<UserScore>();
     }
   }
 
@@ -91,7 +91,6 @@ public class RestRequest {
     } catch (IOException | InterruptedException e) {
       // You land here if there are network failures, or if there are issues with the server.
       System.out.println("Connection to server failed!");
-      HighscoreFileManager.writeToHighscore(userScore, HighscoreFileManager.getFile());
     }
   }
 }
