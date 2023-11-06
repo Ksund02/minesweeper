@@ -19,17 +19,21 @@ import storage.UserScore;
 
 /**
  * This class is used to control the highscore list page. Upon initialization,
- * it reads the highscore file and displays the top 10 scores. 
+ * it reads the highscore file and displays the top 10 scores.
  * also sets the background color of the page, depending on the theme settings.
  */
 public class HighscoreListController {
 
-    private final static int HIGHSCORE_LENGTH = 10;
-    public final static int STAGE_WIDTH = 500, STAGE_HEIGHT = 600;
-    private final RestRequest restRequest = new RestRequest("http://localhost:8080");
-    private String[] difficulties = { "EASY", "MEDIUM", "HARD" };
-    private List<UserScore> userScores, scoresToShow;
-    private List<Label> names, scores, dates;
+  private static final int HIGHSCORE_LENGTH = 10;
+  public static final int STAGE_WIDTH = 500;
+  public static final int STAGE_HEIGHT = 600;
+  private final RestRequest restRequest = new RestRequest("http://localhost:8080");
+  private String[] difficulties = { "EASY", "MEDIUM", "HARD" };
+  private List<UserScore> userScores;
+  private List<UserScore> scoresToShow;
+  private List<Label> names;
+  private List<Label> scores;
+  private List<Label> dates;
 
   @FXML
   private Label name1;
@@ -98,23 +102,30 @@ public class HighscoreListController {
   @FXML
   private ChoiceBox<String> difficultyChoiceBox;
 
-    @FXML
-    public void initialize() {
-        userScores = restRequest.readFromHighscore();
+  /**
+   * Initializes the highscore list page.
+   * Reads the highscore file and displays the top 10 scores.
+   * Also sets the background color of the page, depending on the theme settings.
 
-        names = new ArrayList<>(
-                Arrays.asList(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10));
-        scores = new ArrayList<>(
-                Arrays.asList(score1, score2, score3, score4, score5, score6, score7, score8, score9, score10));
-        dates = new ArrayList<>(
-                Arrays.asList(date1, date2, date3, date4, date5, date6, date7, date8, date9, date10));
+   * @throws IOException If the FXML file for the game page could not be found.
+   */
+  @FXML
+  public void initialize() {
+    userScores = restRequest.readFromHighscore();
 
-        anchorPane.setStyle(SettingsManager.getThemeSettings().getBackgroundStyle());
-        difficultyChoiceBox.getItems().addAll(difficulties);
-        difficultyChoiceBox.setValue(SettingsManager.getGameDifficultyAsString());
-        difficultyChoiceBox.setOnAction(event -> switchLeaderboardDifficulty());
-        switchLeaderboardDifficulty(); // Show the highscores for the selected difficulty.
-    }
+    names = new ArrayList<>(Arrays.asList(
+        name1, name2, name3, name4, name5, name6, name7, name8, name9, name10));
+    scores = new ArrayList<>(Arrays.asList(
+        score1, score2, score3, score4, score5, score6, score7, score8, score9, score10));
+    dates = new ArrayList<>(Arrays.asList(
+        date1, date2, date3, date4, date5, date6, date7, date8, date9, date10));
+
+    anchorPane.setStyle(SettingsManager.getThemeSettings().getBackgroundStyle());
+    difficultyChoiceBox.getItems().addAll(difficulties);
+    difficultyChoiceBox.setValue(SettingsManager.getGameDifficultyAsString());
+    difficultyChoiceBox.setOnAction(event -> switchLeaderboardDifficulty());
+    switchLeaderboardDifficulty(); // Show the highscores for the selected difficulty.
+  }
 
   /**
    * Switches to the game page.
@@ -134,42 +145,42 @@ public class HighscoreListController {
     stage.show();
   }
 
-    /**
-     * Displays the highscores for the selected difficulty.
-     * Difficulty is selected by clicking in the user interface.
-     */
-    public void switchLeaderboardDifficulty() {
-        String difficulty = difficultyChoiceBox.getValue();
-        difficultyLabel.setText(difficulty);
-        switch (difficulty) {
-            case "EASY":
-                difficultyLabel.setStyle("-fx-text-fill: green;");
-                break;
-            case "MEDIUM":
-                difficultyLabel.setStyle("-fx-text-fill: orange;");
-                break;
-            case "HARD":
-                difficultyLabel.setStyle("-fx-text-fill: red;");
-                break;
-            default:
-                throw new IllegalStateException("Invalid game difficulty: " + difficulty + "!");
-        }
-
-        scoresToShow = userScores.stream()
-                .filter(score -> score.getDifficulty().equals(difficulty))
-                .toList();
-
-        for (int i = 0; i < HIGHSCORE_LENGTH; i++) {
-            if (i < scoresToShow.size()) {
-                names.get(i).setText(scoresToShow.get(i).getName());
-                scores.get(i).setText("" + scoresToShow.get(i).getScore());
-                dates.get(i).setText(scoresToShow.get(i).getDate());
-            } else {
-                names.get(i).setText("-");
-                scores.get(i).setText("-");
-                dates.get(i).setText("-");
-            }
-        }
+  /**
+   * Displays the highscores for the selected difficulty.
+   * Difficulty is selected by clicking in the user interface.
+   */
+  public void switchLeaderboardDifficulty() {
+    String difficulty = difficultyChoiceBox.getValue();
+    difficultyLabel.setText(difficulty);
+    switch (difficulty) {
+      case "EASY":
+        difficultyLabel.setStyle("-fx-text-fill: green;");
+        break;
+      case "MEDIUM":
+        difficultyLabel.setStyle("-fx-text-fill: orange;");
+        break;
+      case "HARD":
+        difficultyLabel.setStyle("-fx-text-fill: red;");
+        break;
+      default:
+        throw new IllegalStateException("Invalid game difficulty: " + difficulty + "!");
     }
+
+    scoresToShow = userScores.stream()
+        .filter(score -> score.getDifficulty().equals(difficulty))
+        .toList();
+
+    for (int i = 0; i < HIGHSCORE_LENGTH; i++) {
+      if (i < scoresToShow.size()) {
+        names.get(i).setText(scoresToShow.get(i).getName());
+        scores.get(i).setText("" + scoresToShow.get(i).getScore());
+        dates.get(i).setText(scoresToShow.get(i).getDate());
+      } else {
+        names.get(i).setText("-");
+        scores.get(i).setText("-");
+        dates.get(i).setText("-");
+      }
+    }
+  }
 
 }
