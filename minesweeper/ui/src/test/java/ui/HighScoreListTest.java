@@ -36,11 +36,11 @@ public class HighScoreListTest extends ApplicationTest {
     RestRequest mockzy = Mockito.mock(RestRequest.class);
     this.restRequest = mockzy;
     Mockito.when(mockzy.readFromHighscore()).thenReturn(List.of(
-      new UserScore("Underdal", 400, "2021-04-23", "EASY"),
-      new UserScore("David", 200, "2021-04-21", "EASY"),
+      new UserScore("MineLegend", 14, "2021-04-19", "EASY"),
       new UserScore("Christian", 100, "2021-04-20", "EASY"),
+      new UserScore("David", 200, "2021-04-21", "EASY"),
       new UserScore("Oskar", 300, "2021-04-22", "EASY"),
-      new UserScore("MineLegend", 14, "2021-04-19", "EASY")));
+      new UserScore("Underdal", 400, "2021-04-23", "EASY")));
 
     HighscoreListController ctrl = new HighscoreListController();
     ctrl.setRestRequest(mockzy);
@@ -54,14 +54,13 @@ public class HighScoreListTest extends ApplicationTest {
 
   /**
    * Clicks on the labels in the fxml-file which has the same name as the string
-   * parameters.
+   * parameters. This method is used to click on buttons, which happen to be
+   * a subclass of the Labeled class.
    * 
    * @param labels A list of strings which are the names of the labels you want to
    *               click on.
    */
   private void click(String... labels) {
-    // The button class is a sublass of the Labeled class.
-    // So when searching for matching labels, we will also find buttons.
     for (String label : labels) {
       clickOn(LabeledMatchers.hasText(label));
     }
