@@ -12,12 +12,11 @@ module minesweeperstorage {
     requires spring.beans;
     requires spring.core;
     requires spring.context;
-    requires jakarta.servlet;
     
     // Jackson needs access to the readAndWriteFile package
     exports storage;
-    opens storage to com.fasterxml.jackson.databind;
+    opens storage;
 
     // SpringBoot needs access to the springBoot package, so called 'deep reflection'.
-    opens springBoot;
+    opens springboot;
 }
