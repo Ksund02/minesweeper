@@ -1,20 +1,29 @@
 package core.settings;
 
 public enum ThemeSettings {
-  LIGHT(false),
-  DARK(true);
+  LIGHT("white", "white;", "/"),
+  DARK("gray", "black;", "/dark_");
 
-  private final boolean isDarkMode;
+  private final String backgroundCollorScene;
+  private final String backgroundCollorGameGrid;
+  private final String tilePrefix;
 
-  private ThemeSettings(boolean isDarkMode) {
-    this.isDarkMode = isDarkMode;
+  private ThemeSettings(String backgroundCollorScene, 
+      String backgroundCollorGameGrid, String tilePrefix) {
+    this.backgroundCollorScene = "-fx-background-color: " + backgroundCollorScene;
+    this.backgroundCollorGameGrid = "-fx-background-color: " + backgroundCollorGameGrid;
+    this.tilePrefix = tilePrefix;
   }
 
   public String getBackgroundStyle() {
-    return isDarkMode ? "-fx-background-color: gray" : "-fx-background-color: white";
+    return backgroundCollorScene;
+  }
+
+  public String getBackgroundStyleGameGrid() {
+    return backgroundCollorGameGrid;
   }
 
   public String getTilePrefix() {
-    return isDarkMode ? "/dark_" : "/";
+    return tilePrefix;
   }
 }

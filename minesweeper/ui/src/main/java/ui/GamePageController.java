@@ -342,6 +342,7 @@ public class GamePageController {
 
   public void updateCollorTheme() {
     vbox.setStyle(SettingsManager.getThemeSettings().getBackgroundStyle());
+    gameGrid.setStyle(SettingsManager.getThemeSettings().getBackgroundStyleGameGrid());
   }
 
   // This is for ui-test
