@@ -369,6 +369,11 @@ public class GamePageController {
     return gameEngine.getStopwatch().getDate();
   }
 
+  // This is for ui-test
+  protected void setRestRequest(RestRequest restRequest) {
+    this.restRequest = restRequest;
+  }
+
   protected GameEngine getGameEngine() {
     return gameEngine;
   }
