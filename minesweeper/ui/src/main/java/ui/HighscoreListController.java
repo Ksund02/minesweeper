@@ -27,7 +27,7 @@ public class HighscoreListController {
   private static final int HIGHSCORE_LENGTH = 10;
   public static final int STAGE_WIDTH = 500;
   public static final int STAGE_HEIGHT = 600;
-  private final RestRequest restRequest = new RestRequest("http://localhost:8080");
+  private RestRequest restRequest = new RestRequest("http://localhost:8080");
   private String[] difficulties = { "EASY", "MEDIUM", "HARD" };
   private List<UserScore> userScores;
   private List<UserScore> scoresToShow;
@@ -183,4 +183,11 @@ public class HighscoreListController {
     }
   }
 
+  /**
+   * Sets the RestRequest object for this class.
+   * This method is used for testing purposes.
+   */
+  protected void setRestRequest(RestRequest restRequest) {
+    this.restRequest = restRequest;
+  }
 }
