@@ -150,12 +150,11 @@ public class SettingsController {
    */
   @FXML
   public void switchToGame(ActionEvent event) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ui/GamePage.fxml"));
     Parent root = fxmlLoader.load();
     Node eventSource = (Node) event.getSource();
     Stage stage = (Stage) eventSource.getScene().getWindow();
-    stage.setScene(new Scene(root, SettingsManager.getStageMinWidth() + 1,
-        SettingsManager.getStageMinHeight() + 1));
+    stage.setScene(new Scene(root));
     stage.show();
   }
 
