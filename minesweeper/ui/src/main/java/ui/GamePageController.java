@@ -58,7 +58,7 @@ public class GamePageController {
   private VBox vbox;
 
   private RestRequest restRequest = new RestRequest("http://localhost:8080");
-  private GameEngine gameEngine;
+  protected GameEngine gameEngine;
   private Timeline timeline;
   private int[] currentSquare;
 
