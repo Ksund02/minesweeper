@@ -94,14 +94,18 @@ public class HighscoreFileManager {
    * @param name The name of the player
    * @param time The score of the player
    * @param date The date the score was achieved
+   * @param gameDifficulty The difficulty of the game
+   * @param file The file which is to be read.
    */
-  public static void deleteFromHighscore(String name, int time, String date) {
-    List<UserScore> userScores = readFromHighscore(highscoreFile);
+  public static void deleteFromHighscore(String name, int time, String date,
+      String gameDifficulty, File file) {
+    List<UserScore> userScores = readFromHighscore(file);
     userScores = userScores.stream()
         .filter(score -> !score.getName().equals(name)
-            || score.getScore() != time || !score.getDate().equals(date))
+            || score.getScore() != time || !score.getDate().equals(date)
+            || !score.getDifficulty().equals(gameDifficulty))
         .toList();
-    writeToFile(userScores, highscoreFile);
+    writeToFile(userScores, file);
   }
 
   /**
