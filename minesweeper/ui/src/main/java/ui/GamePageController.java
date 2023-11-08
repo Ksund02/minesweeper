@@ -220,9 +220,7 @@ public class GamePageController {
     final int col = y;
     imageView.setOnMouseClicked(e -> {
       squareClicked(e, row, col);
-      if (gameEngine.isGameStarted() && gameEngine.stopWatchIsStarted()) {
-        timeline.play();
-      }
+      timeline.play();
     });
     // CurrentSquare gets updated when mouse hovers over a square
     imageView.setOnMouseEntered(e -> {
