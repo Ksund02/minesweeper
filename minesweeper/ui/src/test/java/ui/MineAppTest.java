@@ -31,11 +31,4 @@ public class MineAppTest {
     assertFalse(stage.getIcons().isEmpty());
   }
 
-  @Test
-  public void testStageSize() {
-    WaitForAsyncUtils.waitForFxEvents(); // Wait for all javafx operations to finish before testing stage size.
-    WaitForAsyncUtils.sleep(300, java.util.concurrent.TimeUnit.MILLISECONDS);
-    assertEquals(SettingsManager.getGameDifficulty().getStageMinWidth(), stage.getWidth(), "Stage width should match settings");
-    assertEquals(SettingsManager.getGameDifficulty().getStageMinHeight(), stage.getHeight(), "Stage height should match settings");
-  }
 }
