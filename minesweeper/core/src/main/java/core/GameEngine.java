@@ -46,8 +46,7 @@ public class GameEngine {
     latestUpdatedTiles.clear();
 
     TileReadable clickedTile = getTile(x, y);
-    boolean tileFlaggedAfterStart = isGameStarted() && clickedTile.isFlagged();
-    if (gameBoard.isGameEnded() || tileFlaggedAfterStart) {
+    if (clickedTile.isFlagged()) {
       return;
     }
 
@@ -60,7 +59,7 @@ public class GameEngine {
 
     addRevealedTilesToLatestUpdated();
 
-    if (isGameStarted() && !stopWatchIsStarted()) {
+    if (!stopWatchIsStarted()) {
       stopwatch.start();
     }
 
@@ -77,7 +76,7 @@ public class GameEngine {
    */
   public void handleRightClick(int x, int y) {
     latestUpdatedTiles.clear();
-    if (!gameBoard.isGameStarted() || gameBoard.isGameEnded()) {
+    if (!gameBoard.isGameStarted()) {
       return;
     }
 
@@ -95,9 +94,7 @@ public class GameEngine {
    */
   public void handleSpaceBarClick(int x, int y) {
     Tile clickedTile = gameBoard.getTile(x, y);
-    boolean tileRevealedAndGameRunning = gameBoard.isGameStarted() && !gameBoard.isGameEnded()
-        && clickedTile.isRevealed();
-    if (!tileRevealedAndGameRunning) {
+    if (!clickedTile.isRevealed()) {
       return;
     }
 
@@ -149,7 +146,7 @@ public class GameEngine {
   }
 
   private boolean canToggleFlag(Tile tile) {
-    return !tile.isRevealed() && gameBoard.hasFlagsLeft() && !tile.isFlagged() || tile.isFlagged();
+    return !tile.isRevealed() && gameBoard.hasFlagsLeft() || tile.isFlagged();
   }
 
   private void addRevealedTilesToLatestUpdated() {
@@ -205,10 +202,6 @@ public class GameEngine {
 
   public Stopwatch getStopwatch() {
     return stopwatch;
-  }
-
-  protected GameBoard getGameBoard() {
-    return gameBoard;
   }
 
   // For testing
