@@ -23,11 +23,6 @@ import storage.UserScore;
 
 public class HighScoreListTest extends ApplicationTest {
 
-  /*
-   * Mockito is mentioned in the lecture notes, but is not currently used.
-   * 
-   * 
-   */
   private Parent root;
   private FxRobot robot;
   private RestRequest restRequest;
@@ -37,11 +32,11 @@ public class HighScoreListTest extends ApplicationTest {
     RestRequest mockzy = Mockito.mock(RestRequest.class);
     this.restRequest = mockzy;
     Mockito.when(mockzy.readFromHighscore()).thenReturn(List.of(
-      new UserScore("MineLegend", 14, "2021-04-19", "EASY"),
-      new UserScore("Christian", 100, "2021-04-20", "MEDIUM"),
-      new UserScore("David", 200, "2021-04-21", "HARD"),
-      new UserScore("Oskar", 300, "2021-04-22", "MEDIUM"),
-      new UserScore("Underdal", 400, "2021-04-23", "HARD")));
+        new UserScore("MineLegend", 14, "2021-04-19", "EASY"),
+        new UserScore("Christian", 100, "2021-04-20", "MEDIUM"),
+        new UserScore("David", 200, "2021-04-21", "HARD"),
+        new UserScore("Oskar", 300, "2021-04-22", "MEDIUM"),
+        new UserScore("Underdal", 400, "2021-04-23", "HARD")));
 
     HighscoreListController ctrl = new HighscoreListController();
     ctrl.setRestRequest(mockzy);
@@ -69,9 +64,9 @@ public class HighScoreListTest extends ApplicationTest {
 
   /**
    * Checks if the expected player is present in the graphical user interface.
-
+   * 
    * @param userScore The expected player.
-   * @param position The position of the player in the highscore list (1-10)
+   * @param position  The position of the player in the highscore list (1-10)
    */
   private void checkPlayer(UserScore userScore, int position) {
     assertEquals(userScore.getName(), robot.lookup("#name" + position).queryLabeled().getText());
@@ -92,8 +87,6 @@ public class HighScoreListTest extends ApplicationTest {
     }
   }
 
-
-
   @Test
   public void testBackButton() {
     assertEquals(false, robot.lookup("#gameGrid").tryQuery().isPresent());
@@ -105,7 +98,7 @@ public class HighScoreListTest extends ApplicationTest {
   public void testChoiceBox() {
     List<UserScore> userScores = restRequest.readFromHighscore();
     ChoiceBox<String> choiceBox = robot.lookup("#difficultyChoiceBox").queryAs(ChoiceBox.class);
-    
+
     robot.clickOn("#difficultyChoiceBox");
     click("MEDIUM");
     assertEquals("MEDIUM", choiceBox.getValue());
