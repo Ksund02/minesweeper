@@ -1,6 +1,5 @@
 package ui;
 
-import core.settings.SettingsManager;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -24,9 +23,6 @@ public class MineApp extends Application {
 
     Image icon = new Image(getClass().getResourceAsStream("/images/truls.jpg"));
     stage.getIcons().add(icon);
-
-    stage.setWidth(SettingsManager.getGameDifficulty().getStageMinWidth() + 1);
-    stage.setHeight(SettingsManager.getGameDifficulty().getStageMinHeight() + 1);
     stage.show();
   }
 
