@@ -78,7 +78,6 @@ public class GamePageController {
     this.gameEngine = new GameEngine();
     newGameGrid();
     Platform.runLater(() -> setStageSize());
-
     spaceBarClickSetup();
     flagsLeftLabel.setText(String.valueOf(gameEngine.getFlagsLeft()));
     this.timeline = createTimeline();
@@ -251,9 +250,8 @@ public class GamePageController {
     Stage stage = (Stage) gameGrid.getScene().getWindow();
     stage.setMinWidth(SettingsManager.getStageMinWidth());
     stage.setMinHeight(SettingsManager.getStageMinHeight());
-
-    stage.setHeight(SettingsManager.getStageMinWidth() + 1);
-    stage.setWidth(SettingsManager.getStageMinWidth() + 1);
+    stage.setWidth(SettingsManager.getStageMinWidth());
+    stage.setHeight(SettingsManager.getStageMinHeight());
   }
 
   /**
