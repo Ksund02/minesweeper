@@ -25,6 +25,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import storage.HighscoreFileManager;
@@ -174,10 +175,10 @@ public class GamePageTest extends ApplicationTest {
         List<Tile> neighborTiles = gamePageController.getNeighborTiles(tileToClick.getX(), tileToClick.getY());
         for (Tile tile : neighborTiles) {
             if (tile.isBomb()) {
-                rightClickOn(getNodeFromGridPane(gameGrid, tile.getX(), tile.getY()));
+                rightClickOn(getNodeFromGridPane(tile.getX(), tile.getY()));
             }
         }
-        Node tileToClickNode = getNodeFromGridPane(gameGrid, tileToClick.getX(), tileToClick.getY());
+        Node tileToClickNode = getNodeFromGridPane(tileToClick.getX(), tileToClick.getY());
         clickOn(tileToClickNode);
         push(KeyCode.SPACE);
 
@@ -210,10 +211,48 @@ public class GamePageTest extends ApplicationTest {
         assertEquals(true, robot.lookup("#score1").tryQuery().isPresent());
         System.setOut(originalOut);
     }
+    
+    @Test
+    public void testThatOtherButtonsDoNotAffectGame() {
+        // Mousewheel click
+        clickOn((Node) gameGrid.getChildren().get(0), MouseButton.MIDDLE);
+        assertFalse(gamePageController.getStarted());
 
+        // Clicking U on keyboard.
+        clickOn((Node) gameGrid.getChildren().get(0));
+        push(KeyCode.U);
+
+        TileReadable tileToClick = null;
+        for (Node node : gameGrid.getChildren()) {
+            int rowIndex = GridPane.getRowIndex(node);
+            int columnIndex = GridPane.getColumnIndex(node);
+
+            TileReadable tile = gamePageController.getTile(columnIndex, rowIndex);
+            if (!tile.isBomb() && tile.hasAdjacentBomb() && tile.isRevealed()) {
+                tileToClick = tile;
+                break;
+            }
+        }
+
+        List<Tile> neighborTiles = gamePageController.getNeighborTiles(tileToClick.getX(), tileToClick.getY());
+        for (Tile tile : neighborTiles) {
+            if (tile.isBomb()) {
+                rightClickOn(getNodeFromGridPane(tile.getX(), tile.getY()));
+            }
+        }
+
+        Node tileToClickNode = getNodeFromGridPane(tileToClick.getX(), tileToClick.getY());
+        List<Tile> revealedNeighbors = neighborTiles.stream().filter(Tile::isRevealed).toList();
+        clickOn(tileToClickNode);
+        push(KeyCode.U);
+
+        assertFalse(neighborTiles.stream().anyMatch(t -> t.isRevealed() && !revealedNeighbors.contains(t)),
+                "Tiles should not be revealed when clicking U instead of spacebar");    
+    }
+    
     // For testing
-    public static Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
-        return gridPane.getChildren().stream()
+    public Node getNodeFromGridPane(int col, int row) {
+        return gameGrid.getChildren().stream()
                 .filter(node -> GridPane.getColumnIndex(node) == col &&
                         GridPane.getRowIndex(node) == row)
                 .findFirst()
