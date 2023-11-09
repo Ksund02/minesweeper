@@ -105,7 +105,7 @@ The game is now running in the other tab with the virtual computer
 
 ## Game Rules 📜
 
-You can find the overall roules [here](https://minesweepergame.com/strategy/how-to-play-minesweeper.php).
+You can find the overall rules [here](https://minesweepergame.com/strategy/how-to-play-minesweeper.php).
 
 **Chording**
 
