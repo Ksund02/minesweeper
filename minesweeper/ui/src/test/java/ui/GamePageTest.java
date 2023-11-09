@@ -202,7 +202,6 @@ public class GamePageTest extends ApplicationTest {
     
     clickOn(tileToClickNode);
     push(KeyCode.U);
-    List<Tile> revy = neighborTiles.stream().filter(Tile::isRevealed).toList();
 
     assertFalse(neighborTiles.stream().anyMatch(t -> t.isRevealed() && !revealedNeighbors.contains(t)),
         "Tiles should not be revealed when clicking U instead of spacebar");
