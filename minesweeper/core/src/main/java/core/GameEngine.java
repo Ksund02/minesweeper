@@ -32,7 +32,7 @@ public class GameEngine {
    */
   public void resetGame() {
     this.gameBoard = new GameBoard(SettingsManager.getGameDifficulty());
-    stopwatch.restart();
+    stopwatch.reset();
     latestUpdatedTiles.clear();
   }
 
