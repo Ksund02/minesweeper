@@ -5,15 +5,15 @@
 ## Table of contents 📚
 
 - [Minesweeper code base](#minesweeper-code-base)
-  - [Table of contents 📚](#table-of-contents-)
-  - [Game Description 🕹️](#game-description-️)
-  - [Features 🎈](#features-)
-  - [Optional Features 🔨](#optional-features-)
-  - [Intended Use 🎮](#intended-use-)
-  - [Check test coverage🧪](#check-test-coverage)
+  - [Table of contents 📚](#table-of-contents-📚)
+  - [Game Description 🕹️](#game-description-🕹️)
+  - [Features 🎈](#features-🎈)
+  - [Optional Features 🔨](#optional-features-🔨)
+  - [Intended Use 🎮](#intended-use-🎮)
+  - [Check test coverage🧪](#check-test-coverage🧪)
   - [Launch springboot](#launch-springboot)
-  - [Environment setup🕶️](#environment-setup️)
-  - [Issue Priority Labels 🚩](#issue-priority-labels-)
+  - [Environment setup 🕶️](#environment-setup-🕶️)
+  - [Issue Priority Labels 🚩](#issue-priority-labels-🚩)
   - [Code Quality Tools](#code-quality-tools)
 
 ## Game Description 🕹️
@@ -51,33 +51,7 @@ A picture of how the high-score list might look like is presented below.
 
 ## Check test coverage🧪
 
-1. **Navigate to the minesweeper directory**
-
-```cmd
-cd minesweeper
-```
-
-2. **Run the tests**
-
-```cmd
-mvn clean test
-```
-
-3. **Generate Combined JaCoCo Report**
-
-- A JaCoCo report is automatically generated each time tests are run.
-- To create a combined test coverage report across all modules, ensure that all tests are executed and then run:
-
-```cmd
-mvn verify
-```
-
-4. **Viewing the Combined Test Results**
-
-- Navigate to **coverage/target/site/jacocco-aggregate** directory in your project folder.
-- Locate the **index.html** file. You can open this file in your preferred web browser to view the test coverage results.
-- _Optionally, if you have a live server extension in your code editor (such as Visual Studio Code), you can right-click on the index.html file and select "Open with Live Server" to view the results._
-- _Optionally, if you want its possible to view test result in the jacocco.csv and jacocco.xml as well._
+To generate and check test coverage across all modules go [here](./coverage/README.md#generate-coverage-raport-🧪).
 
 ## Launch springboot
 
@@ -103,7 +77,7 @@ taskkill /PID [PID-number] /F
 4. **Go to web browser**
    http://localhost:6969/highscores
 
-## Environment setup🕶️
+## Environment setup 🕶️
 
 - Java: JDK 17
 - Maven: Version 3.8.1
