@@ -58,7 +58,9 @@ public class GamePageTest extends ApplicationTest {
     fxmlLoader.setControllerFactory(cls -> ctrl);
     root = fxmlLoader.load();
     gamePageController = fxmlLoader.getController();
+    
     stage.setScene(new Scene(root));
+    MineApp.setStageSize(stage, SettingsManager.getStageMinWidth(), SettingsManager.getStageMinHeight());
     stage.show();
     robot = new FxRobot();
     gameGrid = robot.lookup("#gameGrid").query();
@@ -266,7 +268,7 @@ public class GamePageTest extends ApplicationTest {
     
     // Flagging one bomb and one non-bomb.
     clickOn(getNodeFromGridPane(neighborBombs.get(0).getX(), neighborBombs.get(0).getY()), MouseButton.SECONDARY);
-    clickOn(getNodeFromGridPane(neighborBombs.get(0).getX(), unrevealedNonBombs.get(0).getY()), MouseButton.SECONDARY);
+    clickOn(getNodeFromGridPane(unrevealedNonBombs.get(0).getX(), unrevealedNonBombs.get(0).getY()), MouseButton.SECONDARY);
     
     clickOn(nodeToClick); // Just to get the mouse to the right place
     push(KeyCode.SPACE); // This move should result in a loss, since we have flagged one bomb and one non-bomb.

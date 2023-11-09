@@ -44,6 +44,7 @@ public class HighScoreListTest extends ApplicationTest {
     fxmlLoader.setControllerFactory(cls -> ctrl);
     root = fxmlLoader.load();
     stage.setScene(new Scene(root));
+    MineApp.setStageSize(stage, HighscoreListController.STAGE_WIDTH, HighscoreListController.STAGE_HEIGHT);
     stage.show();
     robot = new FxRobot();
   }

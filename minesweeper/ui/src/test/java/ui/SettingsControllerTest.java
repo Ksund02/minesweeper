@@ -28,6 +28,7 @@ public class SettingsControllerTest extends ApplicationTest {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/Settings.fxml"));
         root = fxmlLoader.load();
         stage.setScene(new Scene(root));
+        MineApp.setStageSize(stage, SettingsController.STAGE_WIDTH, SettingsController.STAGE_HEIGHT);
         stage.show();
         robot = new FxRobot();
     }
