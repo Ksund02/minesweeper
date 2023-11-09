@@ -77,7 +77,6 @@ public class GamePageController {
   public void initialize() throws IOException {
     this.gameEngine = new GameEngine();
     newGameGrid();
-    Platform.runLater(() -> setStageSize());
     spaceBarClickSetup();
     flagsLeftLabel.setText(String.valueOf(gameEngine.getFlagsLeft()));
     this.timeline = createTimeline();
@@ -122,8 +121,8 @@ public class GamePageController {
     Node eventSource = (Node) event.getSource();
     Stage stage = (Stage) eventSource.getScene().getWindow();
     stage.setScene(new Scene(root));
-    stage.setWidth(HighscoreListController.STAGE_WIDTH);
-    stage.setHeight(HighscoreListController.STAGE_HEIGHT);
+    MineApp.setStageSize(stage, HighscoreListController.STAGE_WIDTH,
+        HighscoreListController.STAGE_HEIGHT);
     stage.show();
   }
 
@@ -140,8 +139,7 @@ public class GamePageController {
     Node eventSource = (Node) event.getSource();
     Stage stage = (Stage) eventSource.getScene().getWindow();
     stage.setScene(new Scene(root));
-    stage.setWidth(SettingsController.STAGE_WIDTH);
-    stage.setHeight(SettingsController.STAGE_HEIGHT);
+    MineApp.setStageSize(stage, SettingsController.STAGE_WIDTH, SettingsController.STAGE_HEIGHT);
     stage.show();
   }
 
@@ -242,14 +240,6 @@ public class GamePageController {
     }
 
     updateGameView();
-  }
-
-  private void setStageSize() {
-    Stage stage = (Stage) gameGrid.getScene().getWindow();
-    stage.setMinWidth(SettingsManager.getStageMinWidth());
-    stage.setMinHeight(SettingsManager.getStageMinHeight());
-    stage.setWidth(SettingsManager.getStageMinWidth());
-    stage.setHeight(SettingsManager.getStageMinHeight());
   }
 
   /**

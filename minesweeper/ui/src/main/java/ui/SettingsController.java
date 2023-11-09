@@ -155,7 +155,9 @@ public class SettingsController {
     Node eventSource = (Node) event.getSource();
     Stage stage = (Stage) eventSource.getScene().getWindow();
     stage.setScene(new Scene(root));
+
+    MineApp.setStageSize(stage, SettingsManager.getStageMinWidth(),
+        SettingsManager.getStageMinHeight());
     stage.show();
   }
-
 }
