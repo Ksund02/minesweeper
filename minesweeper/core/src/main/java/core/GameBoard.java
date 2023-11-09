@@ -295,10 +295,6 @@ public class GameBoard {
     return height;
   }
 
-  public int getNumBombs() {
-    return numBombs;
-  }
-
   public int getTilesLeft() {
     return tilesLeft;
   }

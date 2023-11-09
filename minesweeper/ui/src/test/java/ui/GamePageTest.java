@@ -4,11 +4,13 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -77,6 +79,8 @@ public class GamePageTest extends ApplicationTest {
 
   @Test
   public void testResetGame() {
+    clickOn((Node) gameGrid.getChildren().get(0));
+    assertTrue(gamePageController.getStarted());
     click("Reset game");
     assertFalse(gamePageController.getStarted());
   }
@@ -140,18 +144,7 @@ public class GamePageTest extends ApplicationTest {
   @DisplayName("Ensure clicking on a bomb make you lose")
   public void testLose() {
     clickOn((Node) gameGrid.getChildren().get(0));
-    for (Node node : gameGrid.getChildren()) {
-      // Coordinate of the node we click on
-      int x = GridPane.getColumnIndex(node);
-      int y = GridPane.getRowIndex(node);
-
-      TileReadable tile = gamePageController.getTile(x, y);
-
-      if (tile.isBomb()) {
-        clickOn(node);
-        break;
-      }
-    }
+    clickOn(findFittingNode(t -> t.isBomb()));
     assertEquals("Game over!", robot.lookup("#gameStatusLabel").queryLabeled().getText(), "Game should be over");
   }
 
@@ -161,24 +154,9 @@ public class GamePageTest extends ApplicationTest {
     clickOn((Node) gameGrid.getChildren().get(0));
     push(KeyCode.SPACE);
 
-    TileReadable tileToClick = null;
-    for (Node node : gameGrid.getChildren()) {
-      int rowIndex = GridPane.getRowIndex(node);
-      int columnIndex = GridPane.getColumnIndex(node);
-
-      TileReadable tile = gamePageController.getTile(columnIndex, rowIndex);
-      if (!tile.isBomb() && tile.hasAdjacentBomb() && tile.isRevealed()) {
-        tileToClick = tile;
-        break;
-      }
-    }
-
-    List<Tile> neighborTiles = gamePageController.getNeighborTiles(tileToClick.getX(), tileToClick.getY());
-    for (Tile tile : neighborTiles) {
-      if (tile.isBomb()) {
-        rightClickOn(getNodeFromGridPane(tile.getX(), tile.getY()));
-      }
-    }
+    TileReadable tileToClick = findSuitableSpacebarTile(2);
+    List<Tile> neighborTiles = flagAllNeighborBombs(tileToClick.getX(), tileToClick.getY());
+    
     Node tileToClickNode = getNodeFromGridPane(tileToClick.getX(), tileToClick.getY());
     clickOn(tileToClickNode);
     push(KeyCode.SPACE);
@@ -213,6 +191,10 @@ public class GamePageTest extends ApplicationTest {
     System.setOut(originalOut);
   }
 
+  /**
+   * Just checking that nothing happens when you press buttons which are
+   * irrelevant to the game.
+   */
   @Test
   public void testThatOtherButtonsDoNotAffectGame() {
     // Mousewheel click
@@ -223,32 +205,318 @@ public class GamePageTest extends ApplicationTest {
     clickOn((Node) gameGrid.getChildren().get(0));
     push(KeyCode.U);
 
-    TileReadable tileToClick = null;
-    for (Node node : gameGrid.getChildren()) {
-      int rowIndex = GridPane.getRowIndex(node);
-      int columnIndex = GridPane.getColumnIndex(node);
-
-      TileReadable tile = gamePageController.getTile(columnIndex, rowIndex);
-      if (!tile.isBomb() && tile.hasAdjacentBomb() && tile.isRevealed()) {
-        tileToClick = tile;
-        break;
-      }
-    }
-
-    List<Tile> neighborTiles = gamePageController.getNeighborTiles(tileToClick.getX(), tileToClick.getY());
-    for (Tile tile : neighborTiles) {
-      if (tile.isBomb()) {
-        rightClickOn(getNodeFromGridPane(tile.getX(), tile.getY()));
-      }
-    }
-
+    TileReadable tileToClick = findSuitableSpacebarTile(2);
+    List<Tile> neighborTiles = flagAllNeighborBombs(tileToClick.getX(), tileToClick.getY());
+    
     Node tileToClickNode = getNodeFromGridPane(tileToClick.getX(), tileToClick.getY());
     List<Tile> revealedNeighbors = neighborTiles.stream().filter(Tile::isRevealed).toList();
+    
     clickOn(tileToClickNode);
     push(KeyCode.U);
 
     assertFalse(neighborTiles.stream().anyMatch(t -> t.isRevealed() && !revealedNeighbors.contains(t)),
         "Tiles should not be revealed when clicking U instead of spacebar");
+  }
+
+  @Test
+  public void clickFlaggedTile() {
+    clickOn((Node) gameGrid.getChildren().get(0), MouseButton.SECONDARY);
+    assertEquals(false, gamePageController.getTile(0, 0).isFlagged()
+        ,"You should not be able to flag a tile before the game has started");
+
+    clickOn((Node) gameGrid.getChildren().get(0));
+    assertTrue(gamePageController.getTile(0, 0).isRevealed());
+    clickOn((Node) gameGrid.getChildren().get(0), MouseButton.SECONDARY);
+    assertFalse(gamePageController.getTile(0, 0).isFlagged()
+        , "You should not be able to flag a tile after it has been revealed");
+
+    TileReadable tileToClick = findFirstRevealedTileWithBombNearby();
+    flagAllNeighborBombs(tileToClick.getX(), tileToClick.getY());
+    Node flaggedNode = findFirstFlaggedNeighbor(tileToClick.getX(), tileToClick.getY());
+    TileReadable flaggedTile = gamePageController.getTile(GridPane.getColumnIndex(flaggedNode),
+        GridPane.getRowIndex(flaggedNode));
+    clickOn(flaggedNode);
+    assertFalse(flaggedTile.isRevealed(), "You should not be able to reveal a flagged tile");    
+  }
+
+  @Test
+  public void spaceBarBeforeGameStart() {
+    push(KeyCode.SPACE);
+    assertFalse(gamePageController.getStarted(), "You should not be able to start the game by pressing spacebar");
+  }
+
+  /**
+   * This tests that if you have wrongly flagged a non-bomb
+   * and a bomb, and then you press spacebar, the game should end in a loss.
+
+   * @throws Exception If thread.sleep fails.
+   */
+  @Test
+  public void spaceBarFlaggedWrong() throws Exception {
+    clickOn((Node) gameGrid.getChildren().get(0));
+
+    TileReadable tileToClick = null;
+    
+    // We need to find a tile which is suitable for the spacebar move.
+    while (tileToClick == null) {
+      
+      for (Node node : gameGrid.getChildren()) {
+        int rowIndex = GridPane.getRowIndex(node);
+        int columnIndex = GridPane.getColumnIndex(node);
+
+        TileReadable tile = gamePageController.getTile(columnIndex, rowIndex);
+        
+        List<Node> neighborNodes = getNeighborNodes(columnIndex, rowIndex);
+        List<Node> unrevealedNonBombNeighbors = neighborNodes.stream()
+            .filter(n -> !gamePageController.getTile(GridPane.getColumnIndex(n), GridPane.getRowIndex(n)).isRevealed()
+            && !gamePageController.getTile(GridPane.getColumnIndex(n), GridPane.getRowIndex(n)).isBomb())
+            .toList();  
+        
+        List<Tile> neighborTiles = getNeighborTiles(columnIndex, rowIndex);
+        long neighborBombs = neighborTiles.stream().filter(t -> t.isBomb()).count();
+
+        if (!tile.isRevealed() && neighborBombs == 2 && unrevealedNonBombNeighbors.size() > 0
+            && !neighborTiles.stream().anyMatch(t -> t.isRevealed())
+            && !tile.isBomb()) {
+          tileToClick = tile;
+          break;
+        }
+      }
+    }
+
+    Node nodeToClick = getNodeFromGridPane(tileToClick.getX(), tileToClick.getY());
+    List<Tile> neighborTiles = flagAllNeighborBombs(tileToClick.getX(), tileToClick.getY());
+    
+    clickOn(nodeToClick, MouseButton.SECONDARY);
+    clickOn(nodeToClick, MouseButton.SECONDARY); // Just to get the mouse to the right place
+    push(KeyCode.SPACE); // Doing the spacebar move without having revealed the middle tile.
+    
+    assertFalse(neighborTiles.stream().anyMatch(t -> t.isRevealed() && !t.isFlagged()),
+      "Tiles should not be revealed since middle tile is not revealed");
+
+    clickOn(nodeToClick); // Revealing the middle tile.
+    flagAllNeighborBombs(tileToClick.getX(), tileToClick.getY()); // Unflagging the bombs.
+
+    List<Tile> neighborBombs = neighborTiles.stream().filter(t -> t.isBomb()).toList();
+    List<Tile> unrevealedNonBombs = neighborTiles.stream().filter(t -> !t.isRevealed() && !t.isBomb()).toList();
+    
+    // Flagging one bomb and one non-bomb.
+    clickOn(getNodeFromGridPane(neighborBombs.get(0).getX(), neighborBombs.get(0).getY()), MouseButton.SECONDARY);
+    clickOn(getNodeFromGridPane(neighborBombs.get(0).getX(), unrevealedNonBombs.get(0).getY()), MouseButton.SECONDARY);
+    
+    clickOn(nodeToClick); // Just to get the mouse to the right place
+    push(KeyCode.SPACE); // This move should result in a loss, since we have flagged one bomb and one non-bomb.
+
+    Thread.sleep(200); 
+    for (Tile tile : neighborTiles) {
+      assertEquals(true, tile.isRevealed() || tile.isFlagged(),
+      "Tiles should be flagged or revealed after a spacebar move");
+    }
+    Thread.sleep(200); // Just to make sure that the game has time to update the game status label.
+    assertEquals("Game over!", robot.lookup("#gameStatusLabel").queryLabeled().getText(), "Game should be over");
+  }
+
+  @Test
+  public void noActionsAfterGameEnded() {
+    
+    clickOn((Node) gameGrid.getChildren().get(0));
+
+    TileReadable tileToClick = findSuitableSpacebarTile(2);
+    Node nodeToClick = getNodeFromGridPane(tileToClick.getX(), tileToClick.getY());
+    List<Tile> neighborTiles = flagAllNeighborBombs(tileToClick.getX(), tileToClick.getY());
+
+    Node elBombo = findFittingNode(t -> t.isBomb() && !t.isFlagged());
+    clickOn(elBombo); // Clicking on a bomb and losing.
+
+    // Pressing spacebar after the game has ended should not do anything.
+    clickOn(nodeToClick);
+    push(KeyCode.SPACE);
+    assertTrue(neighborTiles.stream().anyMatch(t -> !t.isRevealed() && !t.isFlagged())
+        , "Spacebar should not reveal any tiles after the game has ended");
+
+    // Game should be over now, and clicking on a tile should not do anything.
+    Node fitNode = findFittingNode(t -> !t.isBomb() && !t.isRevealed());
+    clickOn(fitNode);
+    TileReadable clickedTile = gamePageController.getTile(GridPane.getColumnIndex(fitNode), GridPane.getRowIndex(fitNode));
+    assertFalse(clickedTile.isRevealed(), "You should not be able to click on a tile after the game has ended");
+    
+    // Check that you cannot flag a tile after the game has ended.
+    fitNode = findFittingNode(t -> !t.isFlagged() && !t.isRevealed());
+    clickOn(fitNode, MouseButton.SECONDARY);
+    clickedTile = gamePageController.getTile(GridPane.getColumnIndex(nodeToClick), GridPane.getRowIndex(nodeToClick));
+    assertFalse(clickedTile.isFlagged(), "You should not be able to flag a tile after the game has ended");
+  }
+
+  @Test
+  public void testLimitedNumberOfFlags() {
+    clickOn((Node) gameGrid.getChildren().get(0));
+
+    // Flag 10 tiles.
+    int counter = 0;
+    for (Node node : gameGrid.getChildren()) {
+      int x = GridPane.getColumnIndex(node);
+      int y = GridPane.getRowIndex(node);
+
+      TileReadable tile = gamePageController.getTile(x, y);
+
+      if (!tile.isRevealed() && !tile.isFlagged()) {
+        clickOn(node, MouseButton.SECONDARY);
+        counter++;
+      }
+      if (counter == 10) {
+        break;
+      }
+    }
+
+    // At this point, we have flagged 10 tiles.
+    // We should not be able to flag any more tiles.
+    TileReadable tile = null;
+    for (Node node : gameGrid.getChildren()) {
+      int x = GridPane.getColumnIndex(node);
+      int y = GridPane.getRowIndex(node);
+
+      tile = gamePageController.getTile(x, y);
+
+      if (!tile.isFlagged() && !tile.isRevealed()) {
+        clickOn(node, MouseButton.SECONDARY);
+        break;
+      }
+    }
+    assertFalse(tile.isFlagged()
+        , "You should not be able to flag more than 10 tiles when playing on EASY mode.");
+
+    // We should be able to unflag a tile.
+    Node noldus = findFittingNode(t -> t.isFlagged());
+    TileReadable t = gamePageController.getTile(GridPane.getColumnIndex(noldus), GridPane.getRowIndex(noldus));
+    clickOn(noldus, MouseButton.SECONDARY);
+    assertFalse(t.isFlagged(), "You should be able to unflag a tile.");
+  }
+
+  @Test
+  public void flagsRemovedAfterBombClick() {
+    
+    clickOn((Node) gameGrid.getChildren().get(48));
+    List<Node> bombs = getBombNodes();
+    List<Node> regularSquares = getUnrevealedNonBombNodes();
+    
+    // Place flags on 3 bombs and 3 regular squares.
+    for (int i = 0; i < 3; i ++) {
+      clickOn(regularSquares.get(i), MouseButton.SECONDARY);
+    }
+    for (int i = 0; i < 3; i ++) {
+      clickOn(bombs.get(i), MouseButton.SECONDARY);
+    }
+
+    // Check that the flags are placed.
+    for (int i = 0; i < 3; i ++) {
+      assertTrue(gamePageController.getTile(GridPane.getColumnIndex(regularSquares.get(i)), GridPane.getRowIndex(regularSquares.get(i))).isFlagged()
+          , "Tiles should be flagged before losing.");
+    }
+
+    for (int i = 0; i < 3; i ++) {
+      assertTrue(gamePageController.getTile(GridPane.getColumnIndex(bombs.get(i)), GridPane.getRowIndex(bombs.get(i))).isFlagged()
+          , "Tiles should be flagged before losing.");
+    }
+
+    clickOn(bombs.get(3)); // Click on a bomb and lose.
+    
+    // Check that the flags on the regular squares are still there.
+    for (int i = 0; i < 3; i ++) {
+      assertTrue(gamePageController.getTile(GridPane.getColumnIndex(regularSquares.get(i)), GridPane.getRowIndex(regularSquares.get(i))).isFlagged()
+          , "Flags should remain on non-bomb tiles.");
+    }
+
+    for (int i = 0; i < 3; i ++) {
+      assertFalse(gamePageController.getTile(GridPane.getColumnIndex(bombs.get(i)), GridPane.getRowIndex(bombs.get(i))).isFlagged()
+          , "Flags should be removed from bomb tiles.");
+    }
+  }
+
+  @Test
+  public void doubleRightClick() {
+    clickOn((Node) gameGrid.getChildren().get(42));
+    Node nody = gameGrid.getChildren().stream()
+        .filter(node -> !gamePageController.getTile(GridPane.getColumnIndex(node), GridPane.getRowIndex(node)).isRevealed())
+        .findFirst().get();
+    TileReadable tile = gamePageController.getTile(GridPane.getColumnIndex(nody), GridPane.getRowIndex(nody));
+    clickOn(nody, MouseButton.SECONDARY);
+    assertTrue(tile.isFlagged(), "Tile should be flagged after right clicking");
+    clickOn(nody, MouseButton.SECONDARY);
+    assertFalse(tile.isFlagged(), "Flagged tile should no longer be flagged after right clicking again");
+  }
+
+  @Test
+  public void spaceBarIncorrectNumberOfFlags() {
+    clickOn((Node) gameGrid.getChildren().get(6));
+
+    TileReadable tileToClick = findSuitableSpacebarTile(2);
+    List<Tile> neighborTiles = getNeighborTiles(tileToClick.getX(), tileToClick.getY());
+    List<Node> neighborBombs = neighborTiles.stream().filter(t -> t.isBomb()).map(t -> getNodeFromGridPane(t.getX(), t.getY())).toList();
+    clickOn(neighborBombs.get(0), MouseButton.SECONDARY);
+
+    
+    Node tileToClickNode = getNodeFromGridPane(tileToClick.getX(), tileToClick.getY());
+    clickOn(tileToClickNode); // Just to get the mouse to the right place.
+    push(KeyCode.SPACE);
+
+    assertTrue(neighborTiles.stream().anyMatch(t -> !t.isRevealed() && !t.isFlagged())
+        , "Tiles should not be revealed if the number of flags is incorrect");
+  
+  }
+
+  @Test
+  public void squareWithNoSurroundingBombsFlagged() {
+    
+    Node flaggedNode = null;
+    Node nodeToClick = null;
+    TileReadable flaggedTile = null;
+    TileReadable clickedTile = null;
+    TileReadable autoReveal = null;
+
+    boolean foundSuitableTile = false;
+
+    while (!foundSuitableTile) {
+      click("Reset game");
+      clickOn((Node) gameGrid.getChildren().get(0));
+      for (Node node : gameGrid.getChildren()) {
+        int x = GridPane.getColumnIndex(node);
+        int y = GridPane.getRowIndex(node);
+
+        TileReadable tile = gamePageController.getTile(x, y);
+        for (int i = x - 1; i <= x + 1; i++) {
+          for (int j = y - 1; j <= y + 1; j++) {
+            boolean validCoord = i >= 0 && i < SettingsManager.getGameDifficulty().getGridWidth()
+                && j >= 0 && j < SettingsManager.getGameDifficulty().getGridHeight();
+            
+            if (validCoord && !tile.isRevealed() && tile.getNumBombsAround() == 0) {
+              
+              List<Tile> neighbors = getNeighborTiles(i, j);
+              long numberOfZeros = neighbors.stream().filter(t -> !t.isRevealed() && !t.isBomb() && !t.hasAdjacentBomb()).count();
+              
+              if (numberOfZeros > 1) {
+                nodeToClick = node;
+                clickedTile = tile;
+                List<Tile> tiles = neighbors.stream().filter(t -> !t.isRevealed() && !t.isBomb() && !t.hasAdjacentBomb()).toList();
+                flaggedTile = tiles.get(0);
+                flaggedNode = getNodeFromGridPane(flaggedTile.getX(), flaggedTile.getY());
+                autoReveal = tiles.get(1);
+                foundSuitableTile = true;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    assertFalse(clickedTile.isRevealed() || flaggedTile.isRevealed() || autoReveal.isRevealed()
+        , "None of the tiles should be revealed before clicking");
+    clickOn(flaggedNode, MouseButton.SECONDARY);
+    clickOn(nodeToClick);
+
+    assertTrue(clickedTile.isRevealed(), "Tile should be revealed");
+    assertTrue(flaggedTile.isFlagged(), "Tile should be flagged");
+    assertTrue(!flaggedTile.isRevealed(), "Flagged tile should not be revealed, even if it is an auto-reveal tile");
+    assertTrue(autoReveal.isRevealed(), "Auto-reveal tile should be revealed");
   }
 
   // For testing
@@ -259,4 +527,160 @@ public class GamePageTest extends ApplicationTest {
         .findFirst()
         .orElse(null);
   }
+
+  public Node findFittingNode(Predicate<TileReadable> pred) {
+    return gameGrid.getChildren().stream()
+        .filter(node -> pred.test(gamePageController.getTile(GridPane.getColumnIndex(node), GridPane.getRowIndex(node))))
+        .findFirst()
+        .orElse(null);
+  }
+
+  /**
+   * Finds the first revealed tile with a bomb nearby.
+
+   * @return The first revealed tile with a bomb nearby.
+   *        If no such tile exists, null is returned.
+   */
+  private TileReadable findFirstRevealedTileWithBombNearby() {
+    TileReadable tileToClick = null;
+    for (Node node : gameGrid.getChildren()) {
+      int rowIndex = GridPane.getRowIndex(node);
+      int columnIndex = GridPane.getColumnIndex(node);
+
+      TileReadable tile = gamePageController.getTile(columnIndex, rowIndex);
+      if (!tile.isBomb() && tile.hasAdjacentBomb() && tile.isRevealed()) {
+        tileToClick = tile;
+        return tileToClick;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * We need to find a tile which is revealed.
+   * The tile must have at least one bomb nearby,
+   * and the tile must also have at least one unrevealed neighbor
+   * which is not a bomb.
+
+   * @param numberOfBombs The number of bombs we want the tile to have nearby.
+   * @return A tile which is revealed, has at least one bomb nearby,
+   *        and has at least one unrevealed neighbor which is not a bomb.
+   */
+  private TileReadable findSuitableSpacebarTile(int numberOfBombs) {
+    
+    TileReadable tileToClick = null;
+    while (tileToClick == null) {
+      
+      for (Node node : gameGrid.getChildren()) {
+        int rowIndex = GridPane.getRowIndex(node);
+        int columnIndex = GridPane.getColumnIndex(node);
+
+        TileReadable tile = gamePageController.getTile(columnIndex, rowIndex);
+        
+        List<Node> neighborNodes = getNeighborNodes(columnIndex, rowIndex);
+        List<Node> unrevealedNonBombNeighbors = neighborNodes.stream()
+            .filter(n -> !gamePageController.getTile(GridPane.getColumnIndex(n), GridPane.getRowIndex(n)).isRevealed()
+            && !gamePageController.getTile(GridPane.getColumnIndex(n), GridPane.getRowIndex(n)).isBomb())
+            .toList();  
+        
+        List<Tile> neighborTiles = getNeighborTiles(columnIndex, rowIndex);
+        long neighborBombs = neighborTiles.stream().filter(t -> t.isBomb()).count();
+
+        if (tile.isRevealed() && neighborBombs == numberOfBombs && unrevealedNonBombNeighbors.size() > 0) {
+          tileToClick = tile;
+          return tileToClick;
+        }
+      }
+
+      // If we get here, we did not find a suitable tile.
+      // We need to reveal a tile.
+      List<Node> unrevealed = getUnrevealedNonBombNodes();
+      clickOn(unrevealed.get(0));
+    }
+
+    return null; // This should hopefully never happen.
+  }
+
+
+  /**
+   * Flags all the bombs around a tile.
+
+   * @param x The row of the tile.
+   * @param y The column of the tile.
+   * @return A list of all the neighbor tiles.
+   */
+  private List<Tile> flagAllNeighborBombs(int x, int y) {
+    List<Tile> neighborTiles = gamePageController.getNeighborTiles(x, y);
+    for (TileReadable tile : neighborTiles) {
+      if (tile.isBomb()) {
+        rightClickOn(getNodeFromGridPane(tile.getX(), tile.getY()));
+      }
+    }
+    return neighborTiles;
+  }
+
+  /**
+   * Returns a flagged neighbor Node.
+
+   * @param x The row of the tile.
+   * @param y The column of the tile.
+   * @return A node which corresponds to a flagged neighbor tile.
+   */
+  private Node findFirstFlaggedNeighbor(int x, int y) {
+    List<Tile> neighborTiles = gamePageController.getNeighborTiles(x, y);
+    for (TileReadable tile : neighborTiles) {
+      if (tile.isFlagged()) {
+        return getNodeFromGridPane(tile.getX(), tile.getY());
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Returns a list of all the bomb nodes in the game grid.
+
+   * @return A list of all the bomb nodes in the game grid.
+   */
+  private List<Node> getBombNodes() {
+    return gameGrid.getChildren().stream()
+        .filter(node -> gamePageController.getTile(GridPane.getColumnIndex(node), GridPane.getRowIndex(node)).isBomb())
+        .toList();
+  }
+
+  /**
+   * Returns a list of all the unrevealed non-bomb nodes in the game grid.
+
+   * @return A list of all the unrevealed non-bomb nodes in the game grid.
+   */
+  private List<Node> getUnrevealedNonBombNodes() {
+    return gameGrid.getChildren().stream()
+        .filter(node -> !gamePageController.getTile(GridPane.getColumnIndex(node), GridPane.getRowIndex(node)).isBomb()
+            && !gamePageController.getTile(GridPane.getColumnIndex(node), GridPane.getRowIndex(node)).isRevealed())
+        .toList();
+  }
+
+  /**
+   * Returns a list of all the neighbor nodes of the tile at the specified coordinate.
+
+   * @param x Row number
+   * @param y Column number
+   * @return A list of all the neighbor nodes of the tile at the specified coordinate.
+   */
+  private List<Node> getNeighborNodes(int x, int y) {
+    return gamePageController.getNeighborTiles(x, y).stream()
+        .map(tile -> getNodeFromGridPane(tile.getX(), tile.getY()))
+        .toList();
+  }
+
+  /**
+   * Returns a list of all the tiles adjacent to the tile at the specified coordinate.
+
+   * @param x Row number
+   * @param y Column number
+   * @return A list of all the tiles adjacent to the tile at the specified coordinate.
+   */
+  private List<Tile> getNeighborTiles(int x, int y) {
+    return gamePageController.getNeighborTiles(x, y);
+  }
+
 }
