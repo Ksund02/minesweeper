@@ -1,0 +1,64 @@
+@startuml minesweeper
+
+' Declaired modules and packages separately. '
+
+' Module '
+package "minesweepercore" {
+  ' Packages ' 
+  package "core" {
+    class GameBoard
+    class GameEngine
+    class StopWatch
+    class Tile
+    Interface TileReadable
+  }
+  package "core.settings" {
+    class GameDifficulty
+    class SettingsManager
+    class ThemeSettings
+  }
+}
+
+'Empty module, used for testing-rapport '
+package "coverage" {
+}
+
+'Module'
+package "minesweeperstorage" {
+  ' Packages ' 
+  package "storage" {
+    class HighscoreFileManager
+    class UserScore
+  }
+  package "springBoot" {
+    class HighscoreRestController
+    class HighscoreService
+    class SpringApp
+  }
+}
+
+'Module'
+package "minesweeperui" {
+  ' Packages ' 
+  package "ui" {
+    class GamePageController
+    class HighscoreListController
+    class MineApp
+    class RestRequest
+    class SettingsController
+  }
+}
+
+' Dependencies '
+ui --> core : uses
+ui --> core.settings : reads/writes
+ui --> springBoot : uses
+ui --> storage : uses
+
+storage --> core.settings : reads
+springBoot --> storage : uses
+
+core --> core.settings : reads
+
+
+@enduml
