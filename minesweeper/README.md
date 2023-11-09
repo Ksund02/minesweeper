@@ -5,15 +5,15 @@
 ## Table of contents 📚
 
 - [Minesweeper code base](#minesweeper-code-base)
-  - [Table of contents 📚](#table-of-contents-)
-  - [Game Description 🕹️](#game-description-️)
-  - [Features 🎈](#features-)
-  - [Optional Features 🔨](#optional-features-)
-  - [Intended Use 🎮](#intended-use-)
-  - [Check test coverage🧪](#check-test-coverage)
+  - [Table of contents 📚](#table-of-contents-📚)
+  - [Game Description 🕹️](#game-description-🕹️)
+  - [Features 🎈](#features-🎈)
+  - [Optional Features 🔨](#optional-features-🔨)
+  - [Intended Use 🎮](#intended-use-🎮)
+  - [Check test coverage🧪](#check-test-coverage🧪)
   - [Launch springboot](#launch-springboot)
-  - [Environment setup🕶️](#environment-setup️)
-  - [Issue Priority Labels 🚩](#issue-priority-labels-)
+  - [Environment setup 🕶️](#environment-setup-🕶️)
+  - [Issue Priority Labels 🚩](#issue-priority-labels-🚩)
   - [Code Quality Tools](#code-quality-tools)
 
 ## Game Description 🕹️
@@ -103,7 +103,7 @@ taskkill /PID [PID-number] /F
 4. **Go to web browser**
    http://localhost:6969/highscores
 
-## Environment setup🕶️
+## Environment setup 🕶️
 
 - Java: JDK 17
 - Maven: Version 3.8.1
