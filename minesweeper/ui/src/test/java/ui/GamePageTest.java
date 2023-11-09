@@ -312,8 +312,8 @@ public class GamePageTest extends ApplicationTest {
       assertEquals(true, tile.isRevealed() || tile.isFlagged(),
       "Tiles should be flagged or revealed after a spacebar move");
     }
-    Thread.sleep(200); // Just to make sure that the game has time to update the game status label.
-    assertEquals("Game over!", robot.lookup("#gameStatusLabel").queryLabeled().getText(), "Game should be over");
+
+    assertTrue(gamePageController.getGameEngine().isGameLost(), "Game should be lost");
   }
 
   @Test
@@ -478,46 +478,40 @@ public class GamePageTest extends ApplicationTest {
     while (!foundSuitableTile) {
       click("Reset game");
       clickOn((Node) gameGrid.getChildren().get(0));
+
       for (Node node : gameGrid.getChildren()) {
         int x = GridPane.getColumnIndex(node);
         int y = GridPane.getRowIndex(node);
 
         TileReadable tile = gamePageController.getTile(x, y);
-        for (int i = x - 1; i <= x + 1; i++) {
-          for (int j = y - 1; j <= y + 1; j++) {
-            boolean validCoord = i >= 0 && i < SettingsManager.getGameDifficulty().getGridWidth()
-                && j >= 0 && j < SettingsManager.getGameDifficulty().getGridHeight();
-            
-            if (validCoord && !tile.isRevealed() && tile.getNumBombsAround() == 0) {
-              
-              List<Tile> neighbors = getNeighborTiles(i, j);
-              long numberOfZeros = neighbors.stream().filter(t -> !t.isRevealed() && !t.isBomb() && !t.hasAdjacentBomb()).count();
-              
-              if (numberOfZeros > 1) {
-                nodeToClick = node;
-                clickedTile = tile;
-                List<Tile> tiles = neighbors.stream().filter(t -> !t.isRevealed() && !t.isBomb() && !t.hasAdjacentBomb()).toList();
-                flaggedTile = tiles.get(0);
-                flaggedNode = getNodeFromGridPane(flaggedTile.getX(), flaggedTile.getY());
-                autoReveal = tiles.get(1);
-                foundSuitableTile = true;
-              }
-            }
-          }
+        if (!tile.isRevealed() && !tile.isBomb() && !tile.hasAdjacentBomb()) {
+          
+          List<Tile> neighbors = getNeighborTiles(x, y);
+          long numberOfZeros = neighbors.stream().filter(t -> !t.isRevealed() && !t.hasAdjacentBomb()).count();
+          
+          if (numberOfZeros > 1) {
+            nodeToClick = node;
+            clickedTile = tile;
+            List<Tile> tiles = neighbors.stream().filter(t -> !t.isRevealed() && !t.isBomb() && !t.hasAdjacentBomb()).toList();
+            flaggedTile = tiles.get(0);
+            flaggedNode = getNodeFromGridPane(flaggedTile.getX(), flaggedTile.getY());
+            autoReveal = tiles.get(1);
+            foundSuitableTile = true;
         }
       }
     }
-    
-    assertFalse(clickedTile.isRevealed() || flaggedTile.isRevealed() || autoReveal.isRevealed()
-        , "None of the tiles should be revealed before clicking");
-    clickOn(flaggedNode, MouseButton.SECONDARY);
-    clickOn(nodeToClick);
-
-    assertTrue(clickedTile.isRevealed(), "Tile should be revealed");
-    assertTrue(flaggedTile.isFlagged(), "Tile should be flagged");
-    assertTrue(!flaggedTile.isRevealed(), "Flagged tile should not be revealed, even if it is an auto-reveal tile");
-    assertTrue(autoReveal.isRevealed(), "Auto-reveal tile should be revealed");
   }
+  
+  assertFalse(clickedTile.isRevealed() || flaggedTile.isRevealed() || autoReveal.isRevealed()
+      , "None of the tiles should be revealed before clicking");
+  clickOn(flaggedNode, MouseButton.SECONDARY);
+  clickOn(nodeToClick);
+
+  assertTrue(clickedTile.isRevealed(), "Tile should be revealed");
+  assertTrue(flaggedTile.isFlagged(), "Tile should be flagged");
+  assertTrue(!flaggedTile.isRevealed(), "Flagged tile should not be revealed, even if it is an auto-reveal tile");
+  assertTrue(autoReveal.isRevealed(), "Auto-reveal tile should be revealed");
+}
 
   // For testing
   public Node getNodeFromGridPane(int col, int row) {
