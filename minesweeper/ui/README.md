@@ -1,6 +1,6 @@
 # User interface documentation
 
-The user interface of this minesweeper application is made with JavaFX and FXML. This 
+The user interface of this minesweeper application is made with JavaFX and FXML. This
 document outlines the different elements in the user interface of this minesweeper application.
 
 ## Contents
