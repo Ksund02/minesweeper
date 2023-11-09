@@ -151,9 +151,6 @@ public class GamePageTest extends ApplicationTest {
   @Test
   @DisplayName("Ensure that the choording works")
   public void testChoording() {
-    clickOn((Node) gameGrid.getChildren().get(0));
-    push(KeyCode.SPACE);
-
     TileReadable tileToClick = findSuitableSpacebarTile(2);
     List<Tile> neighborTiles = flagAllNeighborBombs(tileToClick.getX(), tileToClick.getY());
     
@@ -197,25 +194,23 @@ public class GamePageTest extends ApplicationTest {
    */
   @Test
   public void testThatOtherButtonsDoNotAffectGame() {
-    // Mousewheel click
-    clickOn((Node) gameGrid.getChildren().get(0), MouseButton.MIDDLE);
-    assertFalse(gamePageController.getStarted());
-
-    // Clicking U on keyboard.
-    clickOn((Node) gameGrid.getChildren().get(0));
-    push(KeyCode.U);
-
     TileReadable tileToClick = findSuitableSpacebarTile(2);
-    List<Tile> neighborTiles = flagAllNeighborBombs(tileToClick.getX(), tileToClick.getY());
-    
     Node tileToClickNode = getNodeFromGridPane(tileToClick.getX(), tileToClick.getY());
+    
+    List<Tile> neighborTiles = flagAllNeighborBombs(tileToClick.getX(), tileToClick.getY());
     List<Tile> revealedNeighbors = neighborTiles.stream().filter(Tile::isRevealed).toList();
     
     clickOn(tileToClickNode);
     push(KeyCode.U);
+    List<Tile> revy = neighborTiles.stream().filter(Tile::isRevealed).toList();
 
     assertFalse(neighborTiles.stream().anyMatch(t -> t.isRevealed() && !revealedNeighbors.contains(t)),
         "Tiles should not be revealed when clicking U instead of spacebar");
+    
+    click("Reset game");
+    // Mousewheel click
+    clickOn((Node) gameGrid.getChildren().get(0), MouseButton.MIDDLE);
+    assertFalse(gamePageController.getStarted());
   }
 
   @Test
@@ -253,40 +248,10 @@ public class GamePageTest extends ApplicationTest {
    */
   @Test
   public void spaceBarFlaggedWrong() throws Exception {
-    clickOn((Node) gameGrid.getChildren().get(0));
-
-    TileReadable tileToClick = null;
-    
-    // We need to find a tile which is suitable for the spacebar move.
-    while (tileToClick == null) {
-      
-      for (Node node : gameGrid.getChildren()) {
-        int rowIndex = GridPane.getRowIndex(node);
-        int columnIndex = GridPane.getColumnIndex(node);
-
-        TileReadable tile = gamePageController.getTile(columnIndex, rowIndex);
-        
-        List<Node> neighborNodes = getNeighborNodes(columnIndex, rowIndex);
-        List<Node> unrevealedNonBombNeighbors = neighborNodes.stream()
-            .filter(n -> !gamePageController.getTile(GridPane.getColumnIndex(n), GridPane.getRowIndex(n)).isRevealed()
-            && !gamePageController.getTile(GridPane.getColumnIndex(n), GridPane.getRowIndex(n)).isBomb())
-            .toList();  
-        
-        List<Tile> neighborTiles = getNeighborTiles(columnIndex, rowIndex);
-        long neighborBombs = neighborTiles.stream().filter(t -> t.isBomb()).count();
-
-        if (!tile.isRevealed() && neighborBombs == 2 && unrevealedNonBombNeighbors.size() > 0
-            && !neighborTiles.stream().anyMatch(t -> t.isRevealed())
-            && !tile.isBomb()) {
-          tileToClick = tile;
-          break;
-        }
-      }
-    }
-
+    TileReadable tileToClick = findSuitableSpacebarTile(2);
     Node nodeToClick = getNodeFromGridPane(tileToClick.getX(), tileToClick.getY());
+
     List<Tile> neighborTiles = flagAllNeighborBombs(tileToClick.getX(), tileToClick.getY());
-    
     clickOn(nodeToClick, MouseButton.SECONDARY);
     clickOn(nodeToClick, MouseButton.SECONDARY); // Just to get the mouse to the right place
     push(KeyCode.SPACE); // Doing the spacebar move without having revealed the middle tile.
@@ -319,8 +284,6 @@ public class GamePageTest extends ApplicationTest {
   @Test
   public void noActionsAfterGameEnded() {
     
-    clickOn((Node) gameGrid.getChildren().get(0));
-
     TileReadable tileToClick = findSuitableSpacebarTile(2);
     Node nodeToClick = getNodeFromGridPane(tileToClick.getX(), tileToClick.getY());
     List<Tile> neighborTiles = flagAllNeighborBombs(tileToClick.getX(), tileToClick.getY());
@@ -349,7 +312,7 @@ public class GamePageTest extends ApplicationTest {
 
   @Test
   public void testLimitedNumberOfFlags() {
-    clickOn((Node) gameGrid.getChildren().get(0));
+    clickOn((Node) gameGrid.getChildren().get(6));
 
     // Flag 10 tiles.
     int counter = 0;
@@ -447,8 +410,6 @@ public class GamePageTest extends ApplicationTest {
 
   @Test
   public void spaceBarIncorrectNumberOfFlags() {
-    clickOn((Node) gameGrid.getChildren().get(6));
-
     TileReadable tileToClick = findSuitableSpacebarTile(2);
     List<Tile> neighborTiles = getNeighborTiles(tileToClick.getX(), tileToClick.getY());
     List<Node> neighborBombs = neighborTiles.stream().filter(t -> t.isBomb()).map(t -> getNodeFromGridPane(t.getX(), t.getY())).toList();
@@ -501,7 +462,7 @@ public class GamePageTest extends ApplicationTest {
       }
     }
   }
-  
+
   assertFalse(clickedTile.isRevealed() || flaggedTile.isRevealed() || autoReveal.isRevealed()
       , "None of the tiles should be revealed before clicking");
   clickOn(flaggedNode, MouseButton.SECONDARY);
@@ -551,10 +512,9 @@ public class GamePageTest extends ApplicationTest {
   }
 
   /**
-   * We need to find a tile which is revealed.
-   * The tile must have at least one bomb nearby,
-   * and the tile must also have at least one unrevealed neighbor
-   * which is not a bomb.
+   * We want to find an unrevealed tile which has number of bombs nearby equal to
+   * param numberOfBombs. We also want this tile to have only unrevealed neighbors.
+   * The method starts by resetting the game.
 
    * @param numberOfBombs The number of bombs we want the tile to have nearby.
    * @return A tile which is revealed, has at least one bomb nearby,
@@ -563,13 +523,20 @@ public class GamePageTest extends ApplicationTest {
   private TileReadable findSuitableSpacebarTile(int numberOfBombs) {
     
     TileReadable tileToClick = null;
-    while (tileToClick == null) {
+    
+    for (;;) {
+
+      click("Reset game");
+      clickOn((Node) gameGrid.getChildren().get(0));
       
       for (Node node : gameGrid.getChildren()) {
         int rowIndex = GridPane.getRowIndex(node);
         int columnIndex = GridPane.getColumnIndex(node);
 
         TileReadable tile = gamePageController.getTile(columnIndex, rowIndex);
+        if (tile.isRevealed() || tile.isBomb()) {
+          continue;
+        }
         
         List<Node> neighborNodes = getNeighborNodes(columnIndex, rowIndex);
         List<Node> unrevealedNonBombNeighbors = neighborNodes.stream()
@@ -578,21 +545,18 @@ public class GamePageTest extends ApplicationTest {
             .toList();  
         
         List<Tile> neighborTiles = getNeighborTiles(columnIndex, rowIndex);
+        // We need all neighbors to be unrevealed.
+        if (unrevealedNonBombNeighbors.size() + numberOfBombs != neighborTiles.size()) {
+          continue;
+        }
         long neighborBombs = neighborTiles.stream().filter(t -> t.isBomb()).count();
 
-        if (tile.isRevealed() && neighborBombs == numberOfBombs && unrevealedNonBombNeighbors.size() > 0) {
+        if (neighborBombs == numberOfBombs && unrevealedNonBombNeighbors.size() > 0) {
           tileToClick = tile;
           return tileToClick;
         }
       }
-
-      // If we get here, we did not find a suitable tile.
-      // We need to reveal a tile.
-      List<Node> unrevealed = getUnrevealedNonBombNodes();
-      clickOn(unrevealed.get(0));
     }
-
-    return null; // This should hopefully never happen.
   }
 
 
