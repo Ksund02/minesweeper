@@ -1,15 +1,13 @@
 package storage;
 
 import core.settings.SettingsManager;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import core.settings.GameDifficulty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 import java.io.OutputStream;
@@ -270,7 +268,25 @@ public class FileManagerTest {
     assertEquals(0, userScores.size(), "No entries should remain after deletion.");
   }
 
-  
+  @Test
+  public void testWriteToFileIOException() {
+    
+    File file = new File("src/test/resources/readOnlyHighscore.json");
+    file.setReadOnly();
+    assertFalse(file.canWrite(), "File should be read only.");
 
+    PrintStream orgError = System.err; // We don't want to print stacktrace to the console.
+    ByteArrayOutputStream errorText = new ByteArrayOutputStream();
+    System.setErr(new PrintStream(errorText));
 
+    UserScore guttorm = new UserScore("Guttorm", 50, "2021-09-15", SettingsManager.getGameDifficultyAsString());
+    
+    // An IOException should be thrown, but we are not interested in the stacktrace.
+    HighscoreFileManager.writeToHighscore(guttorm, file);
+    System.setErr(orgError);
+
+    List<UserScore> userScores = HighscoreFileManager.readFromHighscore(file);
+    assertEquals(0, userScores.size()
+        , "File was empty before writing, and should be empty after writing, since an IOException was thrown.");
+  }
 }
