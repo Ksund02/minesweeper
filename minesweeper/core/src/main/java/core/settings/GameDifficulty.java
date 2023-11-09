@@ -2,9 +2,9 @@ package core.settings;
 
 public enum GameDifficulty {
   TEST(5, 5, 5, 300, 300, 30),
-  EASY(7, 7, 10, 600, 500, 30),
-  MEDIUM(12, 10, 20, 600, 600, 30),
-  HARD(14, 12, 40, 750, 600, 30);
+  EASY(7, 7, 10, 540, 360, 30),
+  MEDIUM(12, 10, 20, 680, 450, 30),
+  HARD(14, 12, 40, 740, 500, 30);
 
   private final int gridWidth;
   private final int gridHeight;

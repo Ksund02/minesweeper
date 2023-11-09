@@ -2,11 +2,11 @@ package ui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
+import java.io.PrintStream;
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.testfx.api.FxRobot;
@@ -17,16 +17,12 @@ import core.settings.SettingsManager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
 import storage.UserScore;
 
 public class HighScoreListTest extends ApplicationTest {
 
-  /*
-   * Mockito is mentioned in the lecture notes, but is not currently used.
-   * 
-   * 
-   */
   private Parent root;
   private FxRobot robot;
   private RestRequest restRequest;
@@ -36,11 +32,11 @@ public class HighScoreListTest extends ApplicationTest {
     RestRequest mockzy = Mockito.mock(RestRequest.class);
     this.restRequest = mockzy;
     Mockito.when(mockzy.readFromHighscore()).thenReturn(List.of(
-      new UserScore("MineLegend", 14, "2021-04-19", "EASY"),
-      new UserScore("Christian", 100, "2021-04-20", "EASY"),
-      new UserScore("David", 200, "2021-04-21", "EASY"),
-      new UserScore("Oskar", 300, "2021-04-22", "EASY"),
-      new UserScore("Underdal", 400, "2021-04-23", "EASY")));
+        new UserScore("MineLegend", 14, "2021-04-19", "EASY"),
+        new UserScore("Christian", 100, "2021-04-20", "MEDIUM"),
+        new UserScore("David", 200, "2021-04-21", "HARD"),
+        new UserScore("Oskar", 300, "2021-04-22", "MEDIUM"),
+        new UserScore("Underdal", 400, "2021-04-23", "HARD")));
 
     HighscoreListController ctrl = new HighscoreListController();
     ctrl.setRestRequest(mockzy);
@@ -66,6 +62,18 @@ public class HighScoreListTest extends ApplicationTest {
     }
   }
 
+  /**
+   * Checks if the expected player is present in the graphical user interface.
+   * 
+   * @param userScore The expected player.
+   * @param position  The position of the player in the highscore list (1-10)
+   */
+  private void checkPlayer(UserScore userScore, int position) {
+    assertEquals(userScore.getName(), robot.lookup("#name" + position).queryLabeled().getText());
+    assertEquals("" + userScore.getScore(), robot.lookup("#score" + position).queryLabeled().getText());
+    assertEquals(userScore.getDate(), robot.lookup("#date" + position).queryLabeled().getText());
+  }
+
   @Test
   public void right_order() {
     List<UserScore> userScores = restRequest.readFromHighscore();
@@ -75,12 +83,7 @@ public class HighScoreListTest extends ApplicationTest {
         .toList();
 
     for (int i = 1; i < Math.min(11, userScores.size()); i++) {
-      Assertions.assertEquals("" + userScores.get(i - 1).getScore(),
-          robot.lookup("#score" + i).queryLabeled().getText());
-      Assertions.assertEquals(userScores.get(i - 1).getName(),
-          robot.lookup("#name" + i).queryLabeled().getText());
-      Assertions.assertEquals(userScores.get(i - 1).getDate(),
-          robot.lookup("#date" + i).queryLabeled().getText());
+      checkPlayer(userScores.get(i - 1), i);
     }
   }
 
@@ -89,5 +92,54 @@ public class HighScoreListTest extends ApplicationTest {
     assertEquals(false, robot.lookup("#gameGrid").tryQuery().isPresent());
     click("Back");
     assertEquals(true, robot.lookup("#gameGrid").tryQuery().isPresent());
+  }
+
+  @Test
+  public void testChoiceBox() {
+    List<UserScore> userScores = restRequest.readFromHighscore();
+    ChoiceBox<String> choiceBox = robot.lookup("#difficultyChoiceBox").queryAs(ChoiceBox.class);
+
+    robot.clickOn("#difficultyChoiceBox");
+    click("MEDIUM");
+    assertEquals("MEDIUM", choiceBox.getValue());
+    checkPlayer(userScores.get(1), 1);
+
+    robot.clickOn("#difficultyChoiceBox");
+    click("HARD");
+    assertEquals("HARD", choiceBox.getValue());
+    checkPlayer(userScores.get(2), 1);
+
+    robot.clickOn("#difficultyChoiceBox");
+    click("EASY");
+    assertEquals("EASY", choiceBox.getValue());
+    checkPlayer(userScores.get(0), 1);
+  }
+
+  @Test
+  public void testStandardChoiceBox() {
+    switchDifficulty("Medium");
+    ChoiceBox<String> choiceBox = robot.lookup("#difficultyChoiceBox").queryAs(ChoiceBox.class);
+    assertEquals("MEDIUM", choiceBox.getValue());
+
+    switchDifficulty("Hard");
+    choiceBox = robot.lookup("#difficultyChoiceBox").queryAs(ChoiceBox.class);
+    assertEquals("HARD", choiceBox.getValue());
+
+    switchDifficulty("Easy");
+    choiceBox = robot.lookup("#difficultyChoiceBox").queryAs(ChoiceBox.class);
+    assertEquals("EASY", choiceBox.getValue());
+  }
+
+  private void switchDifficulty(String difficulty) {
+    click("Back");
+    click("Settings");
+    click(difficulty);
+    click("Back");
+
+    PrintStream originalOut = System.out;
+    ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outContent));
+    click("Leaderboard");
+    System.setOut(originalOut);
   }
 }

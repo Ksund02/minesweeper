@@ -9,6 +9,8 @@ public interface TileReadable {
 
   public boolean hasAdjacentBomb();
 
+  public int getNumBombsAround();
+
   public int getX();
 
   public int getY();

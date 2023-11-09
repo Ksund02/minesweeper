@@ -58,7 +58,7 @@ public class GamePageController {
   private VBox vbox;
 
   private RestRequest restRequest = new RestRequest("http://localhost:8080");
-  private GameEngine gameEngine;
+  protected GameEngine gameEngine;
   private Timeline timeline;
   private int[] currentSquare;
 
@@ -78,7 +78,6 @@ public class GamePageController {
     this.gameEngine = new GameEngine();
     newGameGrid();
     Platform.runLater(() -> setStageSize());
-
     spaceBarClickSetup();
     flagsLeftLabel.setText(String.valueOf(gameEngine.getFlagsLeft()));
     this.timeline = createTimeline();
@@ -221,9 +220,7 @@ public class GamePageController {
     final int col = y;
     imageView.setOnMouseClicked(e -> {
       squareClicked(e, row, col);
-      if (gameEngine.isGameStarted() && gameEngine.stopWatchIsStarted()) {
-        timeline.play();
-      }
+      timeline.play();
     });
     // CurrentSquare gets updated when mouse hovers over a square
     imageView.setOnMouseEntered(e -> {
@@ -251,9 +248,8 @@ public class GamePageController {
     Stage stage = (Stage) gameGrid.getScene().getWindow();
     stage.setMinWidth(SettingsManager.getStageMinWidth());
     stage.setMinHeight(SettingsManager.getStageMinHeight());
-
-    stage.setHeight(SettingsManager.getStageMinWidth() + 1);
-    stage.setWidth(SettingsManager.getStageMinWidth() + 1);
+    stage.setWidth(SettingsManager.getStageMinWidth());
+    stage.setHeight(SettingsManager.getStageMinHeight());
   }
 
   /**
