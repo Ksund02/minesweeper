@@ -8,6 +8,7 @@
 - [User story](#user-story🧑‍🌾)
 - [How to Run the Game Localy](#how-to-run-the-game-localy-🚂)
 - [How to Run Project in Eclipse Che](#how-to-run-project-in-eclipse-che-🌐)
+- [Game Rules](#game-rules-📜)
 
 ## Project Description 🕹️
 The goal of the project is to make a working minesweeper game.
@@ -88,3 +89,16 @@ mvn javafx:run
 7. **Navigate to the game**
 
 The game is now running in the other tab with the virtual computer
+
+## Game Rules 📜
+
+You can find the overall roules [here](https://minesweepergame.com/strategy/how-to-play-minesweeper.php).
+
+**Chording**
+
+Chording in this game can be used in a unique way. To use the chording function in this version of Minesweeper, you should first _click on_ a revealed tile. If the number of flags placed around this tile matches the number displayed on the tile itself, you can then _press the spacebar_. This action will open all the surrounding tiles that have not been flagged.
+
+1. **The tile makred with a red circel is clicked**
+   ![1_1-tile_clicked](./pictures/1_1-tile_clicked.JPG)
+2. **The space bar is cllicked**
+   ![2_spacebar_clicked](./pictures/2_spacebar_clicked.JPG)
