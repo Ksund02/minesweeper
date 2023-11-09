@@ -26,5 +26,4 @@ public class MineAppTest {
   public void testIconIsPresent() {
     assertFalse(stage.getIcons().isEmpty());
   }
-
 }
