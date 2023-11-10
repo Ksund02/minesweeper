@@ -13,13 +13,13 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.control.LabeledMatchers;
 
+import core.UserScore;
 import core.settings.SettingsManager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
-import storage.UserScore;
 
 public class HighScoreListTest extends ApplicationTest {
 

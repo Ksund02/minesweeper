@@ -3,6 +3,7 @@ package ui;
 import core.GameEngine;
 import core.Tile;
 import core.TileReadable;
+import core.UserScore;
 import core.settings.SettingsManager;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +29,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import storage.UserScore;
 
 
 /**

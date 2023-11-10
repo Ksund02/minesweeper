@@ -1,5 +1,6 @@
 package ui;
 
+import core.UserScore;
 import core.settings.SettingsManager;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import storage.UserScore;
 
 /**
  * This class is used to control the highscore list page. Upon initialization,

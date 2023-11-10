@@ -22,6 +22,8 @@ import org.testfx.matcher.control.LabeledMatchers;
 import core.GameEngine;
 import core.Tile;
 import core.TileReadable;
+import core.UserScore;
+import core.savehandler.HighscoreFileManager;
 import core.settings.SettingsManager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -31,8 +33,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import storage.HighscoreFileManager;
-import storage.UserScore;
 
 public class GamePageTest extends ApplicationTest {
 

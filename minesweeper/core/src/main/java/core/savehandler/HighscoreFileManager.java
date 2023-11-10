@@ -1,7 +1,10 @@
-package storage;
+package core.savehandler;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import core.UserScore;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

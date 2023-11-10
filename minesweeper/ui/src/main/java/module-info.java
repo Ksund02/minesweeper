@@ -5,7 +5,6 @@ module minesweeperui {
     requires javafx.media;
 
     requires minesweepercore;
-    requires minesweeperstorage;
     requires java.net.http;
     requires javafx.base;
     

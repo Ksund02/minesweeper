@@ -1,4 +1,4 @@
-package storage;
+package core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -8,6 +8,7 @@ import java.io.PrintStream;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 public class UserScoreTest {
 

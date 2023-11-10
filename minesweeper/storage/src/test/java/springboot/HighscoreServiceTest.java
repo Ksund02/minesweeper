@@ -1,5 +1,6 @@
 package springboot;
 
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,8 +10,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import storage.HighscoreFileManager;
-import storage.UserScore;
+import core.UserScore;
+import core.savehandler.HighscoreFileManager;
+import springboot.SpringApp;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -35,21 +37,24 @@ import java.util.List;
 @SpringBootTest(classes = SpringApp.class)
 @AutoConfigureMockMvc
 public class HighscoreServiceTest {
-  @Autowired
-  private MockMvc mockMvc; // This guy is used to simulate HTTP interactions. It's a mock, so it's not a
-                           // real server.
 
+  private final String highscorePath = "./../appdata/highscore.json";
+  
+  // This guy is used to simulate HTTP interactions. It's a mock, so it's not a real server.
   @Autowired
-  private ObjectMapper objectMapper; // Instantiating a new field variable of type ObjectMapper with the @Autowired
-                                     // annotation.
+  private MockMvc mockMvc;
+
+  // Instantiating a new field variable of type ObjectMapper with the @Autowired annotation.
+  @Autowired
+  private ObjectMapper objectMapper; 
 
   @Test
   public void testGetAllHighscores() throws Exception {
 
-    List<UserScore> highscores = objectMapper.readValue(new FileInputStream("./../appdata/highscore.json"),
+    List<UserScore> highscores = objectMapper.readValue(new FileInputStream(highscorePath),
         new TypeReference<List<UserScore>>() {
         }); // Read in the userScores from the highscore.json file.
-
+    
     mockMvc.perform(get("/highscores")) // Perform a GET request to the /highscores endpoint.
         .andExpect(status().isOk()) // Expect the status code to be 200 (OK).
         .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // Expect the content type to be JSON.
@@ -64,11 +69,11 @@ public class HighscoreServiceTest {
 
     mockMvc.perform(post("/highscores") // Perform a POST request to the /highscores endpoint.
         .contentType(MediaType.APPLICATION_JSON) // Set the content type to JSON.
-        .content(objectMapper.writeValueAsString(oskar))) // Set the content of the request to the oskar
-                                                          // UserScore object written as a JSON string.
+        .content(objectMapper.writeValueAsString(oskar))) 
+        // Set the content of the request to the oskar UserScore object written as a JSON string.
         .andExpect(status().isOk()); // Expect the status code to be 200 (OK).
 
-    List<UserScore> highscores = objectMapper.readValue(new FileInputStream("./../appdata/highscore.json"),
+    List<UserScore> highscores = objectMapper.readValue(new FileInputStream(highscorePath),
         new TypeReference<List<UserScore>>() {
         }); // Read in the userScores from the highscore.json file.
 
@@ -86,14 +91,14 @@ public class HighscoreServiceTest {
   public void clearAllHighscores() throws Exception {
 
     // Start by saving the original highscores.
-    List<UserScore> highscores = objectMapper.readValue(new FileInputStream("./../appdata/highscore.json"),
+    List<UserScore> highscores = objectMapper.readValue(new FileInputStream(highscorePath),
         new TypeReference<List<UserScore>>() {
         });
 
     mockMvc.perform(delete("/highscores")) // Perform a DELETE request to the /highscores endpoint.
         .andExpect(status().isOk()); // Expect the status code to be 200 (OK).
 
-    List<UserScore> shouldBeEmpty = objectMapper.readValue(new FileInputStream("./../appdata/highscore.json"),
+    List<UserScore> shouldBeEmpty = objectMapper.readValue(new FileInputStream(highscorePath),
         new TypeReference<List<UserScore>>() {
         }); // Read in the userScores from the highscore.json file.
 

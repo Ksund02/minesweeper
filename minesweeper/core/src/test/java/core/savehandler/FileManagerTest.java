@@ -1,9 +1,12 @@
-package storage;
+package core.savehandler;
 
 import core.settings.SettingsManager;
+
 import static org.junit.jupiter.api.Assertions.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import core.UserScore;
 import core.settings.GameDifficulty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
