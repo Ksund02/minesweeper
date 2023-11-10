@@ -12,7 +12,8 @@ public class SettingsManagerTest {
   @Test
   public void testSettingsManager() {
     SettingsManager settingsManager = new SettingsManager();
-    assertEquals(settingsManager.getGameDifficulty(), GameDifficulty.EASY);
-    assertEquals(settingsManager.getThemeSettings(), ThemeSettings.LIGHT);
+    settingsManager.toString(); // Just to get rid of the warning
+    assertEquals("EASY", SettingsManager.getGameDifficultyAsString());
+    assertEquals("-fx-background-color: white", SettingsManager.getThemeSettings().getBackgroundStyle());
   }
 }
