@@ -1,18 +1,18 @@
 package springboot;
 
-
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import core.UserScore;
 import core.savehandler.HighscoreFileManager;
-import springboot.SpringApp;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -31,11 +31,13 @@ import java.util.List;
  * It is possible that the ControllerTest-class passes all the tests, but the
  * ServiceTest-class fails. This is because the ServiceTest-class tests the
  * actual implementation of the service-methods, while the ControllerTest-class
- * tests
- * just tests that the HTTP requests are handled correctly.
+ * just tests that the HTTP requests are received and that the correct methods
+ * for the particular HTTP request are called.
  */
-@SpringBootTest(classes = SpringApp.class)
-@AutoConfigureMockMvc
+@SpringBootTest(classes = SpringApp.class) // Set the Spring Boot application to be used in the test.
+@Import(HighscoreRestController.class) // Set the controller to be used in the test.
+@ContextConfiguration(classes = HighscoreService.class) // Set the service to be used in the test.
+@AutoConfigureMockMvc // Automatically configure the MockMvc object.
 public class HighscoreServiceTest {
 
   private final String highscorePath = "./../appdata/highscore.json";
@@ -55,12 +57,25 @@ public class HighscoreServiceTest {
         new TypeReference<List<UserScore>>() {
         }); // Read in the userScores from the highscore.json file.
     
-    mockMvc.perform(get("/highscores")) // Perform a GET request to the /highscores endpoint.
+    MvcResult mockzyRez = mockMvc.perform(get("/highscores")) // Perform a GET request to the /highscores endpoint.
         .andExpect(status().isOk()) // Expect the status code to be 200 (OK).
         .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // Expect the content type to be JSON.
         // Check that the response in JSON format is equal to the highscores list
         // written as a JSON string.
-        .andExpect(content().json(objectMapper.writeValueAsString(highscores)));
+        .andExpect(content().json(objectMapper.writeValueAsString(highscores)))
+        .andReturn(); // Return the result of the GET request.
+
+    String responseBody = mockzyRez.getResponse().getContentAsString(); // Get the response body as a string.
+    
+    // Convert the response body from a JSON string to a list of UserScore objects.
+    List<UserScore> scory = objectMapper.readValue(responseBody, new TypeReference<List<UserScore>>() {});
+
+    // Check that the highscores list contains all the UserScore objects in the response body.
+    assertTrue(scory.stream().filter(score -> highscores.stream()
+        .anyMatch(highscore -> highscore.getName().equals(score.getName())
+            && highscore.getScore() == score.getScore() && highscore.getDate().equals(score.getDate())
+            && highscore.getDifficulty().equals(score.getDifficulty())))
+        .count() == highscores.size()); 
   }
 
   @Test
@@ -82,7 +97,7 @@ public class HighscoreServiceTest {
         .anyMatch(userScore -> userScore.getName().equals(oskar.getName()) && userScore.getScore() == oskar.getScore()
             && userScore.getDate().equals(oskar.getDate()) && userScore.getDifficulty().equals(oskar.getDifficulty())));
 
-    // Delete oskar from the highscore file, he is only there for tsting purposes.
+    // Delete oskar from the highscore file, he is only there for testing purposes.
     HighscoreFileManager.deleteFromHighscore(oskar.getName(), oskar.getScore(), oskar.getDate(), oskar.getDifficulty(),
         HighscoreFileManager.getFile());
   }
