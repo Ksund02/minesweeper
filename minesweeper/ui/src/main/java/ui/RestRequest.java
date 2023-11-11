@@ -2,9 +2,7 @@ package ui;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import core.UserScore;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;

@@ -2,6 +2,12 @@ package core;
 
 import java.time.LocalDate;
 
+/**
+ * This class is used to measure time spent on a game.
+ * The time spent on a game is measured in seconds, 
+ * and is used to calculate the score of a completed
+ * Minesweeper game.
+ */
 public class Stopwatch {
   private String date;
   protected long timeWhenStarted;
@@ -9,6 +15,11 @@ public class Stopwatch {
   private boolean finished;
   protected boolean started;
   
+  /**
+   * Constructor for the Stopwatch class.
+   * Resets the stopwatch, which sets the date to the current date,
+   * and sets the time to 0.
+   */
   public Stopwatch() {
     reset();
   }

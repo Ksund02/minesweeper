@@ -1,5 +1,8 @@
 package core;
 
+/**
+ * This interface contains all the methods that a Tile object should have.
+ */
 public interface TileReadable {
   public boolean isBomb();
 

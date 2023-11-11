@@ -82,7 +82,7 @@ public class GameBoard {
 
   /**
    * Method for testing purposes.
-   * 
+
    * @param bombLocations The locations of the bombs you want to place,
    *     should be the same as the ones in the custom gameBoard.
    */
@@ -106,7 +106,7 @@ public class GameBoard {
 
    * @param x the x coordinate
    * @param y the y coordinate
-   * @return
+   * @return a list of all the tiles adjacent to the tile at the specified coordinate.
    */
   public List<Tile> getNeighborTiles(int x, int y) {
     List<Tile> neighbors = new ArrayList<>();
@@ -202,7 +202,7 @@ public class GameBoard {
 
   /**
    * Method for testing purposes.
-   * 
+
    * @param gameBoard The custom gameBoard
    */
   protected void setGameboard(List<List<Tile>> gameBoard) {
