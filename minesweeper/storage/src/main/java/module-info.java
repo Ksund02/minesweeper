@@ -1,4 +1,4 @@
-module rest {
+module minesweeperstorage {
     // Jackson 
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
