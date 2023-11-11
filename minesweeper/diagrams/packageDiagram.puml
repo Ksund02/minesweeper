@@ -26,7 +26,7 @@ package "coverage" {
 'Module'
 package "minesweeperrest" {
   ' Packages ' 
-  package "storage" {
+  package "rest" {
     class HighscoreFileManager
     class UserScore
   }
@@ -53,10 +53,10 @@ package "minesweeperui" {
 ui --> core : uses
 ui --> core.settings : reads/writes
 ui --> springBoot : uses
-ui --> storage : uses
+ui --> rest : uses
 
-storage --> core.settings : reads
-springBoot --> storage : uses
+rest --> core.settings : reads
+springBoot --> rest : uses
 
 core --> core.settings : reads
 
