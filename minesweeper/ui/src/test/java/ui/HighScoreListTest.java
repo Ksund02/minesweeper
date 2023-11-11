@@ -98,6 +98,8 @@ public class HighScoreListTest extends ApplicationTest {
   @Test
   public void testChoiceBox() {
     List<UserScore> userScores = restRequest.readFromHighscore();
+    
+    @SuppressWarnings("unchecked") // We know that the ChoiceBox is of type String.
     ChoiceBox<String> choiceBox = robot.lookup("#difficultyChoiceBox").queryAs(ChoiceBox.class);
 
     robot.clickOn("#difficultyChoiceBox");
@@ -116,6 +118,7 @@ public class HighScoreListTest extends ApplicationTest {
     checkPlayer(userScores.get(0), 1);
   }
 
+  @SuppressWarnings("unchecked") // We know that the ChoiceBox is of type String.
   @Test
   public void testStandardChoiceBox() {
     switchDifficulty("Medium");
