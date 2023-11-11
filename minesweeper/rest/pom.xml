@@ -148,7 +148,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>minesweeperstorage/springboot.SpringApp</mainClass>
+                    <mainClass>minesweeperrest/springboot.SpringApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>

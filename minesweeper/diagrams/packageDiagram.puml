@@ -24,7 +24,7 @@ package "coverage" {
 }
 
 'Module'
-package "minesweeperstorage" {
+package "minesweeperrest" {
   ' Packages ' 
   package "storage" {
     class HighscoreFileManager
