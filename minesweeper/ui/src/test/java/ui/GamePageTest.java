@@ -242,6 +242,18 @@ public class GamePageTest extends ApplicationTest {
   }
 
   /**
+   * We don't want anything to happen when we click spacebar,
+   * if we are not hovering over a tile.
+   */
+  @Test
+  public void spaceBarDoesNotReset() {
+    clickOn((Node) gameGrid.getChildren().get(0));
+    clickOn("Reset game", MouseButton.SECONDARY); // We want the mouse to be in the right place.
+    push(KeyCode.SPACE); // Click spacebar while hovering over the reset button.
+    assertTrue(gamePageController.getTile(0, 0).isRevealed(), "Spacebar should not be able to reset the game");
+  }
+
+  /**
    * This tests that if you have wrongly flagged a non-bomb
    * and a bomb, and then you press spacebar, the game should end in a loss.
 
