@@ -1,16 +1,16 @@
-# minesweeperstorage: Module documentation
+# rest: Module documentation
 
-Welcome to the `minesweeperstorage` module documentation. This module is an integral part of the Minesweeper game application, providing robust data management functionalities, all the way from backend to the front-facing REST API. Its primary focus is to permanently store game scores so that high scores are maintained across sessions, providing an exquisite gaming experience.
+Welcome to the `rest` module documentation. This module is an integral part of the Minesweeper game application, providing robust data management functionalities, all the way from backend to the front-facing REST API. Its primary focus is to permanently store game scores so that high scores are maintained across sessions, providing an exquisite gaming experience.
 
 Within this documentation, you will find detailed information about the classes and methods used to manage and present highscore data. 
 
 The storage package includes all the necessary operations for reading, writing, and manipulating highscore information. The SpringBoot package on the other hand, contains code for the web server's initialization process. It is also responsible for defining which HTTP-requests are supported, and how they are handled.
 
-Use this documentation as a guide for understanding the internal workings of the `minesweeperstorage` module.
+Use this documentation as a guide for understanding the internal workings of the `rest` module.
 
 ## Contents
 
-- [minesweeperstorage: Module documentation](#minesweeperstorage-module-documentation)
+- [rest: Module documentation](#rest-module-documentation)
   - [Contents](#contents)
   - [Storage Package](#storage-package)
     - [Classes](#classes)
