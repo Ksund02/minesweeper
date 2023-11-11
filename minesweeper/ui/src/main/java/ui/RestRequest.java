@@ -27,7 +27,18 @@ public class RestRequest {
    *                locally.
    */
   public RestRequest(String baseUri) {
-    this.httpClient = HttpClient.newHttpClient();
+    this(baseUri, HttpClient.newHttpClient());
+  }
+
+  /**
+   * Constructor for RestRequest, used for testing purposes.
+   * Allows for a mock HttpClient to be passed in.
+
+   * @param baseUri The base URI for HTTP requests; typically 'http://localhost:8080'
+   * @param httpClient The HttpClient used to send HTTP requests.
+   */
+  public RestRequest(String baseUri, HttpClient httpClient) {
+    this.httpClient = httpClient;
     this.baseUri = baseUri;
   }
 
