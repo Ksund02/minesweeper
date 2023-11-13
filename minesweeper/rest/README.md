@@ -82,3 +82,10 @@ A service class which is responsible for the core logic needed to handle the HTT
 - **Jackson Library**: Utilized for JSON processing, enabling easy conversion of `UserScore` objects to/from JSON.
 - **Spring Boot**: Automates configuration and startup processes for the web server, simplifies server management and reduces boilerplate code.
 - **Integrating REST API within the storage module** We have included the Spring Boot REST API within the storage module to keep related features — data persistence and data presentation — together. This makes the system easier to understand and work on, as it keeps all aspects of storage management in one place, all the way from the backend file handling to the user-facing API.
+
+## Sequence diagram
+
+A diagram showing an important possible sequence in the game
+
+![sequenceDiagram](../../pictures/sequenceDiagram.png)
+
