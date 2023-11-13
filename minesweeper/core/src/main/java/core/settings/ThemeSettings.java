@@ -1,5 +1,9 @@
 package core.settings;
 
+/**
+ * This enum is used to store the different themes which the user can choose from.
+ * Currently, there are two themes: LIGHT and DARK.
+ */
 public enum ThemeSettings {
   LIGHT("white", "white;", "/"),
   DARK("gray", "black;", "/dark_");

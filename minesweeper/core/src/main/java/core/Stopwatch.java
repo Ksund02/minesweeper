@@ -2,76 +2,100 @@ package core;
 
 import java.time.LocalDate;
 
+/**
+ * This class is used to measure time spent on a game.
+ * The time spent on a game is measured in seconds, 
+ * and is used to calculate the score of a completed
+ * Minesweeper game.
+ */
 public class Stopwatch {
   private String date;
-  private long timeWhenStarted;
-  private int endTime;
+  protected long timeWhenStarted;
+  protected int endTime;
   private boolean finished;
-  private boolean started;
-
+  protected boolean started;
+  
+  /**
+   * Constructor for the Stopwatch class.
+   * Resets the stopwatch, which sets the date to the current date,
+   * and sets the time to 0.
+   */
   public Stopwatch() {
-    restart();
+    reset();
+  }
+  
+  /**
+   * Restarts the stopwatch.
+   * Sets the date to the current date, and sets the time to 0.
+   */
+  public void reset() {
+    date = "" + LocalDate.now();
+    timeWhenStarted = 0;
+    endTime = 0;
+    finished = false;
+    started = false;
   }
 
   /**
-   * Starts the stopwatch.
+   * Resets the stopwatch and starts taking time.
    */
   public void start() {
-    this.started = true;
-    this.timeWhenStarted = System.currentTimeMillis();
+    if (finished) {
+      reset();
+    }
+    started = true;
+    timeWhenStarted = System.currentTimeMillis();
   }
 
   /**
-   * Stops the stopwatch.
+   * Stops the stopwatch and calculates the
+   * time used since the stopwatch was started.
    */
   public void stop() {
     if (!finished && started) {
-      this.endTime = (int) ((System.currentTimeMillis() - this.timeWhenStarted) / 1000);
+      endTime = (int) ((System.currentTimeMillis() - timeWhenStarted) / 1000);
       finished = true;
     }
   }
 
   /**
    * Main method for the Stopwatch class.
-   * 
-   * @return the time used in seconds
+   * Returns the time in seconds since the stopwatch was started.
+
+   * @return the time used in seconds since the stopwatch was started
    */
   public int getTime() {
-    if (finished && started) {
+
+    // Return 0 if the stopwatch has not been started.
+    if (!started) {
+      return 0;
+    }
+
+    // Return the already calculated time, stopwatch has not been reset yet.
+    if (finished) { 
       return endTime;
     }
 
-    int timeUsed = ((int) (System.currentTimeMillis() - this.timeWhenStarted) / 1000);
-    boolean usedTooLongTime = timeUsed > 999;
+    int timeUsed = ((int) (System.currentTimeMillis() - timeWhenStarted) / 1000);
+    boolean usedTooLongTime = timeUsed >= 999;
 
-    if (started && usedTooLongTime) {
+    if (usedTooLongTime) {
       finished = true;
       return 999;
     }
 
-    if (started) {
-      return timeUsed;
-    }
-    return 0;
+    return timeUsed; // Return the time used in seconds
   }
 
   public String getDate() {
-    return this.date;
+    return date;
   }
 
   public boolean isStarted() {
-    return this.started;
+    return started;
   }
 
-  /**
-   * Restarts the stopwatch.
-   * Sets the date to the current date, and sets the time to 0.
-   */
-  public void restart() {
-    this.date = "" + LocalDate.now();
-    this.timeWhenStarted = 0;
-    this.endTime = 0;
-    this.finished = false;
-    this.started = false;
+  public boolean isFinished() {
+    return finished;
   }
 }

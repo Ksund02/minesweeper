@@ -16,7 +16,7 @@
 
     <modules>
         <module>core</module>
-        <module>storage</module>
+        <module>rest</module>
         <module>ui</module>
         <module>coverage</module>
     </modules>
@@ -26,19 +26,19 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.7.2</version>
+            <version>5.10.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.7.2</version>
+            <version>5.10.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>5.7.2</version>
+            <version>5.10.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -120,11 +120,10 @@
             <plugin>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <groupId>org.apache.maven.plugins</groupId>
-                <version>3.1.1</version>
+                <version>3.3.1</version>
                 <configuration>
                     <configLocation>google_checks.xml</configLocation>
                     <consoleOutput>true</consoleOutput>
-                    <encoding>UTF-8</encoding>
                     <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
                 </configuration>
@@ -132,7 +131,7 @@
                     <dependency>
                         <artifactId>checkstyle</artifactId>
                         <groupId>com.puppycrawl.tools</groupId>
-                        <version>8.36.1</version>
+                        <version>10.12.4</version>
                     </dependency>
                 </dependencies>
                 <executions>

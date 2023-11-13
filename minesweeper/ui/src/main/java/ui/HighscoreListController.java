@@ -1,5 +1,6 @@
 package ui;
 
+import core.UserScore;
 import core.settings.SettingsManager;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import storage.UserScore;
 
 /**
  * This class is used to control the highscore list page. Upon initialization,
@@ -25,8 +25,8 @@ import storage.UserScore;
 public class HighscoreListController {
 
   private static final int HIGHSCORE_LENGTH = 10;
-  public static final int STAGE_WIDTH = 500;
-  public static final int STAGE_HEIGHT = 600;
+  public static final int STAGE_WIDTH = 470;
+  public static final int STAGE_HEIGHT = 460;
   private RestRequest restRequest = new RestRequest("http://localhost:8080");
   private String[] difficulties = { "EASY", "MEDIUM", "HARD" };
   private List<UserScore> userScores;
@@ -140,8 +140,8 @@ public class HighscoreListController {
     Node eventSource = (Node) event.getSource();
     Stage stage = (Stage) eventSource.getScene().getWindow();
     stage.setScene(new Scene(root));
-    stage.setWidth(SettingsManager.getGameDifficulty().getStageMinWidth() + 1);
-    stage.setHeight(SettingsManager.getGameDifficulty().getStageMinHeight() + 1);
+    MineApp.setStageSize(stage, SettingsManager.getStageMinWidth(),
+        SettingsManager.getStageMinHeight());
     stage.show();
   }
 

@@ -2,6 +2,7 @@ package ui;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import core.UserScore;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -9,7 +10,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
-import storage.UserScore;
 
 /**
  * This class is used to send HTTP requests to the /highscores endpoint. 
@@ -27,7 +27,18 @@ public class RestRequest {
    *                locally.
    */
   public RestRequest(String baseUri) {
-    this.httpClient = HttpClient.newHttpClient();
+    this(baseUri, HttpClient.newHttpClient());
+  }
+
+  /**
+   * Constructor for RestRequest, used for testing purposes.
+   * Allows for a mock HttpClient to be passed in.
+
+   * @param baseUri The base URI for HTTP requests; typically 'http://localhost:8080'
+   * @param httpClient The HttpClient used to send HTTP requests.
+   */
+  public RestRequest(String baseUri, HttpClient httpClient) {
+    this.httpClient = httpClient;
     this.baseUri = baseUri;
   }
 

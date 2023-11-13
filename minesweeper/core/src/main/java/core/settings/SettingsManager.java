@@ -1,5 +1,16 @@
 package core.settings;
 
+/**
+ * SettingsManager keeps track of the current settings of the game.
+ * There are two main settings: game difficulty and theme.
+ * The game difficulty can be set to EASY, MEDIUM or HARD, and
+ * the theme can be set to LIGHT or DARK.
+ * 
+ * <p>The standard settings are EASY and LIGHT.
+
+ * @see GameDifficulty
+ * @see ThemeSettings
+ */
 public class SettingsManager {
 
   private static GameDifficulty gameDifficulty = GameDifficulty.EASY;

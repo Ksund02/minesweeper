@@ -1,9 +1,9 @@
 package springboot;
 
+import core.UserScore;
+import core.savehandler.HighscoreFileManager;
 import java.util.List;
 import org.springframework.stereotype.Service;
-import storage.HighscoreFileManager;
-import storage.UserScore;
 
 /**
  * This class is used to get appropriate responses to HTTP requests.

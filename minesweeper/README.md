@@ -5,15 +5,15 @@
 ## Table of contents 📚
 
 - [Minesweeper code base](#minesweeper-code-base)
-  - [Table of contents 📚](#table-of-contents-📚)
-  - [Game Description 🕹️](#game-description-🕹️)
-  - [Features 🎈](#features-🎈)
-  - [Optional Features 🔨](#optional-features-🔨)
-  - [Intended Use 🎮](#intended-use-🎮)
-  - [Check test coverage🧪](#check-test-coverage🧪)
+  - [Table of contents 📚](#table-of-contents-)
+  - [Game Description 🕹️](#game-description-️)
+  - [Features 🎈](#features-)
+  - [Optional Features 🔨](#optional-features-)
+  - [Intended Use 🎮](#intended-use-)
+  - [Check test coverage🧪](#check-test-coverage)
   - [Launch springboot](#launch-springboot)
-  - [Environment setup 🕶️](#environment-setup-🕶️)
-  - [Issue Priority Labels 🚩](#issue-priority-labels-🚩)
+  - [Environment setup 🕶️](#environment-setup-️)
+  - [Issue Priority Labels 🚩](#issue-priority-labels-)
   - [Code Quality Tools](#code-quality-tools)
 
 ## Game Description 🕹️
@@ -55,10 +55,10 @@ To generate and check test coverage across all modules go [here](./coverage/READ
 
 ## Launch springboot
 
-1. **Navigate to storage**
+1. **Navigate to rest**
 
 ```
-cd storage
+cd rest
 ```
 
 2. **Run the restAPI**
