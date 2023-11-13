@@ -92,4 +92,4 @@ This is the folder where all the images in the game are stored. It contains dark
 
 A diagram showing how the classes in core work together:
 
-![class diagram]("lim inn filsti her")
+![class diagram](../../pictures/classDiagram.png)
