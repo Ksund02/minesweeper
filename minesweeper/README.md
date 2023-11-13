@@ -70,12 +70,15 @@ mvn javafx:run
 3. **Kill the server if already running**
 
 ```
-netstat -ano | findstr :6969
-taskkill /PID [PID-number] /F
+netstat -ano | findstr :8080
+```
+Replace `<PID-number>` by the value you find from the first command:
+```
+taskkill /PID <PID-number> /F
 ```
 
 4. **Go to web browser**
-   http://localhost:6969/highscores
+   http://localhost:8080/highscores
 
 ## Environment setup 🕶️
 
@@ -109,3 +112,34 @@ Red: High Priority 🔴
   - [What is Checkstyle?](./FAQ.md#what-is-checkstyle)
   - [How do i standarize my code to pass checkstyle?](./FAQ.md#how-do-i-standarize-my-code-to-pass-checkstyle)
   - [How do i change java-formatter settings?](./FAQ.md#how-do-i-change-java-formatter-settings)
+
+## Convert to executable:
+
+Before doing this, you should first check that the game runs locally by retracing the steps explained [here](../README.md#how-to-run-the-game-localy-🚂). After this, you can follow these steps:
+
+1. **Navigate to minesweeper folder**
+
+```
+cd minesweeeper
+```
+
+2. **Run the JLink-command**
+
+```
+mvn javafx:jlink -f ./ui/pom.xml
+```
+
+3. **Run the JPackage-command**
+
+```
+mvn jpackage:jpackage -f ./ui/pom.xml
+```
+
+4. **Find the executable file**
+
+The executable file should be located in the target folder in ui under "dist". The path from the minesweeper folder is:
+`ui\target\dist\MinesweeperFX-1.0.0.exe`
+
+5. **Run the server**
+
+For the executable file to work as intended, the REST-server needs to be running in the background. Retrace the steps [here](#launch-springboot) to complete the set-up.
