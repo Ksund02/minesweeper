@@ -7,15 +7,13 @@ The `minesweepercore` module contains the classes with logic for the minesweeper
 - GameBoard
 - Stopwatch
 - GameEngine
-<br /><br />
-**Settings folder:**
-    - GameDifficulty
-    - SettingsManager
-    - ThemeSettings
+  <br /><br />
+  **Settings folder:** - GameDifficulty - SettingsManager - ThemeSettings
 
 ## Contents
 
 - [minesweepercore: Module documentation](#minesweepercore-module-documentation)
+
   - [Contents](#contents)
     - [Tile](#tile)
     - [TileReadable](#tilereadable)
@@ -28,6 +26,7 @@ The `minesweepercore` module contains the classes with logic for the minesweeper
     - [ThemeSettings](#themesettings)
   - [resources](#resources)
   - [Class diagram](#class-diagram)
+  - [Test coverage](#test-coverage)
 
 ### Tile
 
@@ -93,3 +92,23 @@ This is the folder where all the images in the game are stored. It contains dark
 A diagram showing how the classes in core work together:
 
 ![class diagram](../../pictures/classDiagram.png)
+
+## Test coverage
+
+To generate _Jacoco raport_ for the whole project: [here](../coverage/README.md#generate-coverage-raport-🧪).
+
+**Jacoco test coverage core:**
+
+![core report](../../pictures/jacoco_reports/core-report.jpg)
+
+**Jacoco test coverage for all classes in core:**
+
+![core report classes](../../pictures/jacoco_reports/core_core-report-classes.jpg)
+
+**Jacoco test coverage for all classes in core.savehandler:**
+
+![core.savehandler report classes](../../pictures/jacoco_reports/core_savehandler-report-classes.jpg)
+
+**Jacoco test coverage for all classes in core.settings:**
+
+![core.settings report classes](../../pictures/jacoco_reports/core_settings-report-classes.jpg)

@@ -2,7 +2,7 @@
 
 Welcome to the `minesweeperrest` module documentation. This module is an integral part of the Minesweeper game application, providing robust data management functionalities, all the way from backend to the front-facing REST API. Its primary focus is to permanently store game scores so that high scores are maintained across sessions, providing an exquisite gaming experience.
 
-Within this documentation, you will find detailed information about the classes and methods used to manage and present highscore data. 
+Within this documentation, you will find detailed information about the classes and methods used to manage and present highscore data.
 
 The storage package includes all the necessary operations for reading, writing, and manipulating highscore information. The SpringBoot package on the other hand, contains code for the web server's initialization process. It is also responsible for defining which HTTP-requests are supported, and how they are handled.
 
@@ -11,6 +11,7 @@ Use this documentation as a guide for understanding the internal workings of the
 ## Contents
 
 - [minesweeperrest: Module documentation](#minesweeperrest-module-documentation)
+
   - [Contents](#contents)
   - [Storage Package](#storage-package)
     - [Classes](#classes)
@@ -22,6 +23,8 @@ Use this documentation as a guide for understanding the internal workings of the
       - [`HighscoreRestController`](#highscorerestcontroller)
       - [`HighscoreService`](#highscoreservice)
   - [Dependencies and other information](#dependencies-and-other-information)
+  - [Sequence diagram](#sequence-diagram)
+  - [Test coverage](#test-coverage)
 
 ## Storage Package
 
@@ -89,3 +92,14 @@ A diagram showing an important possible sequence in the game
 
 ![sequenceDiagram](../../pictures/sequenceDiagram.png)
 
+## Test coverage
+
+To generate _Jacoco raport_ for the whole project: [here](../coverage/README.md#generate-coverage-raport-🧪).
+
+**Jacoco test coverage rest:**
+
+![ui report](../../pictures/jacoco_reports/rest-report.jpg)
+
+**Jacoco test coverage for all classes in :**
+
+![rest report classes](../../pictures/jacoco_reports/rest-report-classes.jpg)

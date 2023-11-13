@@ -6,6 +6,7 @@ document outlines the different elements in the user interface of this minesweep
 ## Contents
 
 - [User interface documentation](#user-interface-documentation)
+
   - [Contents](#contents)
   - [UI package](#ui-package)
     - [MineApp](#mineapp)
@@ -13,9 +14,12 @@ document outlines the different elements in the user interface of this minesweep
     - [HighScoreListController](#highscorelistcontroller)
     - [SettingsController](#settingscontroller)
   - [resources](#resources)
+
     - [GamePage.fxml](#gamepagefxml)
     - [HighscoreList.fxml](#highscorelistfxml)
     - [Settings.fxml](#settingsfxml)
+
+  - [Test coverage](#test-coverage)
 
 ## UI package
 
@@ -52,3 +56,15 @@ HighscoreList.fxml contains the user interface for the highscorelist in the mine
 ### Settings.fxml
 
 Settings.fxml contains the user interface for the settings in the minesweeper application.
+
+## Test coverage
+
+To generate _Jacoco raport_ for the whole project: [here](../coverage/README.md#generate-coverage-raport-🧪).
+
+**Jacoco test coverage UI:**
+
+![ui report](../../pictures/jacoco_reports/ui-report.jpg).
+
+**Jacoco test coverage for all classes in UI:**
+
+![ui report classes](../../pictures/jacoco_reports/ui-report-classes.jpg)
