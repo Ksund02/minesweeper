@@ -15,6 +15,7 @@
   - [Environment setup 🕶️](#environment-setup-️)
   - [Issue Priority Labels 🚩](#issue-priority-labels-)
   - [Code Quality Tools](#code-quality-tools)
+  - [Package Diagram](#package-diagram)
 
 ## Game Description 🕹️
 
@@ -109,3 +110,9 @@ Red: High Priority 🔴
   - [What is Checkstyle?](./FAQ.md#what-is-checkstyle)
   - [How do i standarize my code to pass checkstyle?](./FAQ.md#how-do-i-standarize-my-code-to-pass-checkstyle)
   - [How do i change java-formatter settings?](./FAQ.md#how-do-i-change-java-formatter-settings)
+
+## Package Diagram
+
+A diagram showing the connection between the packages in the minesweeper folder
+
+![package-diagram](../pictures/packageDiagram.png)
