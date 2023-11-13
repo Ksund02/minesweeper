@@ -24,6 +24,7 @@ import core.Tile;
 import core.TileReadable;
 import core.UserScore;
 import core.savehandler.HighscoreFileManager;
+import core.settings.GameDifficulty;
 import core.settings.SettingsManager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -51,7 +52,7 @@ public class GamePageTest extends ApplicationTest {
       HighscoreFileManager.writeToHighscore(score, HighscoreFileManager.getFile());
       return null;
     }).when(mockz).writeToHighscore(Mockito.any(UserScore.class));
-
+    
     GamePageController ctrl = new GamePageController();
     ctrl.setRestRequest(mockz);
     FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/ui/GamePage.fxml"));
@@ -64,6 +65,7 @@ public class GamePageTest extends ApplicationTest {
     stage.show();
     robot = new FxRobot();
     gameGrid = robot.lookup("#gameGrid").query();
+    SettingsManager.setGameDifficulty(GameDifficulty.EASY);
   }
 
   /**
