@@ -10,7 +10,7 @@
 - [Optional Features 🎚️](#optional-features-🎚️)
 - [Intended Use 🎮](#intended-use-)
 - [Check test coverage🧪](#check-test-coverage🧪)
-- [Launch springboot](#launch-springboot)
+- [Launch springboot 🚀](#launch-springboot-🚀)
 - [Environment setup 🕶️](#environment-setup-️🕶️)
 - [Issue Priority Labels 🚩](#issue-priority-labels-🚩)
 - [Code Quality Tools 🔨](#code-quality-tools-🔨)
@@ -52,9 +52,13 @@ A picture of how the high-score list might look like is presented below.
 
 ## Check test coverage🧪
 
-To generate and check test coverage across all modules go [here](./coverage/README.md#generate-coverage-raport-🧪).
+**Easily generate and review test coverage** across all modules with the following steps [here](./coverage/README.md#generate-coverage-raport-🧪).
 
-## Launch springboot
+**View Overall Coverage:** For a quick overview of the project's test coverage, refer to the Overall JaCoCo Report below:
+![overall_jacoco_report](../pictures/jacoco_reports/overall_jacoco_report.JPG)
+**Detailed Module Coverage:** For more comprehensive coverage details of each individual module, check the respective README files in each module directory. These contain detailed JaCoCo coverage reports, offering insights into specific areas of the code.
+
+## Launch springboot 🚀
 
 1. **Navigate to rest**
 
