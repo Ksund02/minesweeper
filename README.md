@@ -30,7 +30,7 @@ More information about the implementation and the environment setup can be found
 - `docs/`: Contains all sort of documentation about the project, including the reports after each Release.
 - `minesweeper/`: This is the folder where all of the code for the Minesweeper-game is.
 - `minesweeper/core`: Contains the core logic of the game.
-- `minesweeper/storage`: Contains code used when saving files.
+- `minesweeper/rest`: Contains code for running the REST-server and defines the HTTP methods used.
 - `minesweeper/ui`: Contains code for frontend UI, created with JavaFX.
 - `minesweeper/appdata`: Contains all of the persistent data is. The highscore list is located here.
 
@@ -50,16 +50,28 @@ cd minesweeper
 2. **Install the code**
 
 ```cmd
-mvn clean install
+mvn clean install -U
 ```
 
-3. **Navigate to the ui directory**
+3. **Navigate to the rest module**
 
 ```cmd
-cd ui
+cd rest
 ```
 
-4. **Run the application**
+4. **Start the REST-server**
+
+```cmd
+mvn spring-boot:run
+```
+
+5. **Navigate to the ui directory**
+
+```cmd
+cd ..\ui
+```
+
+6. **Run the application**
 
 ```cmd
 mvn javafx:run
@@ -69,37 +81,53 @@ mvn javafx:run
 
 1. **Open the link in a browser**
 
+You must have a valid git-token on GitLab and configured a personal access token for Eclipse Che with this git-token.
+
 [Open project in Eclipse Che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2302/gr2302?new)
 
 2. **Open a new terminal and navigate to the minesweeper directory**
 
 ```cmd
-cd minesweeper/
+cd minesweeper
 ```
 
 3. **Run the following command**
 
-```cmd
-mvn clean install
-```
-
-4. **Navigate to the ui directory**
+The tests are running in a separate window. To see them, do step 7.
 
 ```cmd
-cd ui/
+mvn clean install -U
 ```
 
-5. **Open virtual endpoint**
+4. **Navigate to the rest module**
+
+```cmd
+cd rest
+```
+
+5. **Start the REST-server**
+
+```cmd
+mvn spring-boot:run
+```
+
+6. **Navigate to the ui directory**
+
+```cmd
+cd ..\ui
+```
+
+7. **Open virtual endpoint**
 
 In the left down corner open **ENDPOINTS** and copy the link from **6080-tcp-desktop-ui (6080/http)** and paste it in a new tab.
 
-6. **Run the following command**
+8. **Run the following command**
 
 ```cmd
 mvn javafx:run
 ```
 
-7. **Navigate to the game**
+9. **Navigate to the game**
 
 The game is now running in the other tab with the virtual computer
 
