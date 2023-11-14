@@ -11,7 +11,11 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <!-- This module needs the jackson library. -->
+    <!-- This module needs the jackson library.
+      
+    The library is used by HighscoreFileManager to read json-files
+    and convert the content to valid UserScore objects.  -->
+
     <dependencies>
 
       <dependency>
