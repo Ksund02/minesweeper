@@ -2,18 +2,16 @@
 
 This document outlines the structure and usage of HTTP requests supported by our REST-service. The service currently facilitates operations related to the highscore list of our application.
 
-## Contents
+## Table of contents
 
-- [REST service documentation](#rest-service-documentation)
-  - [Contents](#contents)
-  - [Server type](#server-type)
-  - [GET requests](#get-requests)
-    - [Retrieve all highscores](#retrieve-all-highscores)
-      - [Example of response body](#example-of-response-body)
-  - [POST requests](#post-requests)
-    - [Add new Highscore](#add-new-highscore)
-  - [DELETE Requests](#delete-requests)
-    - [Potential Feature: Delete All Highscores](#potential-feature-delete-all-highscores)
+- [Server type](#server-type)
+- [GET requests](#get-requests)
+  - [Retrieve all highscores](#retrieve-all-highscores)
+    - [Example of response body](#example-of-response-body)
+- [POST requests](#post-requests)
+  - [Add new Highscore](#add-new-highscore)
+- [DELETE Requests](#delete-requests)
+  - [Potential Feature: Delete All Highscores](#potential-feature-delete-all-highscores)
 
 ## Server type
 
@@ -65,15 +63,15 @@ We employ Jetty as our HTTP server to host the REST API. This means that Jetty i
   - `Request body`: JSON-formatted `UserScore` object.
 - **Response:**
   - `200 OK`: The highscore was successfully added.
-  
+
 Example of request body:
 
 ```json
 {
-    "name" : "MyNewScore",
-    "score" : 178,
-    "date" : "2023-07-31",
-    "difficulty" : "HARD"
+  "name": "MyNewScore",
+  "score": 178,
+  "date": "2023-07-31",
+  "difficulty": "HARD"
 }
 ```
 
