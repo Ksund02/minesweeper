@@ -3,23 +3,20 @@
 The user interface of this minesweeper application is made with JavaFX and FXML. This
 document outlines the different elements in the user interface of this minesweeper application.
 
-## Contents
+## Table of contents
 
-- [User interface documentation](#user-interface-documentation)
+- [UI package](#ui-package)
+  - [MineApp](#mineapp)
+  - [GamePageController](#gamepagecontroller)
+  - [HighScoreListController](#highscorelistcontroller)
+  - [SettingsController](#settingscontroller)
+- [resources](#resources)
 
-  - [Contents](#contents)
-  - [UI package](#ui-package)
-    - [MineApp](#mineapp)
-    - [GamePageController](#gamepagecontroller)
-    - [HighScoreListController](#highscorelistcontroller)
-    - [SettingsController](#settingscontroller)
-  - [resources](#resources)
+  - [GamePage.fxml](#gamepagefxml)
+  - [HighscoreList.fxml](#highscorelistfxml)
+  - [Settings.fxml](#settingsfxml)
 
-    - [GamePage.fxml](#gamepagefxml)
-    - [HighscoreList.fxml](#highscorelistfxml)
-    - [Settings.fxml](#settingsfxml)
-
-  - [Test coverage](#test-coverage)
+- [Test coverage](#test-coverage)
 
 ## UI package
 

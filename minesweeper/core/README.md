@@ -2,26 +2,24 @@
 
 The `minesweepercore` module contains the classes containing logic for the minesweeper application. The different classes contained in this module can easily be found in the contents.
 
-## Contents
+## Table of contents
 
-- [minesweepercore: Module documentation](#minesweepercore-module-documentation)
-  - [Contents](#contents)
-  - [Core](#core)
-    - [`Tile`](#tile)
-    - [`TileReadable`](#tilereadable)
-    - [`GameBoard`](#gameboard)
-    - [`Stopwatch`](#stopwatch)
-    - [`GameEngine`](#gameengine)
-    - [`UserScore`](#userscore)
-  - [settings](#settings)
-    - [`GameDifficulty`](#gamedifficulty)
-    - [`SettingsManager`](#settingsmanager)
-    - [`ThemeSettings`](#themesettings)
-  - [Savehandler](#savehandler)
-    - [`HighscoreFileManager`](#highscorefilemanager)
-  - [resources](#resources)
-  - [Class diagram](#class-diagram)
-  - [Test coverage](#test-coverage)
+- [Core](#core)
+  - [`Tile`](#tile)
+  - [`TileReadable`](#tilereadable)
+  - [`GameBoard`](#gameboard)
+  - [`Stopwatch`](#stopwatch)
+  - [`GameEngine`](#gameengine)
+  - [`UserScore`](#userscore)
+- [settings](#settings)
+  - [`GameDifficulty`](#gamedifficulty)
+  - [`SettingsManager`](#settingsmanager)
+  - [`ThemeSettings`](#themesettings)
+- [Savehandler](#savehandler)
+  - [`HighscoreFileManager`](#highscorefilemanager)
+- [resources](#resources)
+- [Class diagram](#class-diagram)
+- [Test coverage](#test-coverage)
 
 ## Core
 

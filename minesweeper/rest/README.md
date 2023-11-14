@@ -6,18 +6,16 @@ The SpringBoot package contains code for the web server's initialization process
 
 Use this documentation as a guide for understanding the internal workings of the `minesweeperrest` module.
 
-## Contents
+## Table of contents
 
-- [minesweeperrest: Module documentation](#minesweeperrest-module-documentation)
-  - [Contents](#contents)
-  - [SpringBoot package](#springboot-package)
-    - [Classes](#classes)
-      - [`SpringApp`](#springapp)
-      - [`HighscoreRestController`](#highscorerestcontroller)
-      - [`HighscoreService`](#highscoreservice)
-  - [Dependencies](#dependencies)
-  - [Sequence diagram](#sequence-diagram)
-  - [Test coverage](#test-coverage)
+- [SpringBoot package](#springboot-package)
+  - [Classes](#classes)
+    - [`SpringApp`](#springapp)
+    - [`HighscoreRestController`](#highscorerestcontroller)
+    - [`HighscoreService`](#highscoreservice)
+- [Dependencies](#dependencies)
+- [Sequence diagram](#sequence-diagram)
+- [Test coverage](#test-coverage)
 
 ## SpringBoot package
 

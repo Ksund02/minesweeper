@@ -7,7 +7,6 @@ This module is used to generate a overall jacoco rapport. It leverages the capab
 ## Table of contents 📚
 
 - [Overview](#overview)
-- [Table of contents 📚](#table-of-contents-📚)
 - [Configuration-setup](#configuration-setup)
 - [Generate Coverage Raport 🧪](#generate-coverage-raport-🧪)
 
