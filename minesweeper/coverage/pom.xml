@@ -7,6 +7,7 @@
 
     <name>coverage</name>
     <description>Compute aggregated test code coverage</description>
+    <!-- Skips the deployment of this module. -->
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
@@ -14,6 +15,7 @@
     <build>
         <plugins>
             <plugin>
+                <!-- Configured for running tests. Includes Jacoco agent setup for test coverage.-->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
@@ -23,6 +25,8 @@
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
+            <!--Manages
+            resources like properties files, with UTF-8 encoding specified.-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -31,6 +35,7 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+            <!-- JaCoCO plugin, create aggregated report-->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -47,6 +52,7 @@
             </plugin>
         </plugins>
     </build>
+    <!-- The modules that is included in test report -->
     <dependencies>
         <dependency>
             <groupId>it1901</groupId>
