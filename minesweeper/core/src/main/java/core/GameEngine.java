@@ -6,13 +6,12 @@ import java.util.List;
 
 /**
  * This is a class which serves as a bridge between the GameBoard and the GUI.
- * It is responsible for handling user input and updating the GameBoard accordingly.
- * It also keeps track of the game's stopwatch.
- * 
- * <p>What essentially happens is that the GUI calls the GameEngine's methods when the user
- * interacts with the GUI. The GameEngine then updates the GameBoard accordingly, and
- * returns a list of tiles which were affected by the user's action. The GUI then updates
- * the affected tiles.
+ * It is responsible for handling user input and updating the GameBoard
+ * accordingly. It also keeps track of the game's stopwatch. What essentially
+ * happens is that the GUI calls the GameEngine's methods when the user
+ * interacts with the GUI. The GameEngine then updates the GameBoard
+ * accordingly, and returns a list of tiles which were affected by the user's
+ * action. The GUI then updates the affected tiles.
  */
 public class GameEngine {
   private GameBoard gameBoard;
@@ -38,7 +37,7 @@ public class GameEngine {
 
   /**
    * Handles a left click action at the specified coordinates.
-
+   * 
    * @param x the x coordinate
    * @param y the y coordinate
    */
@@ -70,7 +69,7 @@ public class GameEngine {
 
   /**
    * Handles a right click action at the specified coordinates.
-
+   * 
    * @param x the x coordinate
    * @param y the y coordinate
    */
@@ -88,7 +87,7 @@ public class GameEngine {
 
   /**
    * Handles a space bar click action at the specified coordinates.
-
+   * 
    * @param x the x coordinate
    * @param y the y coordinate
    */
@@ -99,27 +98,24 @@ public class GameEngine {
     }
 
     List<Tile> neighbors = gameBoard.getNeighborTiles(x, y);
-    boolean correctNumberOfFlags = clickedTile.getNumBombsAround()
-        == neighbors.stream().filter(Tile::isFlagged).count();
+    boolean correctNumberOfFlags = clickedTile.getNumBombsAround() == neighbors.stream().filter(Tile::isFlagged)
+        .count();
 
     if (!correctNumberOfFlags) {
       return;
     }
 
-    neighbors.stream()
-             .filter(tile -> !tile.isFlagged() && !tile.isBomb())
-             .forEach(tile -> handleLeftClick(tile.getX(), tile.getY()));
-    neighbors.stream()
-             .filter(tile -> !tile.isFlagged() && tile.isBomb())
-             .forEach(tile -> handleLeftClick(tile.getX(), tile.getY()));
+    neighbors.stream().filter(tile -> !tile.isFlagged() && !tile.isBomb())
+        .forEach(tile -> handleLeftClick(tile.getX(), tile.getY()));
+    neighbors.stream().filter(tile -> !tile.isFlagged() && tile.isBomb())
+        .forEach(tile -> handleLeftClick(tile.getX(), tile.getY()));
 
     addRevealedTilesToLatestUpdated();
   }
 
-
   /**
-   * Handles the event when a bomb is clicked. 
-   * It stops the game's stopwatch and reveals all bomb tiles.
+   * Handles the event when a bomb is clicked. It stops the game's stopwatch and
+   * reveals all bomb tiles.
    */
   private void handleBombClicked() {
     List<Tile> bombTiles = gameBoard.getBombTiles();
@@ -156,7 +152,7 @@ public class GameEngine {
         if (tile.isRevealed()) {
           latestUpdatedTiles.add(tile);
         }
-      }  
+      }
     }
   }
 
