@@ -7,13 +7,17 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <!-- Specifying that we are using UTF-8 encoding,
+        and that we are using java 17.
+        This will be inherited by all of the modules in the project -->
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <jacoco.version>0.8.11</jacoco.version>
     </properties>
 
+    <!-- Defining all of the modules in the project -->
     <modules>
         <module>core</module>
         <module>rest</module>
@@ -22,28 +26,22 @@
     </modules>
 
     <dependencies>
-        <!-- junit testing with jupiter -->
+
+        <!-- junit testing with jupiter
+        All modules need this dependency, therefore we 
+        define it in the parent pom.xml -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.10.1</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.10.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>5.10.1</version>
-            <scope>test</scope>
-        </dependency>
+
     </dependencies>
+
     <build>
         <plugins>
+
             <!-- Configure jacoco code coverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -66,14 +64,13 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
-                <configuration>
-                    <skipTests>${skipTests}</skipTests>
-                </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -94,6 +91,7 @@
                 </configuration>
             </plugin>
 
+            <!-- Configure the maven compiler, compiles java code to java bytecode -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -102,12 +100,18 @@
 
             <!-- spotbugs -->
             <plugin>
+
+                <!-- The dependency which is used to add spotbugs into the maven lifecycle -->
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>4.7.3.6</version>
+
+                <!-- Adding configuration, so that spotbugs recognizes the exclude file -->
                 <configuration>
                     <excludeFilterFile>${project.parent.basedir}/spotbugs-exclude.xml</excludeFilterFile>
                 </configuration>
+                
+                <!-- Specifying that the goal of the plugin is to check for bugs -->
                 <executions>
                     <execution>
                         <goals>
@@ -115,9 +119,13 @@
                         </goals>
                     </execution>
                 </executions>
+
             </plugin>
+
             <!-- Checkstyle -->
             <plugin>
+
+                <!-- The dependency which is used to add checkstyle into the maven lifecycle -->
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <groupId>org.apache.maven.plugins</groupId>
                 <version>3.3.1</version>
@@ -127,6 +135,8 @@
                     <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
                 </configuration>
+                
+                <!-- Specifying that we are using checkstyle tool version 10.12.4 -->
                 <dependencies>
                     <dependency>
                         <artifactId>checkstyle</artifactId>
@@ -134,7 +144,10 @@
                         <version>10.12.4</version>
                     </dependency>
                 </dependencies>
+                
                 <executions>
+
+                    <!-- Checkstyle runs automatically during the verify, install and deploy phases -->
                     <execution>
                         <id>checkstyle-check</id>
                         <phase>verify</phase>
@@ -142,7 +155,9 @@
                             <goal>check</goal>
                         </goals>
                     </execution>
+
                 </executions>
+
             </plugin>
         </plugins>
     </build>
