@@ -6,11 +6,10 @@ This module is used to generate a overall jacoco rapport. It leverages the capab
 
 ## Table of contents 📚
 
-- [Overview](#overview)
-- [Configuration-setup](#configuration-setup)
+- [Configuration-setup ⚙️](#configuration-setup-⚙️)
 - [Generate Coverage Raport 🧪](#generate-coverage-raport-🧪)
 
-## Configuration-setup
+## Configuration-setup ⚙️
 
 This module contains a POM.xml-file, no code. The POM is configured to import all reports from all modules and generate a combined one. This will appear in the target-folder in this module.
 
