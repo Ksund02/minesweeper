@@ -74,7 +74,7 @@ mvn spring-boot:run
 
 3. **Kill the server if already running (optional)**
 
-This is only for when you are having issues with the server not auto-closing after use. Run these commands in the terminal and follow the steps:
+This is only for when you are having issues with the server not auto-closing after use. Run these commands in the **powershell** terminal and follow the instructions:
 
 ```cmd
 netstat -ano | findstr :8080
