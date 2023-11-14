@@ -4,13 +4,13 @@
 
 ## Table of Contents 📚
 
-- [Project Description](#project-description-🕹️)
-- [Project Members](#members-🧔)
-- [Repository Structure](#repository-structure-👀)
-- [User story](#user-story🧑‍🌾)
-- [How to Run the Game Localy](#how-to-run-the-game-localy-🚂)
-- [How to Run Project in Eclipse Che](#how-to-run-project-in-eclipse-che-🌐)
-- [Game Rules](#game-rules-📜)
+- [Project Description 🕹️](#project-description-🕹️)
+- [Project Members 🧔](#members-🧔)
+- [Repository Structure 👀](#repository-structure-👀)
+- [User story 🧑‍🌾](#user-story🧑‍🌾)
+- [How to Run the Game Localy 🚂](#how-to-run-the-game-localy-🚂)
+- [How to Run Project in Eclipse Che 🌐](#how-to-run-project-in-eclipse-che-🌐)
+- [Game Rules 📜](#game-rules-📜)
 
 ## Project Description 🕹️
 
