@@ -67,8 +67,10 @@ mvn spring-boot:run
 
 5. **Navigate to the ui directory**
 
+Open a new terminal or split your current which is running the server.
+
 ```cmd
-cd ..\ui
+cd minesweeper\ui
 ```
 
 6. **Run the application**
@@ -113,8 +115,10 @@ mvn spring-boot:run
 
 6. **Navigate to the ui directory**
 
+Open a new terminal or split your current which is running the server.
+
 ```cmd
-cd ..\ui
+cd minesweeper\ui
 ```
 
 7. **Open virtual endpoint**
