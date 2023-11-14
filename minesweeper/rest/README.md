@@ -16,6 +16,7 @@ Use this documentation as a guide for understanding the internal workings of the
       - [`HighscoreRestController`](#highscorerestcontroller)
       - [`HighscoreService`](#highscoreservice)
   - [Dependencies](#dependencies)
+  - [Sequence diagram](#sequence-diagram)
   - [Test coverage](#test-coverage)
 
 ## SpringBoot package
@@ -51,6 +52,12 @@ A service class which is responsible for the core logic needed to handle the HTT
 - **Jackson Library**: Utilized for JSON processing, enabling easy conversion of `UserScore` objects to/from JSON.
 - **Spring Boot**: Automates configuration and startup processes for the web server, simplifies server management and reduces boilerplate code.
 - **minesweepercore**: The `HighscoreFileManager`-class from core.savehandler, used to write scores to the JSON-file at the server end.
+
+## Sequence diagram
+
+A diagram showing an important possible sequence in the game
+
+![sequenceDiagram](../../pictures/sequenceDiagram.png)
 
 ## Test coverage
 
