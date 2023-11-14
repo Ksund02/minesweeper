@@ -4,18 +4,18 @@
 
 ## Table of contents 📚
 
-- [Minesweeper code base](#minesweeper-code-base)
-  - [Table of contents 📚](#table-of-contents-)
-  - [Game Description 🕹️](#game-description-️)
-  - [Features 🎈](#features-)
-  - [Optional Features 🔨](#optional-features-)
-  - [Intended Use 🎮](#intended-use-)
-  - [Check test coverage🧪](#check-test-coverage)
-  - [Launch springboot](#launch-springboot)
-  - [Environment setup 🕶️](#environment-setup-️)
-  - [Issue Priority Labels 🚩](#issue-priority-labels-)
-  - [Code Quality Tools](#code-quality-tools)
-  - [Package Diagram](#package-diagram)
+- [Table of contents 📚](#table-of-contents-📚)
+- [Game Description 🕹️](#game-description-️🕹️)
+- [Features 🎈](#features-)
+- [Optional Features 🎚️](#optional-features-🎚️)
+- [Intended Use 🎮](#intended-use-)
+- [Check test coverage🧪](#check-test-coverage🧪)
+- [Launch springboot 🚀](#launch-springboot-🚀)
+- [Environment setup 🕶️](#environment-setup-️🕶️)
+- [Issue Priority Labels 🚩](#issue-priority-labels-🚩)
+- [Code Quality Tools 🔨](#code-quality-tools-🔨)
+- [Package Diagram 📈](#package-diagram-📈)
+- [Modules 📦](#modules-📦)
 
 ## Game Description 🕹️
 
@@ -29,14 +29,14 @@ The goal of our project is to make a working version of minesweeper.
 A [screenshot](#minesweeper-code-base) of the game is shown at the top of this file.
 A picture of how the high-score list might look like is presented below.
 
-![High-Score List](../pictures/highscore_list.png)
+![High-Score List](../pictures/leaderboard.png)
 
 ## Features 🎈
 
 - **Basic Minesweeper Gameplay**: Clear a grid of tiles without triggering mines.
 - **High-Score List**: Players can submit their names and scores after successfully completing a game.
 
-## Optional Features 🔨
+## Optional Features 🎚️
 
 - **Difficulty Levels**: Choose between Easy, Medium, and Hard levels.
 - **Game Saving**: Save the current game state and resume later. Note: Saved games will not be eligible for the high-score list to prevent cheating.
@@ -52,29 +52,37 @@ A picture of how the high-score list might look like is presented below.
 
 ## Check test coverage🧪
 
-To generate and check test coverage across all modules go [here](./coverage/README.md#generate-coverage-raport-🧪).
+**Easily generate and review test coverage** across all modules with the following steps [here](./coverage/README.md#generate-coverage-raport-🧪).
 
-## Launch springboot
+**View Overall Coverage:** For a quick overview of the project's test coverage, refer to the Overall JaCoCo Report below:
+![overall_jacoco_report](../pictures/jacoco_reports/overall_jacoco_report.JPG)
+**Detailed Module Coverage:** For more comprehensive coverage details of each individual module, check the respective README files in each module directory. These contain detailed JaCoCo coverage reports, offering insights into specific areas of the code.
+
+## Launch springboot 🚀
 
 1. **Navigate to rest**
 
-```
+```cmd
 cd rest
 ```
 
-2. **Run the restAPI**
+2. **Run the REST-API**
 
-```
-mvn javafx:run
+```cmd
+mvn spring-boot:run
 ```
 
-3. **Kill the server if already running**
+3. **Kill the server if already running (optional)**
 
-```
+This is only for when you are having issues with the server not auto-closing after use. Run these commands in the **powershell** terminal and follow the instructions:
+
+```cmd
 netstat -ano | findstr :8080
 ```
+
 Replace `<PID-number>` by the value you find from the first command:
-```
+
+```cmd
 taskkill /PID <PID-number> /F
 ```
 
@@ -105,7 +113,7 @@ Red: High Priority 🔴
 - What it means: Issues marked red are critical and must be resolved immediately as they either block further development or introduce serious bugs.
 - Action: Prioritize these issues, they must be resolved before attending to tasks of lower priority.
 
-## Code Quality Tools
+## Code Quality Tools 🔨
 
 - _[SpotBugs](https://spotbugs.github.io/)_: is automatically executed during the build process when running "mvn clean install". It serves to analyze the compiled Java bytecode to detect a variety of potential issues in the code.
 - _[Checkstyle](https://checkstyle.sourceforge.io/)_: is helping write Java code that adheres to a coding standard. It automaticly check for miss match in the defined formating in code and [google_checks.xml](./google_checks.xml) and the code when running 'mvn clean install' (the google_checks.xml is [downloaded here](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml)).
@@ -120,19 +128,19 @@ Before doing this, you should first check that the game runs locally by retracin
 
 1. **Navigate to minesweeper folder**
 
-```
+```cmd
 cd minesweeeper
 ```
 
 2. **Run the JLink-command**
 
-```
+```cmd
 mvn javafx:jlink -f ./ui/pom.xml
 ```
 
 3. **Run the JPackage-command**
 
-```
+```cmd
 mvn jpackage:jpackage -f ./ui/pom.xml
 ```
 
@@ -145,8 +153,17 @@ The executable file should be located in the target folder in ui under "dist". T
 
 For the executable file to work as intended, the REST-server needs to be running in the background. Retrace the steps [here](#launch-springboot) to complete the set-up.
 
-## Package Diagram
+## Modules 📦
+
+Our project is structured into four distinct modules, each playing a crucial role in our system's functionality. For in-depth information and guidelines on each module, please refer to their individual README files:
+
+1. [ui](ui/readme.md)
+2. [rest](rest/readme.md)
+3. [coverage](coverage/readme.md)
+4. [core](core/readme.md)
+
+## Package Diagram 📈
 
 A diagram showing the connection between the packages in the minesweeper folder
 
-![package-diagram](../pictures/packageDiagram.png)
+![package-diagram](../pictures/diagrams/packageDiagram.png)

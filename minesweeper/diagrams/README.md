@@ -6,7 +6,7 @@ The diagram folder contains the three different diagrams in the form of plantUML
 - packageDiagram
 - restSequenceDiagram
 
-## Contents
+## Table of contents
 
 - [coreLogicClassDiagram](#coreLogicClassDiagram)
 - [packageDiagram](#packageDiagram)

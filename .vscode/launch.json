@@ -6,8 +6,8 @@
             "name": "SpringApp",
             "request": "launch",
             "mainClass": "rest/springBoot.SpringApp",
-            "projectName": "storage",
-            "cwd": "${workspaceFolder}/minesweeper/storage"
+            "projectName": "rest",
+            "cwd": "${workspaceFolder}/minesweeper/rest"
         },
         {
             "type": "java",
