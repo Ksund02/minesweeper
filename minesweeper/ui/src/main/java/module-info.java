@@ -2,7 +2,6 @@ module minesweeperui {
     // JavaFX
     requires javafx.controls;
     requires javafx.fxml;
-    requires javafx.media;
 
     requires minesweepercore;
     requires java.net.http;
