@@ -22,4 +22,4 @@ This diagram is a package digram showing the connection between all the packages
 
 ### restSequenceDiagram
 
-This diagram shows an important possible sequence of the minesweeper application where the REST-api gets used.
+This diagram shows an important possible sequence of method calls in the minesweeper application where the REST-api gets used.
