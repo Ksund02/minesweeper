@@ -10,7 +10,6 @@
     <!-- Specifying that we are using UTF-8 encoding,
         and that we are using java 17.
         This will be inherited by all of the modules in the project -->
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
@@ -27,7 +26,7 @@
 
     <dependencies>
 
-        <!-- junit testing with jupiter
+        <!-- junit testing with jupiter.
         All modules need this dependency, therefore we 
         define it in the parent pom.xml -->
         <dependency>
@@ -48,6 +47,8 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.11</version>
                 <executions>
+                    
+                    <!-- Prepares the jacoco agent, so that it can be used during the tests -->
                     <execution>
                         <id>jacoco-prepare-agent</id>
                         <phase>process-test-classes</phase>
@@ -55,6 +56,8 @@
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
+
+                    <!-- Makes the jacoco report run automatically during the verify phase -->
                     <execution>
                         <id>jacoco-report</id>
                         <phase>verify</phase>
@@ -62,19 +65,24 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
+
                 </executions>
             </plugin>
 
+            <!-- Maven surefire plugin, used for unit tests.-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
             </plugin>
 
+            <!-- Maven failsafe plugin, used for integration tests.-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>3.0.0-M5</version>
+
+                <!-- Runs the integration tests automatically during the verify phase -->
                 <executions>
                     <execution>
                         <goals>
@@ -83,12 +91,15 @@
                         </goals>
                     </execution>
                 </executions>
+
+                <!-- Configures the jacoco agent, so that it can be used during the integration tests -->
                 <configuration>
                     <argLine>@{argLine} -Djacoco-agent.destfile=target/jacoco.exec</argLine>
                     <systemPropertyVariables>
                         <jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
                     </systemPropertyVariables>
                 </configuration>
+                
             </plugin>
 
             <!-- Configure the maven compiler, compiles java code to java bytecode -->
