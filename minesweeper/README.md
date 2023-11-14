@@ -29,7 +29,7 @@ The goal of our project is to make a working version of minesweeper.
 A [screenshot](#minesweeper-code-base) of the game is shown at the top of this file.
 A picture of how the high-score list might look like is presented below.
 
-![High-Score List](../pictures/highscore_list.png)
+![High-Score List](../pictures/leaderboard.png)
 
 ## Features 🎈
 
@@ -73,7 +73,9 @@ mvn javafx:run
 ```
 netstat -ano | findstr :8080
 ```
+
 Replace `<PID-number>` by the value you find from the first command:
+
 ```
 taskkill /PID <PID-number> /F
 ```
