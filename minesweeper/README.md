@@ -4,18 +4,18 @@
 
 ## Table of contents 📚
 
-- [Minesweeper code base](#minesweeper-code-base)
-  - [Table of contents 📚](#table-of-contents-📚)
-  - [Game Description 🕹️](#game-description-️🕹️)
-  - [Features 🎈](#features-)
-  - [Optional Features 🎚️](#optional-features-🎚️)
-  - [Intended Use 🎮](#intended-use-)
-  - [Check test coverage🧪](#check-test-coverage🧪)
-  - [Launch springboot](#launch-springboot)
-  - [Environment setup 🕶️](#environment-setup-️🕶️)
-  - [Issue Priority Labels 🚩](#issue-priority-labels-🚩)
-  - [Code Quality Tools 🔨](#code-quality-tools-🔨)
-  - [Package Diagram 📈](#package-diagram-📈)
+- [Table of contents 📚](#table-of-contents-📚)
+- [Game Description 🕹️](#game-description-️🕹️)
+- [Features 🎈](#features-)
+- [Optional Features 🎚️](#optional-features-🎚️)
+- [Intended Use 🎮](#intended-use-)
+- [Check test coverage🧪](#check-test-coverage🧪)
+- [Launch springboot](#launch-springboot)
+- [Environment setup 🕶️](#environment-setup-️🕶️)
+- [Issue Priority Labels 🚩](#issue-priority-labels-🚩)
+- [Code Quality Tools 🔨](#code-quality-tools-🔨)
+- [Package Diagram 📈](#package-diagram-📈)
+- [Modules 📦](#modules-📦)
 
 ## Game Description 🕹️
 
@@ -146,6 +146,15 @@ The executable file should be located in the target folder in ui under "dist". T
 5. **Run the server**
 
 For the executable file to work as intended, the REST-server needs to be running in the background. Retrace the steps [here](#launch-springboot) to complete the set-up.
+
+## Modules 📦
+
+Our project is structured into four distinct modules, each playing a crucial role in our system's functionality. For in-depth information and guidelines on each module, please refer to their individual README files:
+
+1. [ui](ui/readme.md)
+2. [rest](rest/readme.md)
+3. [coverage](coverage/readme.md)
+4. [core](core/readme.md)
 
 ## Package Diagram 📈
 
