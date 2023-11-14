@@ -5,17 +5,17 @@
 ## Table of contents 📚
 
 - [Minesweeper code base](#minesweeper-code-base)
-  - [Table of contents 📚](#table-of-contents-)
-  - [Game Description 🕹️](#game-description-️)
+  - [Table of contents 📚](#table-of-contents-📚)
+  - [Game Description 🕹️](#game-description-️🕹️)
   - [Features 🎈](#features-)
-  - [Optional Features 🔨](#optional-features-)
+  - [Optional Features 🎚️](#optional-features-🎚️)
   - [Intended Use 🎮](#intended-use-)
-  - [Check test coverage🧪](#check-test-coverage)
+  - [Check test coverage🧪](#check-test-coverage🧪)
   - [Launch springboot](#launch-springboot)
-  - [Environment setup 🕶️](#environment-setup-️)
-  - [Issue Priority Labels 🚩](#issue-priority-labels-)
-  - [Code Quality Tools](#code-quality-tools)
-  - [Package Diagram](#package-diagram)
+  - [Environment setup 🕶️](#environment-setup-️🕶️)
+  - [Issue Priority Labels 🚩](#issue-priority-labels-🚩)
+  - [Code Quality Tools 🔨](#code-quality-tools-🔨)
+  - [Package Diagram 📈](#package-diagram-📈)
 
 ## Game Description 🕹️
 
@@ -36,7 +36,7 @@ A picture of how the high-score list might look like is presented below.
 - **Basic Minesweeper Gameplay**: Clear a grid of tiles without triggering mines.
 - **High-Score List**: Players can submit their names and scores after successfully completing a game.
 
-## Optional Features 🔨
+## Optional Features 🎚️
 
 - **Difficulty Levels**: Choose between Easy, Medium, and Hard levels.
 - **Game Saving**: Save the current game state and resume later. Note: Saved games will not be eligible for the high-score list to prevent cheating.
@@ -107,7 +107,7 @@ Red: High Priority 🔴
 - What it means: Issues marked red are critical and must be resolved immediately as they either block further development or introduce serious bugs.
 - Action: Prioritize these issues, they must be resolved before attending to tasks of lower priority.
 
-## Code Quality Tools
+## Code Quality Tools 🔨
 
 - _[SpotBugs](https://spotbugs.github.io/)_: is automatically executed during the build process when running "mvn clean install". It serves to analyze the compiled Java bytecode to detect a variety of potential issues in the code.
 - _[Checkstyle](https://checkstyle.sourceforge.io/)_: is helping write Java code that adheres to a coding standard. It automaticly check for miss match in the defined formating in code and [google_checks.xml](./google_checks.xml) and the code when running 'mvn clean install' (the google_checks.xml is [downloaded here](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml)).
@@ -147,7 +147,7 @@ The executable file should be located in the target folder in ui under "dist". T
 
 For the executable file to work as intended, the REST-server needs to be running in the background. Retrace the steps [here](#launch-springboot) to complete the set-up.
 
-## Package Diagram
+## Package Diagram 📈
 
 A diagram showing the connection between the packages in the minesweeper folder
 
