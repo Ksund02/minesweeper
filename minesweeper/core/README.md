@@ -114,7 +114,7 @@ This is the folder where all the images in the game are stored. It contains dark
 
 A diagram showing how the classes in core work together:
 
-![class diagram](../../pictures/classDiagram.png)
+![class diagram](../../pictures/diagrams/classDiagram.png)
 
 ## Test coverage
 

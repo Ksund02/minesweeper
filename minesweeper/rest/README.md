@@ -57,7 +57,7 @@ A service class which is responsible for the core logic needed to handle the HTT
 
 A diagram showing an important possible sequence in the game
 
-![sequenceDiagram](../../pictures/sequenceDiagram.png)
+![sequenceDiagram](../../pictures/diagrams/sequenceDiagram.png)
 
 ## Test coverage
 

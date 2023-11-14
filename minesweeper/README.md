@@ -151,4 +151,4 @@ For the executable file to work as intended, the REST-server needs to be running
 
 A diagram showing the connection between the packages in the minesweeper folder
 
-![package-diagram](../pictures/packageDiagram.png)
+![package-diagram](../pictures/diagrams/packageDiagram.png)
