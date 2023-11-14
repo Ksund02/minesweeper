@@ -4,7 +4,7 @@
 
 ' Module '
 package "minesweepercore" {
-  ' Packages ' 
+  ' Packages '
   package "core" {
     class GameBoard
     class GameEngine
@@ -12,10 +12,16 @@ package "minesweepercore" {
     class Tile
     Interface TileReadable
   }
+
+  package "core.savehandler" {
+    class HighscoreFileManager
+  }
+
   package "core.settings" {
     class GameDifficulty
     class SettingsManager
     class ThemeSettings
+    class UserScore
   }
 }
 
@@ -25,11 +31,7 @@ package "coverage" {
 
 'Module'
 package "minesweeperrest" {
-  ' Packages ' 
-  package "rest" {
-    class HighscoreFileManager
-    class UserScore
-  }
+  ' Packages '
   package "springBoot" {
     class HighscoreRestController
     class HighscoreService
@@ -39,7 +41,7 @@ package "minesweeperrest" {
 
 'Module'
 package "minesweeperui" {
-  ' Packages ' 
+  ' Packages '
   package "ui" {
     class GamePageController
     class HighscoreListController
@@ -53,10 +55,10 @@ package "minesweeperui" {
 ui --> core : uses
 ui --> core.settings : reads/writes
 ui --> springBoot : uses
-ui --> rest : uses
+ui --> core.savehandler : uses
 
-rest --> core.settings : reads
-springBoot --> rest : uses
+core.savehandler --> core.settings : reads
+springBoot --> core.savehandler : uses
 
 core --> core.settings : reads
 

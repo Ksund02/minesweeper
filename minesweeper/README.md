@@ -15,6 +15,7 @@
   - [Environment setup 🕶️](#environment-setup-️)
   - [Issue Priority Labels 🚩](#issue-priority-labels-)
   - [Code Quality Tools](#code-quality-tools)
+  - [Package Diagram](#package-diagram)
 
 ## Game Description 🕹️
 
@@ -143,3 +144,9 @@ The executable file should be located in the target folder in ui under "dist". T
 5. **Run the server**
 
 For the executable file to work as intended, the REST-server needs to be running in the background. Retrace the steps [here](#launch-springboot) to complete the set-up.
+
+## Package Diagram
+
+A diagram showing the connection between the packages in the minesweeper folder
+
+![package-diagram](../pictures/packageDiagram.png)
