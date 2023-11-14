@@ -62,25 +62,27 @@ A picture of how the high-score list might look like is presented below.
 
 1. **Navigate to rest**
 
-```
+```cmd
 cd rest
 ```
 
-2. **Run the restAPI**
+2. **Run the REST-API**
 
-```
-mvn javafx:run
+```cmd
+mvn spring-boot:run
 ```
 
-3. **Kill the server if already running**
+3. **Kill the server if already running (optional)**
 
-```
+This is only for when you are having issues with the server not auto-closing after use. Run these commands in the terminal and follow the steps:
+
+```cmd
 netstat -ano | findstr :8080
 ```
 
 Replace `<PID-number>` by the value you find from the first command:
 
-```
+```cmd
 taskkill /PID <PID-number> /F
 ```
 
@@ -126,19 +128,19 @@ Before doing this, you should first check that the game runs locally by retracin
 
 1. **Navigate to minesweeper folder**
 
-```
+```cmd
 cd minesweeeper
 ```
 
 2. **Run the JLink-command**
 
-```
+```cmd
 mvn javafx:jlink -f ./ui/pom.xml
 ```
 
 3. **Run the JPackage-command**
 
-```
+```cmd
 mvn jpackage:jpackage -f ./ui/pom.xml
 ```
 
